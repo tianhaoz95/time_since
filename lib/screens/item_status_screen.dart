@@ -55,17 +55,25 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      ElevatedButton(
-                        onPressed: () => _logNow(item),
-                        child: const Text('Log Now'),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () => _logNow(item),
+                          child: const Text('Log Now'),
+                        ),
                       ),
-                      ElevatedButton(
-                        onPressed: () => _addCustomDate(item),
-                        child: const Text('Custom Date'),
+                      const SizedBox(width: 8.0),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () => _addCustomDate(item),
+                          child: const Text('Custom Date'),
+                        ),
                       ),
-                      ElevatedButton(
-                        onPressed: () => _viewHistory(item),
-                        child: const Text('View History'),
+                      const SizedBox(width: 8.0),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () => _viewHistory(item),
+                          child: const Text('View History'),
+                        ),
                       ),
                     ],
                   ),
