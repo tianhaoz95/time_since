@@ -17,3 +17,5 @@ When I tap on the "sign out" button, it will show a black screen with a circular
 Your task is to show the login screen when the user was not previously logged in.
 
 Your task is to use Firebase Firestore to save the information for items and status. Each user should have an entry using their UID as the key and the app should store the items information (e.g., name, last date, etc) under the UID entry in the database. The app should read the information corresponding to the user's UID from Firestore when the user login, and when the user edit or delete the items, data in the Firestore database should change accordingly.
+
+Your task is to show the time since last log on each of the items showing in status tab.
