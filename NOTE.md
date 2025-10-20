@@ -11,3 +11,9 @@ Your task is add a sign up screen to the app which can be access by tapping on n
 Your task is to add a email and password field to the sign up screen.
 
 Your task is to use Firebase auth to implement the user sign up and login with email and password.
+
+When I tap on the "sign out" button, it will show a black screen with a circular progress bar forever, your task is to fix this. The progress bar should be shown right next to the "sign out" button and the rest of the content on the settings page should remain the same.
+
+Your task is to show the login screen when the user was not previously logged in.
+
+Your task is to use Firebase Firestore to save the information for items and status. Each user should have an entry using their UID as the key and the app should store the items information (e.g., name, last date, etc) under the UID entry in the database. The app should read the information corresponding to the user's UID from Firestore when the user login, and when the user edit or delete the items, data in the Firestore database should change accordingly.

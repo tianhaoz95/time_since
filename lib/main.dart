@@ -3,6 +3,7 @@ import 'package:time_since/screens/sign_in_screen.dart';
 import 'package:time_since/screens/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,9 +19,21 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: 'Maintenance Tracker',
       theme: ThemeData(primarySwatch: Colors.blue),
-      initialRoute: '/',
+      home: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator(); // Or a splash screen
+          }
+          if (snapshot.hasData) {
+            return const HomeScreen();
+          } else {
+            return const SignInScreen();
+          }
+        },
+      ),
       routes: {
-        '/': (context) => const SignInScreen(),
+        '/signIn': (context) => const SignInScreen(),
         '/home': (context) => const HomeScreen(),
       },
     );
