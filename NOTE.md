@@ -5,3 +5,5 @@ Your task is to continue on the existing code to finish the UI for the app. The 
 Your task is to rename the app from `com.example.time_since` to `com.hejitech.timesince` for all platforms.
 
 Your task is to implement a pop up window when user clicks on the "add" button on the manage tab, and the pop up window should let user input the name of the item and add the item to the list once user tap on "add" button and cancel the pop up window when user tap on "cancel" button.
+
+Your task is add a sign up screen to the app which can be access by tapping on newly added "register" button from the login screen.
