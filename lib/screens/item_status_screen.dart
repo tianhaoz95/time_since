@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:time_since/models/tracking_item.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ItemStatusScreen extends StatefulWidget {
   const ItemStatusScreen({super.key});
@@ -9,77 +11,155 @@ class ItemStatusScreen extends StatefulWidget {
 }
 
 class _ItemStatusScreenState extends State<ItemStatusScreen> {
-  final List<TrackingItem> _trackingItems = [
-    TrackingItem(id: '1', name: 'AC Filter'),
-    TrackingItem(id: '2', name: 'Water Filter'),
-    TrackingItem(id: '3', name: 'Car Oil Change'),
-  ];
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  void _logNow(TrackingItem item) {
-    // TODO: Implement log now functionality
-    print('Log now for: ${item.name}');
+  User? get currentUser => _auth.currentUser;
+
+  void _logNow(TrackingItem item) async {
+    if (currentUser == null) return;
+
+    try {
+      await _firestore
+          .collection('users')
+          .doc(currentUser!.uid)
+          .collection('items')
+          .doc(item.id)
+          .update({'lastDate': Timestamp.fromDate(DateTime.now())});
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Logged now for: ${item.name}')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error logging date: $e')),
+        );
+      }
+    }
   }
 
-  void _addCustomDate(TrackingItem item) {
-    // TODO: Implement add custom date functionality
-    print('Add custom date for: ${item.name}');
-  }
+  void _addCustomDate(TrackingItem item) async {
+    if (currentUser == null) return;
 
-  void _viewHistory(TrackingItem item) {
-    // TODO: Implement view history functionality
-    print('View history for: ${item.name}');
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+    );
+
+    if (pickedDate != null) {
+      try {
+        await _firestore
+            .collection('users')
+            .doc(currentUser!.uid)
+            .collection('items')
+            .doc(item.id)
+            .update({'lastDate': Timestamp.fromDate(pickedDate)});
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Custom date added for: ${item.name}')),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error adding custom date: $e')),
+          );
+        }
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (currentUser == null) {
+      return const Center(child: Text('Please sign in to view your items.'));
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Item Status'),
       ),
-      body: ListView.builder(
-        itemCount: _trackingItems.length,
-        itemBuilder: (context, index) {
-          final item = _trackingItems[index];
-          return Card(
-            margin: const EdgeInsets.all(8.0),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.name,
-                    style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 10.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body: StreamBuilder<QuerySnapshot<TrackingItem>>(
+        stream: _firestore
+            .collection('users')
+            .doc(currentUser!.uid)
+            .collection('items')
+            .withConverter<TrackingItem>(
+              fromFirestore: TrackingItem.fromFirestore,
+              toFirestore: (item, options) => item.toFirestore(),
+            )
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final items = snapshot.data?.docs.map((doc) => doc.data()).toList() ?? [];
+
+          if (items.isEmpty) {
+            return const Center(child: Text('No tracking items yet. Add some in the Manage tab!'));
+          }
+
+          return ListView.builder(
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              final item = items[index];
+              return Card(
+                margin: const EdgeInsets.all(8.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () => _logNow(item),
-                          child: const Text('Log Now'),
-                        ),
+                      Text(
+                        item.name,
+                        style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                       ),
-                      const SizedBox(width: 8.0),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () => _addCustomDate(item),
-                          child: const Text('Custom Date'),
-                        ),
+                      const SizedBox(height: 10.0),
+                      Text(
+                        'Last Logged: ${item.lastDate.toLocal().toString().split(' ')[0]}',
+                        style: const TextStyle(fontSize: 16.0),
                       ),
-                      const SizedBox(width: 8.0),
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: () => _viewHistory(item),
-                          child: const Text('View History'),
+                      if (item.notes != null && item.notes!.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Text(
+                            'Notes: ${item.notes}',
+                            style: const TextStyle(fontSize: 14.0, fontStyle: FontStyle.italic),
+                          ),
                         ),
+                      const SizedBox(height: 10.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () => _logNow(item),
+                              child: const Text('Log Now'),
+                            ),
+                          ),
+                          const SizedBox(width: 8.0),
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () => _addCustomDate(item),
+                              child: const Text('Custom Date'),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           );
         },
       ),

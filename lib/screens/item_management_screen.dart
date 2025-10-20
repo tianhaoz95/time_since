@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:time_since/models/tracking_item.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ItemManagementScreen extends StatefulWidget {
   const ItemManagementScreen({super.key});
@@ -9,22 +11,34 @@ class ItemManagementScreen extends StatefulWidget {
 }
 
 class _ItemManagementScreenState extends State<ItemManagementScreen> {
-  final List<TrackingItem> _trackingItems = [
-    TrackingItem(id: '1', name: 'AC Filter'),
-    TrackingItem(id: '2', name: 'Water Filter'),
-    TrackingItem(id: '3', name: 'Car Oil Change'),
-  ];
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  User? get currentUser => _auth.currentUser;
 
   void _addItem() {
+    if (currentUser == null) return;
+
     TextEditingController itemNameController = TextEditingController();
+    TextEditingController itemNotesController = TextEditingController();
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Add New Item'),
-          content: TextField(
-            controller: itemNameController,
-            decoration: const InputDecoration(hintText: 'Item Name'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: itemNameController,
+                decoration: const InputDecoration(hintText: 'Item Name'),
+              ),
+              TextField(
+                controller: itemNotesController,
+                decoration: const InputDecoration(hintText: 'Notes (Optional)'),
+              ),
+            ],
           ),
           actions: <Widget>[
             TextButton(
@@ -35,17 +49,31 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
             ),
             TextButton(
               child: const Text('Add'),
-              onPressed: () {
+              onPressed: () async {
                 if (itemNameController.text.isNotEmpty) {
-                  setState(() {
-                    _trackingItems.add(
-                      TrackingItem(
-                        id: DateTime.now().millisecondsSinceEpoch.toString(),
-                        name: itemNameController.text,
-                      ),
-                    );
-                  });
-                  Navigator.of(context).pop();
+                  try {
+                    await _firestore
+                        .collection('users')
+                        .doc(currentUser!.uid)
+                        .collection('items')
+                        .add(
+                          TrackingItem(
+                            id: '',
+                            name: itemNameController.text,
+                            lastDate: DateTime.now(),
+                            notes: itemNotesController.text.isEmpty ? null : itemNotesController.text,
+                          ).toFirestore(),
+                        );
+                    if (mounted) {
+                      Navigator.of(context).pop();
+                    }
+                  } catch (e) {
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Error adding item: $e')),
+                      );
+                    }
+                  }
                 }
               },
             ),
@@ -56,50 +84,159 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
   }
 
   void _editItem(TrackingItem item) {
-    // TODO: Implement edit item functionality
-    print('Edit item: ${item.name}');
+    if (currentUser == null) return;
+
+    TextEditingController itemNameController = TextEditingController(text: item.name);
+    TextEditingController itemNotesController = TextEditingController(text: item.notes);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Edit Item'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: itemNameController,
+                decoration: const InputDecoration(hintText: 'Item Name'),
+              ),
+              TextField(
+                controller: itemNotesController,
+                decoration: const InputDecoration(hintText: 'Notes (Optional)'),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Save'),
+              onPressed: () async {
+                if (itemNameController.text.isNotEmpty) {
+                  try {
+                    await _firestore
+                        .collection('users')
+                        .doc(currentUser!.uid)
+                        .collection('items')
+                        .doc(item.id)
+                        .update({
+                          'name': itemNameController.text,
+                          'notes': itemNotesController.text.isEmpty ? null : itemNotesController.text,
+                        });
+                    if (mounted) {
+                      Navigator.of(context).pop();
+                    }
+                  } catch (e) {
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Error updating item: $e')),
+                      );
+                    }
+                  }
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
-  void _deleteItem(TrackingItem item) {
-    // TODO: Implement delete item functionality
-    print('Delete item: ${item.name}');
+  void _deleteItem(TrackingItem item) async {
+    if (currentUser == null) return;
+
+    try {
+      await _firestore
+          .collection('users')
+          .doc(currentUser!.uid)
+          .collection('items')
+          .doc(item.id)
+          .delete();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Item ${item.name} deleted.')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error deleting item: $e')),
+        );
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (currentUser == null) {
+      return const Center(child: Text('Please sign in to manage your items.'));
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Item Management'),
       ),
-      body: ListView.builder(
-        itemCount: _trackingItems.length,
-        itemBuilder: (context, index) {
-          final item = _trackingItems[index];
-          return Card(
-            margin: const EdgeInsets.all(8.0),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      item.name,
-                      style: const TextStyle(fontSize: 18.0),
-                    ),
+      body: StreamBuilder<QuerySnapshot<TrackingItem>>(
+        stream: _firestore
+            .collection('users')
+            .doc(currentUser!.uid)
+            .collection('items')
+            .withConverter<TrackingItem>(
+              fromFirestore: TrackingItem.fromFirestore,
+              toFirestore: (item, options) => item.toFirestore(),
+            )
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final items = snapshot.data?.docs.map((doc) => doc.data()).toList() ?? [];
+
+          if (items.isEmpty) {
+            return const Center(child: Text('No tracking items yet. Add one using the + button!'));
+          }
+
+          return ListView.builder(
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              final item = items[index];
+              return Card(
+                margin: const EdgeInsets.all(8.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          item.name,
+                          style: const TextStyle(fontSize: 18.0),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () => _editItem(item),
+                        child: const Text('Edit'),
+                      ),
+                      const SizedBox(width: 8.0),
+                      ElevatedButton(
+                        onPressed: () => _deleteItem(item),
+                        style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                        child: const Text('Delete'),
+                      ),
+                    ],
                   ),
-                  ElevatedButton(
-                    onPressed: () => _editItem(item),
-                    child: const Text('Edit'),
-                  ),
-                  const SizedBox(width: 8.0),
-                  ElevatedButton(
-                    onPressed: () => _deleteItem(item),
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                    child: const Text('Delete'),
-                  ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           );
         },
       ),
