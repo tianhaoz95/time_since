@@ -16,6 +16,26 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
 
   User? get currentUser => _auth.currentUser;
 
+  String _getTimeSince(DateTime lastDate) {
+    final Duration difference = DateTime.now().difference(lastDate);
+
+    if (difference.inDays > 365) {
+      final int years = (difference.inDays / 365).floor();
+      return '$years year${years == 1 ? '' : 's'} ago';
+    } else if (difference.inDays > 30) {
+      final int months = (difference.inDays / 30).floor();
+      return '$months month${months == 1 ? '' : 's'} ago';
+    } else if (difference.inDays > 0) {
+      return '${difference.inDays} day${difference.inDays == 1 ? '' : 's'} ago';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours} hour${difference.inHours == 1 ? '' : 's'} ago';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes} minute${difference.inMinutes == 1 ? '' : 's'} ago';
+    } else {
+      return 'Just now';
+    }
+  }
+
   void _logNow(TrackingItem item) async {
     if (currentUser == null) return;
 
@@ -125,7 +145,7 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
                       ),
                       const SizedBox(height: 10.0),
                       Text(
-                        'Last Logged: ${item.lastDate.toLocal().toString().split(' ')[0]}',
+                        'Last Logged: ${item.lastDate.toLocal().toString().split(' ')[0]} (${_getTimeSince(item.lastDate)})',
                         style: const TextStyle(fontSize: 16.0),
                       ),
                       if (item.notes != null && item.notes!.isNotEmpty)
