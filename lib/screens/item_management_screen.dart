@@ -16,8 +16,43 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
   ];
 
   void _addItem() {
-    // TODO: Implement add item functionality
-    print('Add item');
+    TextEditingController itemNameController = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Add New Item'),
+          content: TextField(
+            controller: itemNameController,
+            decoration: const InputDecoration(hintText: 'Item Name'),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Add'),
+              onPressed: () {
+                if (itemNameController.text.isNotEmpty) {
+                  setState(() {
+                    _trackingItems.add(
+                      TrackingItem(
+                        id: DateTime.now().millisecondsSinceEpoch.toString(),
+                        name: itemNameController.text,
+                      ),
+                    );
+                  });
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void _editItem(TrackingItem item) {
