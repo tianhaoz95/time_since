@@ -83,4 +83,5 @@ class DefaultFirebaseOptions {
     authDomain: 'time-since-app.firebaseapp.com',
     storageBucket: 'time-since-app.firebasestorage.app',
   );
+
 }
