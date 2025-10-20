@@ -1,4 +1,4 @@
-package com.example.time_since
+package com.hejitech.timesince
 
 import io.flutter.embedding.android.FlutterActivity
 
