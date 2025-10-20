@@ -9,3 +9,5 @@ Your task is to implement a pop up window when user clicks on the "add" button o
 Your task is add a sign up screen to the app which can be access by tapping on newly added "register" button from the login screen.
 
 Your task is to add a email and password field to the sign up screen.
+
+Your task is to use Firebase auth to implement the user sign up and login with email and password.
