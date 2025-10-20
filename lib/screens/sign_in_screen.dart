@@ -1,3 +1,4 @@
+import 'package:time_since/screens/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -46,6 +47,13 @@ class _SignInScreenState extends State<SignInScreen> {
             ElevatedButton(
               onPressed: _signIn,
               child: const Text('Sign In'),
+            ),
+            const SizedBox(height: 16.0),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignUpScreen()));
+              },
+              child: const Text('Register'),
             ),
           ],
         ),
