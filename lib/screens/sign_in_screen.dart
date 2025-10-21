@@ -47,6 +47,35 @@ class _SignInScreenState extends State<SignInScreen> {
     }
   }
 
+  void _resetPassword() async {
+    if (_emailController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter your email to reset password.')),
+      );
+      return;
+    }
+    try {
+      await _auth.sendPasswordResetEmail(email: _emailController.text);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Password reset email sent. Check your inbox.')),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.message ?? 'Error sending password reset email.')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString())),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,6 +113,10 @@ class _SignInScreenState extends State<SignInScreen> {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignUpScreen()));
               },
               child: const Text('Register'),
+            ),
+            TextButton(
+              onPressed: _resetPassword,
+              child: const Text('Forgot Password?'),
             ),
           ],
         ),
