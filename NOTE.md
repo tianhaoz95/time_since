@@ -23,3 +23,5 @@ Your task is to show the time since last log on each of the items showing in sta
 Your task is to add a forgot password button which the user can tap to trigger password reset using Firebase auth API. It will use the email from the login email text field as the email to reset the password.
 
 When the app resumes login status from a previous session, tapping on the sign out button will lead to a black screen with a circular progress bar forever. Your task is to fix this and make sure it navigates to the sign in screen.
+
+You task is to change the screen title for the sign in screen from "Sign in" to "Time Since".
