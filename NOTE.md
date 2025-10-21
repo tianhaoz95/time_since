@@ -25,3 +25,5 @@ Your task is to add a forgot password button which the user can tap to trigger p
 When the app resumes login status from a previous session, tapping on the sign out button will lead to a black screen with a circular progress bar forever. Your task is to fix this and make sure it navigates to the sign in screen.
 
 You task is to change the screen title for the sign in screen from "Sign in" to "Time Since".
+
+You task is to generate a privacy notice for the app in `PRIVACY.md` file.
