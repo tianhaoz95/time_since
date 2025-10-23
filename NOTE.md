@@ -29,3 +29,5 @@ Your task is to change the screen title for the sign in screen from "Sign in" to
 Your task is to generate a privacy notice for the app in `PRIVACY.md` file.
 
 Your task is to use `branding/Gemini_Generated_Image_t7ux3xt7ux3xt7ux.png` as the new logo for the app. It should relace the current icon for ios, android app, favicon for web, and macos, linux and windows as well. Resize the image as needed.
+
+Your task is to modify the current firebase firestore configuration so that only signed in users can access the path `/{uid}` where the uid is the uid of the signed in user.
