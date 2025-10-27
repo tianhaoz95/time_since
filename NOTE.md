@@ -31,3 +31,19 @@ Your task is to generate a privacy notice for the app in `PRIVACY.md` file.
 Your task is to use `branding/Gemini_Generated_Image_t7ux3xt7ux3xt7ux.png` as the new logo for the app. It should relace the current icon for ios, android app, favicon for web, and macos, linux and windows as well. Resize the image as needed.
 
 Your task is to modify the current firebase firestore configuration so that only signed in users can access the path `/{uid}` where the uid is the uid of the signed in user.
+
+=== TODO ===
+
+Your task is to add a "upgrade" button to the settings screen which is used to navigate to the upgrade screen where user can use in-store purchase to subscribe to the premium version of the app.
+
+Your task is to add a logic to limit the number of total items free tier user can add to 5, if a free tier user attemtps to add the 6th item, prompt the user to the upgrade screen.
+```
+final PurchaseDetails oldPurchaseDetails = ...;
+PurchaseParam purchaseParam = GooglePlayPurchaseParam(
+    productDetails: productDetails,
+    changeSubscriptionParam: ChangeSubscriptionParam(
+        oldPurchaseDetails: oldPurchaseDetails,
+        replacementMode: ReplacementMode.withTimeProration));
+InAppPurchase.instance
+    .buyNonConsumable(purchaseParam: purchaseParam);
+```
