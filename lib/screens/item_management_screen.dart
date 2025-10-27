@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:time_since/models/tracking_item.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:time_since/screens/upgrade_screen.dart';
 
 class ItemManagementScreen extends StatefulWidget {
   const ItemManagementScreen({super.key});
@@ -16,8 +17,45 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
 
   User? get currentUser => _auth.currentUser;
 
-  void _addItem() {
+  void _addItem() async {
     if (currentUser == null) return;
+
+    // Check current item count
+    final itemsSnapshot = await _firestore
+        .collection('users')
+        .doc(currentUser!.uid)
+        .collection('items')
+        .get();
+
+    if (itemsSnapshot.docs.length >= 5) {
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Upgrade Required'),
+              content: const Text('Free tier users are limited to 5 items. Please upgrade to add more.'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Cancel'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: const Text('Upgrade'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => UpgradeScreen()));
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+      return;
+    }
 
     TextEditingController itemNameController = TextEditingController();
     TextEditingController itemNotesController = TextEditingController();
