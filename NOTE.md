@@ -32,11 +32,12 @@ Your task is to use `branding/Gemini_Generated_Image_t7ux3xt7ux3xt7ux.png` as th
 
 Your task is to modify the current firebase firestore configuration so that only signed in users can access the path `/{uid}` where the uid is the uid of the signed in user.
 
-=== TODO ===
-
 Your task is to add a "upgrade" button to the settings screen which is used to navigate to the upgrade screen where user can use in-store purchase to subscribe to the premium version of the app.
 
+=== TODO ===
+
 Your task is to add a logic to limit the number of total items free tier user can add to 5, if a free tier user attemtps to add the 6th item, prompt the user to the upgrade screen.
+
 ```
 final PurchaseDetails oldPurchaseDetails = ...;
 PurchaseParam purchaseParam = GooglePlayPurchaseParam(
