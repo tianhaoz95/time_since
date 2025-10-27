@@ -38,6 +38,8 @@ Your task is to add a logic to limit the number of total items free tier user ca
 
 === TODO ===
 
+Your task is to add config for building signed Android package.
+
 ```
 final PurchaseDetails oldPurchaseDetails = ...;
 PurchaseParam purchaseParam = GooglePlayPurchaseParam(
