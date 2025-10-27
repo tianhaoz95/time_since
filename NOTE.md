@@ -36,9 +36,9 @@ Your task is to add a "upgrade" button to the settings screen which is used to n
 
 Your task is to add a logic to limit the number of total items free tier user can add to 5, if a free tier user attemtps to add the 6th item, prompt the user to the upgrade screen.
 
-=== TODO ===
-
 Your task is to add config for building signed Android package.
+
+=== TODO ===
 
 ```
 final PurchaseDetails oldPurchaseDetails = ...;
