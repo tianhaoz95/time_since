@@ -18,7 +18,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
     try {
       await FirebaseAuth.instance.signOut();
-      // No explicit navigation needed here, as the StreamBuilder in main.dart will handle the state change.
+      if (mounted) {
+        Navigator.of(context).pushReplacementNamed('/signIn');
+      }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
