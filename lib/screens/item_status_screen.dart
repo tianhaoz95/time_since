@@ -167,19 +167,8 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
                             ],
                           ),
                         ),
-                        // Right side image (placeholder for now)
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Container(
-                            width: 48,
-                            height: 48,
-                            color: Colors.grey[200],
-                            child: const Icon(Icons.image, color: Colors.grey),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10.0),
+                                              ],
+                                            ),                    const SizedBox(height: 10.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
