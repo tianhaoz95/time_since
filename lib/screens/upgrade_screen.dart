@@ -13,10 +13,17 @@ class UpgradeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'This app is currently in beta. Subscriptions are not yet available.',
-              style: TextStyle(fontSize: 16, color: Colors.orange),
-              textAlign: TextAlign.center,
+            Card(
+              color: Colors.red.withOpacity(0.5),
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              child: const Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  'This app is currently in beta. Subscriptions are not yet available.',
+                  style: TextStyle(fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+              ),
             ),
             const SizedBox(height: 20),
             const Text(

@@ -44,9 +44,9 @@ Your task is to generate a feature graphics for google play store listing for my
 
 Your task is to add a `short-description.md` and `full-description.md` under `branding/description` which should be the short and full description for the app in google store listing.
 
-=== TODO ===
-
 Your task is to add a text notice to the upgrade screen to say that the app is currently in beta testing phase and subscription is not yet available. Make this text an alert box.
+
+=== TODO ===
 
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
 ```
