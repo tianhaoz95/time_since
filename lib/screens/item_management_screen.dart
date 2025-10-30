@@ -276,7 +276,7 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
                     const SizedBox(width: 8.0),
                     ElevatedButton(
                       onPressed: () => _deleteItem(item),
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                      style: ElevatedButton.styleFrom(backgroundColor: Colors.white),
                       child: const Text('Delete'),
                     ),
                   ],
