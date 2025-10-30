@@ -48,9 +48,9 @@ Your task is to add a text notice to the upgrade screen to say that the app is c
 
 Your task is to modify the bottom nav bar to make it have the same style as the example shown in `prototype/navbar_example.png`. The style includes the shape of the nav bar, the border and the shade.
 
-=== TODO ===
-
 Your task is change the currently slightly purple color in the theme to be white.
+
+=== TODO ===
 
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
 ```
