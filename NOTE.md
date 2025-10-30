@@ -54,6 +54,8 @@ Your task is change the currently slightly purple color in the theme to be white
 
 Your task is to modify the UI for the items in status screen to look like shown in @prototype/navbar_example.png more specifically, it should no longer be a card, but a list with dividers between each item. The functionalities should remain the same. The 2 buttons, and the last logged information and the name should remain the same.
 
+Your task is to modify the buttons in status screen according the the style shown in @prototype/button_example.png where the "log now" button should take the style of "Done" button in the example, and "custom date" button should take on the style of "cancel" button in the example.
+
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
 ```
 final PurchaseDetails oldPurchaseDetails = ...;
