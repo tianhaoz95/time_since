@@ -52,6 +52,8 @@ Your task is change the currently slightly purple color in the theme to be white
 
 === TODO ===
 
+Your task is to modify the UI for the items in status screen to look like shown in [navbar_example]. More specifically, it should no longer be a card, but a list with dividers between each item.
+
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
 ```
 final PurchaseDetails oldPurchaseDetails = ...;
