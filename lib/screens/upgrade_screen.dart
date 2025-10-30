@@ -14,6 +14,12 @@ class UpgradeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
+              'This app is currently in beta. Subscriptions are not yet available.',
+              style: TextStyle(fontSize: 16, color: Colors.orange),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            const Text(
               'Unlock Premium Features!',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
