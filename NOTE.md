@@ -38,9 +38,9 @@ Your task is to add a logic to limit the number of total items free tier user ca
 
 Your task is to add config for building signed Android package.
 
-=== TODO ===
-
 Your task is to remove the "DEBUG" label on the top right corner of the screen.
+
+=== TODO ===
 
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
 ```
