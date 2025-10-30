@@ -175,6 +175,11 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
                         Expanded(
                           child: ElevatedButton(
                             onPressed: () => _logNow(item),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.orange,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+                            ),
                             child: const Text('Log Now'),
                           ),
                         ),
@@ -182,6 +187,11 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
                         Expanded(
                           child: ElevatedButton(
                             onPressed: () => _addCustomDate(item),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              foregroundColor: Colors.orange,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0), side: const BorderSide(color: Colors.orange)),
+                            ),
                             child: const Text('Custom Date'),
                           ),
                         ),
