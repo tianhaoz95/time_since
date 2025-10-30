@@ -141,13 +141,6 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
                   children: [
                     Row(
                       children: [
-                        // Circular Avatar (placeholder for now, as we don't have actual images)
-                        const CircleAvatar(
-                          radius: 24,
-                          backgroundColor: Colors.grey,
-                          child: Icon(Icons.category, color: Colors.white),
-                        ),
-                        const SizedBox(width: 16.0),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
