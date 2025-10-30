@@ -128,55 +128,77 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
             return const Center(child: Text('No tracking items yet. Add some in the Manage tab!'));
           }
 
-          return ListView.builder(
+          return ListView.separated(
             itemCount: items.length,
+            separatorBuilder: (context, index) => const Divider(height: 1, indent: 16, endIndent: 16),
             itemBuilder: (context, index) {
               final item = items[index];
-              return Card(
-                margin: const EdgeInsets.all(8.0),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        item.name,
-                        style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 10.0),
-                      Text(
-                        'Last Logged: ${item.lastDate.toLocal().toString().split(' ')[0]} (${_getTimeSince(item.lastDate)})',
-                        style: const TextStyle(fontSize: 16.0),
-                      ),
-                      if (item.notes != null && item.notes!.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Text(
-                            'Notes: ${item.notes}',
-                            style: const TextStyle(fontSize: 14.0, fontStyle: FontStyle.italic),
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        // Circular Avatar (placeholder for now, as we don't have actual images)
+                        const CircleAvatar(
+                          radius: 24,
+                          backgroundColor: Colors.grey,
+                          child: Icon(Icons.category, color: Colors.white),
+                        ),
+                        const SizedBox(width: 16.0),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item.name,
+                                style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                'Last Logged: ${item.lastDate.toLocal().toString().split(' ')[0]} (${_getTimeSince(item.lastDate)})',
+                                style: const TextStyle(fontSize: 14.0, color: Colors.grey),
+                              ),
+                              if (item.notes != null && item.notes!.isNotEmpty)
+                                Text(
+                                  'Notes: ${item.notes}',
+                                  style: const TextStyle(fontSize: 12.0, fontStyle: FontStyle.italic, color: Colors.grey),
+                                ),
+                            ],
                           ),
                         ),
-                      const SizedBox(height: 10.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: () => _logNow(item),
-                              child: const Text('Log Now'),
-                            ),
+                        // Right side image (placeholder for now)
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Container(
+                            width: 48,
+                            height: 48,
+                            color: Colors.grey[200],
+                            child: const Icon(Icons.image, color: Colors.grey),
                           ),
-                          const SizedBox(width: 8.0),
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: () => _addCustomDate(item),
-                              child: const Text('Custom Date'),
-                            ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () => _logNow(item),
+                            child: const Text('Log Now'),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
+                        ),
+                        const SizedBox(width: 8.0),
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () => _addCustomDate(item),
+                            child: const Text('Custom Date'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               );
             },
