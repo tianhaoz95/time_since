@@ -82,10 +82,12 @@ class _SignInScreenState extends State<SignInScreen> {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          Positioned.fill(
+          Positioned(
+            left: 20.0, // Adjust this value to move the pattern right
+            top: 0.0,
             child: Image.asset(
               'assets/images/login-screen-pattern.png',
-              fit: BoxFit.cover,
+              fit: BoxFit.fitWidth,
             ),
           ),
           Positioned(
