@@ -36,7 +36,6 @@ class MainApp extends StatelessWidget {
             backgroundColor: Colors.white,
             foregroundColor: Colors.black,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-            side: BorderSide(color: Colors.grey[300]!), // Add a subtle border
           ),
         ),
         textButtonTheme: TextButtonThemeData(

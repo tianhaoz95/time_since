@@ -179,6 +179,7 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
                               backgroundColor: Colors.orange,
                               foregroundColor: Colors.white,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+                              elevation: 0,
                             ),
                             child: const Text('Log Now'),
                           ),
@@ -190,7 +191,8 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
                               foregroundColor: Colors.orange,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0), side: const BorderSide(color: Colors.orange)),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0), side: BorderSide(color: Colors.orange, width: 2.0)),
+                              elevation: 0,
                             ),
                             child: const Text('Custom Date'),
                           ),
