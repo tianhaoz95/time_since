@@ -244,34 +244,42 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
             return const Center(child: Text('No tracking items yet. Add one using the + button!'));
           }
 
-          return ListView.builder(
+          return ListView.separated(
             itemCount: items.length,
+            separatorBuilder: (context, index) => const Divider(height: 1, indent: 16, endIndent: 16),
             itemBuilder: (context, index) {
               final item = items[index];
-              return Card(
-                margin: const EdgeInsets.all(8.0),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          item.name,
-                          style: const TextStyle(fontSize: 18.0),
-                        ),
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            item.name,
+                            style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                          ),
+                          if (item.notes != null && item.notes!.isNotEmpty)
+                            Text(
+                              'Notes: ${item.notes}',
+                              style: const TextStyle(fontSize: 12.0, fontStyle: FontStyle.italic, color: Colors.grey),
+                            ),
+                        ],
                       ),
-                      ElevatedButton(
-                        onPressed: () => _editItem(item),
-                        child: const Text('Edit'),
-                      ),
-                      const SizedBox(width: 8.0),
-                      ElevatedButton(
-                        onPressed: () => _deleteItem(item),
-                        style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                        child: const Text('Delete'),
-                      ),
-                    ],
-                  ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => _editItem(item),
+                      child: const Text('Edit'),
+                    ),
+                    const SizedBox(width: 8.0),
+                    ElevatedButton(
+                      onPressed: () => _deleteItem(item),
+                      style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                      child: const Text('Delete'),
+                    ),
+                  ],
                 ),
               );
             },
