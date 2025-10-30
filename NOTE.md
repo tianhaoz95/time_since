@@ -54,9 +54,9 @@ Your task is to modify the UI for the items in status screen to look like shown 
 
 Your task is to modify the buttons in status screen according the the style shown in @prototype/button_example.png where the "log now" button should take the style of "Done" button in the example, and "custom date" button should take on the style of "cancel" button in the example.
 
-=== TODO ===
-
 Your task is to make the 2 button stlyes in the status screen a reusable widget and use the button style widget that "custom date" uses for all other buttons in the app.
+
+=== TODO ===
 
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
 ```
