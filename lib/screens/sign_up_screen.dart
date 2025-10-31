@@ -11,9 +11,19 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void _signUp() async {
+    if (_passwordController.text != _confirmPasswordController.text) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Passwords do not match!')),
+        );
+      }
+      return;
+    }
+
     try {
       await _auth.createUserWithEmailAndPassword(
         email: _emailController.text,
@@ -141,6 +151,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       const SizedBox(height: 8.0),
                       TextField(
                         controller: _passwordController,
+                        style: const TextStyle(color: Colors.black),
+                        decoration: InputDecoration(
+                          hintText: '********',
+                          hintStyle: TextStyle(color: Colors.grey[400]),
+                          filled: true,
+                          fillColor: Colors.grey[200],
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: BorderSide.none,
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.visibility, color: Colors.grey[400]),
+                            onPressed: () {},
+                          ),
+                        ),
+                        obscureText: true,
+                      ),
+                      const SizedBox(height: 16.0),
+                      const Text(
+                        'CONFIRM PASSWORD',
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8.0),
+                      TextField(
+                        controller: _confirmPasswordController,
                         style: const TextStyle(color: Colors.black),
                         decoration: InputDecoration(
                           hintText: '********',
