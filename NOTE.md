@@ -86,4 +86,4 @@ InAppPurchase.instance
 
 === TODO ===
 
-
+Your task is to fix the visible toggle for password input in sign up screen and sign in screen to toggle the visibility of password.
