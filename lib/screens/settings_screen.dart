@@ -49,22 +49,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
               style: const TextStyle(fontSize: 18),
             ),
             const SizedBox(height: 24.0),
-            ElevatedButton(
-              onPressed: _isLoading ? null : _signOut,
-              child: _isLoading
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : const Text('Sign Out'),
+            FractionallySizedBox(
+              widthFactor: 0.8,
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: _isLoading ? null : _signOut,
+                  child: _isLoading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Text('Sign Out'),
+                ),
+              ),
             ),
             const SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const UpgradeScreen()));
-              },
-              child: const Text('Upgrade'),
+            FractionallySizedBox(
+              widthFactor: 0.8,
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const UpgradeScreen()));
+                  },
+                  child: const Text('Upgrade'),
+                ),
+              ),
             ),
           ],
         ),

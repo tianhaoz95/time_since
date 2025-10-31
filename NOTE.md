@@ -66,6 +66,8 @@ Your task is to add a password confirmation in the sign up screen, the sign up a
 
 Your task is to show the user's email address in the settings screen.
 
+Your task is to make the "sign out" and "upgrade" button fill 80% of the width of the screen.
+
 === Backlog ===
 
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
@@ -82,4 +84,3 @@ InAppPurchase.instance
 
 === TODO ===
 
-Your task is to make the "sign out" and "upgrade" button fill the width of the screen.
