@@ -88,3 +88,4 @@ InAppPurchase.instance
 
 === TODO ===
 
+Your task is to make sure the content of sign in screen and sign up screen shift upwards when the virtual keyboard is shown to let the user see the input.
