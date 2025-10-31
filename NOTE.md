@@ -84,3 +84,4 @@ InAppPurchase.instance
 
 === TODO ===
 
+Your task is to change the color of the add button on the manage screen to be the same color as the buttons.
