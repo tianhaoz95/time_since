@@ -82,3 +82,4 @@ InAppPurchase.instance
 
 === TODO ===
 
+Your task is to make the "sign out" and "upgrade" button fill the width of the screen.
