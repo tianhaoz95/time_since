@@ -70,6 +70,8 @@ Your task is to make the "sign out" and "upgrade" button fill 80% of the width o
 
 Your task is to change the color of the add button on the manage screen to be the same color as the buttons.
 
+Your task is to fix the visible toggle for password input in sign up screen and sign in screen to toggle the visibility of password.
+
 === Backlog ===
 
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
@@ -86,4 +88,3 @@ InAppPurchase.instance
 
 === TODO ===
 
-Your task is to fix the visible toggle for password input in sign up screen and sign in screen to toggle the visibility of password.

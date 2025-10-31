@@ -13,6 +13,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
 
   void _signUp() async {
     if (_passwordController.text != _confirmPasswordController.text) {
@@ -162,11 +164,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             borderSide: BorderSide.none,
                           ),
                           suffixIcon: IconButton(
-                            icon: Icon(Icons.visibility, color: Colors.grey[400]),
-                            onPressed: () {},
+                            icon: Icon(
+                              _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                              color: Colors.grey[400],
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isPasswordVisible = !_isPasswordVisible;
+                              });
+                            },
                           ),
                         ),
-                        obscureText: true,
+                        obscureText: !_isPasswordVisible,
                       ),
                       const SizedBox(height: 16.0),
                       const Text(
@@ -191,11 +200,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             borderSide: BorderSide.none,
                           ),
                           suffixIcon: IconButton(
-                            icon: Icon(Icons.visibility, color: Colors.grey[400]),
-                            onPressed: () {},
+                            icon: Icon(
+                              _isConfirmPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                              color: Colors.grey[400],
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
+                              });
+                            },
                           ),
                         ),
-                        obscureText: true,
+                        obscureText: !_isConfirmPasswordVisible,
                       ),
                       const SizedBox(height: 24.0), // Adjusted spacing
                       SizedBox(

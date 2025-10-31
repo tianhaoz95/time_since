@@ -13,6 +13,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool _isPasswordVisible = false;
 
   void _signIn() async {
     try {
@@ -182,11 +183,18 @@ class _SignInScreenState extends State<SignInScreen> {
                             borderSide: BorderSide.none,
                           ),
                           suffixIcon: IconButton(
-                            icon: Icon(Icons.visibility, color: Colors.grey[400]),
-                            onPressed: () {},
+                            icon: Icon(
+                              _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                              color: Colors.grey[400],
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isPasswordVisible = !_isPasswordVisible;
+                              });
+                            },
                           ),
                         ),
-                        obscureText: true,
+                        obscureText: !_isPasswordVisible,
                       ),
                       Align(
                         alignment: Alignment.centerRight,
