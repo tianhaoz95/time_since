@@ -102,6 +102,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             left: 0,
             right: 0,
             child: Container(
+              height: MediaQuery.of(context).size.height * 0.65, // Adjust this value to control height
               padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
               decoration: const BoxDecoration(
                 color: Colors.white,
