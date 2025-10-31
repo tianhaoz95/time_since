@@ -64,6 +64,8 @@ Your task is to update the sign up screen UI to match the login screen UI.
 
 Your task is to add a password confirmation in the sign up screen, the sign up api should only be called if the password and confirmation password matches, otherwise, show a warning to let the user know the password does not match the password confirmation.
 
+Your task is to show the user's email address in the settings screen.
+
 === Backlog ===
 
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
@@ -80,4 +82,3 @@ InAppPurchase.instance
 
 === TODO ===
 
-Your task is to show the user's email address in the settings screen.

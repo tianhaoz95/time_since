@@ -44,6 +44,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text(
+              'Logged in as: ${FirebaseAuth.instance.currentUser?.email ?? 'N/A'}',
+              style: const TextStyle(fontSize: 18),
+            ),
+            const SizedBox(height: 24.0),
             ElevatedButton(
               onPressed: _isLoading ? null : _signOut,
               child: _isLoading
