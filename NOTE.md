@@ -90,4 +90,4 @@ InAppPurchase.instance
 
 === TODO ===
 
-
+Your task is to make sure the "logged in as" message in the settings screen is centered to the screen and have a 10% margin on each side, and wrap around to another line if necessary.
