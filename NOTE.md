@@ -79,3 +79,5 @@ InAppPurchase.instance
 ```
 
 === TODO ===
+
+Your task is to show the user's email address in the settings screen.
