@@ -287,6 +287,7 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addItem,
+        backgroundColor: Colors.deepOrangeAccent,
         child: const Icon(Icons.add),
       ),
     );
