@@ -72,6 +72,8 @@ Your task is to change the color of the add button on the manage screen to be th
 
 Your task is to fix the visible toggle for password input in sign up screen and sign in screen to toggle the visibility of password.
 
+Your task is to make sure the content of sign in screen and sign up screen shift upwards when the virtual keyboard is shown to let the user see the input.
+
 === Backlog ===
 
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
@@ -88,4 +90,4 @@ InAppPurchase.instance
 
 === TODO ===
 
-Your task is to make sure the content of sign in screen and sign up screen shift upwards when the virtual keyboard is shown to let the user see the input.
+
