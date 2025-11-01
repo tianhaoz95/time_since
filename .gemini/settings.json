@@ -1,9 +1,14 @@
 {
-    "useSmartEdit": "true",
-    "model": {
-        "name": "gemini-2.5-flash"
-    },
-    "ide": {
-        "enabled": false
+  "useSmartEdit": "true",
+  "model": {
+    "name": "gemini-2.5-flash"
+  },
+  "ide": {
+    "enabled": false
+  },
+  "mcpServers": {
+    "local-server": {
+      "httpUrl": "http://127.0.0.1:9100/mcp"
     }
+  }
 }
