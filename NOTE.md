@@ -74,6 +74,8 @@ Your task is to fix the visible toggle for password input in sign up screen and 
 
 Your task is to make sure the content of sign in screen and sign up screen shift upwards when the virtual keyboard is shown to let the user see the input.
 
+Your task is to make sure the "logged in as" message in the settings screen is centered to the screen and have a 10% margin on each side, and wrap around to another line if necessary.
+
 === Backlog ===
 
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
@@ -90,4 +92,3 @@ InAppPurchase.instance
 
 === TODO ===
 
-Your task is to make sure the "logged in as" message in the settings screen is centered to the screen and have a 10% margin on each side, and wrap around to another line if necessary.
