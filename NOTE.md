@@ -93,3 +93,5 @@ InAppPurchase.instance
 ```
 
 === TODO ===
+
+your task is to modify the items in the management screen to make each item have 3 rows where 1st row is the item name, 2nd row is the item note and the 3rd row is the 2 buttons for delete and modify.
