@@ -92,3 +92,4 @@ InAppPurchase.instance
 
 === TODO ===
 
+Your task is to change the user visible Android app name from "time_since" to "TimeSince".
