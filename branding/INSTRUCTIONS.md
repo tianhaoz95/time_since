@@ -5,4 +5,4 @@ Your task is to use `browser_*` tools to complete the following tasks:
 * Upon user's approval, add the comment to the reddit thread
 
 
-Your task is to search on reddit to find posts that this app can address their pain points and generatea a report for me where each row represents a post result and contains the url to the reddit post, a small summarization of the post and a comment that can be used to recommend the app in the post.
+Your task is to search on reddit to find posts that this app can address their pain points and generatea a report under `branding/reports` for me where each row represents a post result and contains the url to the reddit post, a small summarization of the post and a comment that can be used to recommend the app in the post.
