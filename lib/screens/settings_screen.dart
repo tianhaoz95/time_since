@@ -44,9 +44,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Logged in as: ${FirebaseAuth.instance.currentUser?.email ?? 'N/A'}',
-              style: const TextStyle(fontSize: 18),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.1),
+              child: Text(
+                'Logged in as: ${FirebaseAuth.instance.currentUser?.email ?? 'N/A'}',
+                style: const TextStyle(fontSize: 18),
+                textAlign: TextAlign.center,
+              ),
             ),
             const SizedBox(height: 24.0),
             FractionallySizedBox(
