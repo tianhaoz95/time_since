@@ -98,4 +98,4 @@ InAppPurchase.instance
 
 === TODO ===
 
-Your task is to add a "delete account" button in the settings screen which should first delete all user data from the database and then delete the user from the authentication system.
+Your task is to add a "delete account" button in the settings screen which should first open a pop up alert to inform the user of the consequence of the action, and then prompt the user to type in "DELETE" and tap on confirm button to confirm the deletion, and then delete all user data from the database and then delete the user from the authentication system.
