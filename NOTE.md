@@ -82,6 +82,8 @@ your task is to modify the items in the management screen to make each item have
 
 your task is to modify the sign in screen and sign up screen so that the auto fill in Android and iOS can recognize that this is credential and prompt the user to save passwords upon successful sign up or sign in and prompt user to choose to choose from saved credentials when the user wants to sign in.
 
+Your task is to add a "delete account" button in the settings screen which should first open a pop up alert to inform the user of the consequence of the action, and then prompt the user to type in "DELETE" and tap on confirm button to confirm the deletion, and then delete all user data from the database and then delete the user from the authentication system.
+
 === Backlog ===
 
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
@@ -98,4 +100,3 @@ InAppPurchase.instance
 
 === TODO ===
 
-Your task is to add a "delete account" button in the settings screen which should first open a pop up alert to inform the user of the consequence of the action, and then prompt the user to type in "DELETE" and tap on confirm button to confirm the deletion, and then delete all user data from the database and then delete the user from the authentication system.
