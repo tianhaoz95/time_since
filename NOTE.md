@@ -97,3 +97,5 @@ InAppPurchase.instance
 your task is to modify the items in the management screen to make each item have 3 rows where 1st row is the item name, 2nd row is the item note and the 3rd row is the 2 buttons for delete and modify.
 
 your task is to modify the sign in screen and sign up screen so that the auto fill in Android and iOS can recognize that this is credential and prompt the user to save passwords upon successful sign up or sign in and prompt user to choose to choose from saved credentials when the user wants to sign in.
+
+your task is to create a allowlist which is a hard coded list of email addresses which is not limited to 5 items.
