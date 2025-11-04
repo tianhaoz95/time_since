@@ -84,6 +84,10 @@ your task is to modify the sign in screen and sign up screen so that the auto fi
 
 Your task is to add a "delete account" button in the settings screen which should first open a pop up alert to inform the user of the consequence of the action, and then prompt the user to type in "DELETE" and tap on confirm button to confirm the deletion, and then delete all user data from the database and then delete the user from the authentication system.
 
+Your task is to support internationalization for the app, only English and Chinese support is needed. Add a selector in the settings page to switch between Chinese, English, and system default.
+
+your task is to fix the issue that when i tap on the add button on the manage screen, the title of the item is not editable where it should be editable.
+
 === Backlog ===
 
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
@@ -101,5 +105,3 @@ InAppPurchase.instance
 === TODO ===
 
 your task is to make the border of the "delete account" button in the settings page have the same color as the button fill color which is red.
-
-Your task is to support internationalization for the app, only English and Chinese support is needed. Add a selector in the settings page to switch between Chinese, English, and system default.

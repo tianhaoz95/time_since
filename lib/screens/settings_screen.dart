@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:time_since/screens/upgrade_screen.dart';
+import 'package:time_since/l10n/app_localizations.dart';
+import 'package:time_since/main.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -12,6 +14,15 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool _isLoading = false;
+  String? _selectedLanguage;
+  AppLocalizations? l10n;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    l10n = AppLocalizations.of(context);
+    _selectedLanguage = Localizations.localeOf(context).languageCode == 'zh' ? 'Chinese' : 'English';
+  }
 
   Future<void> _signOut() async {
     setState(() {
@@ -25,7 +36,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error signing out: $e')),
+          SnackBar(content: Text(l10n!.errorSigningOut(e.toString()))),
         );
       }
     } finally {
@@ -42,7 +53,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (currentUser == null) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('No user logged in.')),
+          SnackBar(content: Text(l10n!.noUserLoggedIn)),
         );
       }
       return;
@@ -53,18 +64,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Delete Account'),
-          content: const Text(
-              'Are you sure you want to delete your account? All your data will be permanently lost.'),
+          title: Text(l10n!.deleteAccountWarningTitle),
+          content: Text(l10n!.deleteAccountWarningContent),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancel'),
+              child: Text(l10n!.cancelButton),
               onPressed: () {
                 Navigator.of(context).pop(false);
               },
             ),
             TextButton(
-              child: const Text('Delete'),
+              child: Text(l10n!.deleteButton),
               onPressed: () {
                 Navigator.of(context).pop(true);
               },
@@ -80,11 +90,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('Confirm Deletion'),
+            title: Text(l10n!.confirmDeletionTitle),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text('To confirm, type "DELETE" in the box below:'),
+                Text(l10n!.confirmDeletionPrompt),
                 TextField(
                   controller: confirmController,
                   decoration: const InputDecoration(hintText: 'DELETE'),
@@ -93,19 +103,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             actions: <Widget>[
               TextButton(
-                child: const Text('Cancel'),
+                child: Text(l10n!.cancelButton),
                 onPressed: () {
                   Navigator.of(context).pop(false);
                 },
               ),
               TextButton(
-                child: const Text('Confirm'),
+                child: Text(l10n!.deleteButton),
                 onPressed: () {
                   if (confirmController.text == 'DELETE') {
                     Navigator.of(context).pop(true);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Incorrect confirmation text.')),
+                      SnackBar(content: Text(l10n!.incorrectConfirmation)),
                     );
                   }
                 },
@@ -136,20 +146,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Account successfully deleted.')),
+              SnackBar(content: Text(l10n!.accountDeletedSuccess)),
             );
             Navigator.of(context).pushReplacementNamed('/signIn');
           }
         } on FirebaseAuthException catch (e) {
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Error deleting account: ${e.message}')),
+              SnackBar(content: Text(l10n!.errorDeletingAccount(e.message ?? 'Unknown error'))),
             );
           }
         } catch (e) {
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('An unexpected error occurred: $e')),
+              SnackBar(content: Text(l10n!.unexpectedError(e.toString()))),
             );
           }
         } finally {
@@ -165,8 +175,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String currentLanguageCode = Localizations.localeOf(context).languageCode;
+    if (_selectedLanguage == null) {
+      _selectedLanguage = currentLanguageCode == 'zh' ? 'Chinese' : 'English';
+    }
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
+      appBar: AppBar(title: Text(l10n!.settingsTitle)),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -174,12 +189,44 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.1),
               child: Text(
-                'Logged in as: ${FirebaseAuth.instance.currentUser?.email ?? 'N/A'}',
+                l10n!.loggedInAs(FirebaseAuth.instance.currentUser?.email ?? 'N/A'),
                 style: const TextStyle(fontSize: 18),
                 textAlign: TextAlign.center,
               ),
             ),
             const SizedBox(height: 24.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Language:',
+                  style: TextStyle(fontSize: 18),
+                ),
+                const SizedBox(width: 10),
+                DropdownButton<String>(
+                  value: _selectedLanguage,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedLanguage = newValue;
+                    });
+                    if (newValue == 'English') {
+                      MainApp.of(context)!.setLocale(const Locale('en'));
+                    } else if (newValue == 'Chinese') {
+                      MainApp.of(context)!.setLocale(const Locale('zh'));
+                    } else {
+                      MainApp.of(context)!.setLocale(const Locale('en')); // Default to English for system if not Chinese
+                    }                  },
+                  items: <String>['English', 'Chinese', 'System Default']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16.0),
             FractionallySizedBox(
               widthFactor: 0.8,
               child: SizedBox(
@@ -192,7 +239,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           height: 20,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : const Text('Sign Out'),
+                      : Text(l10n!.signOutButton),
                 ),
               ),
             ),
@@ -205,7 +252,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => const UpgradeScreen()));
                   },
-                  child: const Text('Upgrade'),
+                  child: Text(l10n!.upgradeButton),
                 ),
               ),
             ),
@@ -225,7 +272,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           height: 20,
                           child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white,),
                         )
-                      : const Text('Delete Account', style: TextStyle(color: Colors.white),),
+                      : Text(l10n!.deleteAccountButton, style: const TextStyle(color: Colors.white),),
                 ),
               ),
             ),

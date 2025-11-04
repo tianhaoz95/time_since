@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:time_since/screens/sign_in_screen.dart';
 import 'package:time_since/screens/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:time_since/l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,14 +14,60 @@ void main() async {
   runApp(const MainApp());
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
+
+  @override
+  State<MainApp> createState() => _MainAppState();
+
+  static _MainAppState? of(BuildContext context) =>
+      context.findAncestorStateOfType<_MainAppState>();
+}
+
+class _MainAppState extends State<MainApp> {
+  Locale? _locale;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchLocale();
+  }
+
+  Future<void> _fetchLocale() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? languageCode = prefs.getString('languageCode');
+    if (languageCode != null) {
+      setState(() {
+        _locale = Locale(languageCode);
+      });
+    }
+  }
+
+  void setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+    _saveLocale(locale.languageCode);
+  }
+
+  Future<void> _saveLocale(String languageCode) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('languageCode', languageCode);
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      locale: _locale,
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       debugShowCheckedModeBanner: false,
-      title: 'Maintenance Tracker',
+      onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
       theme: ThemeData(
         primaryColor: Colors.white,
         colorScheme: ColorScheme.fromSwatch(
@@ -58,9 +107,8 @@ class MainApp extends StatelessWidget {
           }
           if (snapshot.hasData) {
             return const HomeScreen();
-          } else {
-            return const SignInScreen();
           }
+          return const SignInScreen();
         },
       ),
       routes: {

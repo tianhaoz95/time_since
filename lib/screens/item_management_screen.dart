@@ -3,6 +3,7 @@ import 'package:time_since/models/tracking_item.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:time_since/screens/upgrade_screen.dart';
+import 'package:time_since/l10n/app_localizations.dart';
 
 class ItemManagementScreen extends StatefulWidget {
   const ItemManagementScreen({super.key});
@@ -14,8 +15,15 @@ class ItemManagementScreen extends StatefulWidget {
 class _ItemManagementScreenState extends State<ItemManagementScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  AppLocalizations? l10n;
 
   User? get currentUser => _auth.currentUser;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    l10n = AppLocalizations.of(context);
+  }
 
   void _addItem() async {
     if (currentUser == null) return;
@@ -33,17 +41,17 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: const Text('Upgrade Required'),
-              content: const Text('Free tier users are limited to 5 items. Please upgrade to add more.'),
+              title: Text(l10n!.upgradeRequiredTitle),
+              content: Text(l10n!.upgradeRequiredContent),
               actions: <Widget>[
                 TextButton(
-                  child: const Text('Cancel'),
+                  child: Text(l10n!.cancelButton),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                 ),
                 TextButton(
-                  child: const Text('Upgrade'),
+                  child: Text(l10n!.upgradeButton),
                   onPressed: () {
                     Navigator.of(context).pop();
                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => UpgradeScreen()));
@@ -64,29 +72,29 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Add New Item'),
+          title: Text(l10n!.addItemTitle),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: itemNameController,
-                decoration: const InputDecoration(hintText: 'Item Name'),
+                decoration: InputDecoration(hintText: l10n!.itemNameHint),
               ),
               TextField(
                 controller: itemNotesController,
-                decoration: const InputDecoration(hintText: 'Notes (Optional)'),
+                decoration: InputDecoration(hintText: l10n!.notesOptionalHint),
               ),
             ],
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancel'),
+              child: Text(l10n!.cancelButton),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: const Text('Add'),
+              child: Text(l10n!.addButton),
               onPressed: () async {
                 if (itemNameController.text.isNotEmpty) {
                   try {
@@ -108,7 +116,7 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
                   } catch (e) {
                     if (mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Error adding item: $e')),
+                        SnackBar(content: Text(l10n!.errorAddingItem(e.toString()))),
                       );
                     }
                   }
@@ -131,29 +139,29 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Edit Item'),
+          title: Text(l10n!.editItemTitle),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: itemNameController,
-                decoration: const InputDecoration(hintText: 'Item Name'),
+                decoration: InputDecoration(hintText: l10n!.itemNameHint),
               ),
               TextField(
                 controller: itemNotesController,
-                decoration: const InputDecoration(hintText: 'Notes (Optional)'),
+                decoration: InputDecoration(hintText: l10n!.notesOptionalHint),
               ),
             ],
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancel'),
+              child: Text(l10n!.cancelButton),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: const Text('Save'),
+              child: Text(l10n!.saveButton),
               onPressed: () async {
                 if (itemNameController.text.isNotEmpty) {
                   try {
@@ -172,7 +180,7 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
                   } catch (e) {
                     if (mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Error updating item: $e')),
+                        SnackBar(content: Text(l10n!.errorUpdatingItem(e.toString()))),
                       );
                     }
                   }
@@ -197,13 +205,13 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
           .delete();
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Item ${item.name} deleted.')),
+          SnackBar(content: Text(l10n!.itemDeleted(item.name))),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error deleting item: $e')),
+          SnackBar(content: Text(l10n!.errorDeletingItem(e.toString()))),
         );
       }
     }
@@ -212,12 +220,12 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
   @override
   Widget build(BuildContext context) {
     if (currentUser == null) {
-      return const Center(child: Text('Please sign in to manage your items.'));
+      return Center(child: Text(l10n!.pleaseSignIn));
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Item Management'),
+        title: Text(l10n!.itemManagementTitle),
       ),
       body: StreamBuilder<QuerySnapshot<TrackingItem>>(
         stream: _firestore
@@ -241,7 +249,7 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
           final items = snapshot.data?.docs.map((doc) => doc.data()).toList() ?? [];
 
           if (items.isEmpty) {
-            return const Center(child: Text('No tracking items yet. Add one using the + button!'));
+            return Center(child: Text(l10n!.noTrackingItems));
           }
 
           return ListView.separated(
@@ -260,7 +268,7 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
                     ),
                     if (item.notes != null && item.notes!.isNotEmpty)
                       Text(
-                        'Notes: ${item.notes}',
+                        l10n!.notesLabel(item.notes!),
                         style: const TextStyle(fontSize: 12.0, fontStyle: FontStyle.italic, color: Colors.grey),
                       ),
                     Row(
@@ -268,12 +276,12 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
                       children: [
                         ElevatedButton(
                           onPressed: () => _editItem(item),
-                          child: const Text('Edit'),
+                          child: Text(l10n!.editButton),
                         ),
                         const SizedBox(width: 8.0),
                         ElevatedButton(
                           onPressed: () => _deleteItem(item),
-                          child: const Text('Delete'),
+                          child: Text(l10n!.deleteButton),
                         ),
                       ],
                     ),

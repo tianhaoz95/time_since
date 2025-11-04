@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:time_since/models/tracking_item.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:time_since/widgets/status_buttons.dart'; // Added this import
+import 'package:time_since/widgets/status_buttons.dart';
+import 'package:time_since/l10n/app_localizations.dart';
 
 class ItemStatusScreen extends StatefulWidget {
   const ItemStatusScreen({super.key});
@@ -14,26 +15,33 @@ class ItemStatusScreen extends StatefulWidget {
 class _ItemStatusScreenState extends State<ItemStatusScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  AppLocalizations? l10n;
 
   User? get currentUser => _auth.currentUser;
 
-  String _getTimeSince(DateTime lastDate) {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    l10n = AppLocalizations.of(context);
+  }
+
+  String _getTimeSince(DateTime lastDate, AppLocalizations l10n) {
     final Duration difference = DateTime.now().difference(lastDate);
 
     if (difference.inDays > 365) {
       final int years = (difference.inDays / 365).floor();
-      return '$years year${years == 1 ? '' : 's'} ago';
+      return l10n.yearsAgo(years);
     } else if (difference.inDays > 30) {
       final int months = (difference.inDays / 30).floor();
-      return '$months month${months == 1 ? '' : 's'} ago';
+      return l10n.monthsAgo(months);
     } else if (difference.inDays > 0) {
-      return '${difference.inDays} day${difference.inDays == 1 ? '' : 's'} ago';
+      return l10n.daysAgo(difference.inDays);
     } else if (difference.inHours > 0) {
-      return '${difference.inHours} hour${difference.inHours == 1 ? '' : 's'} ago';
+      return l10n.hoursAgo(difference.inHours);
     } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes} minute${difference.inMinutes == 1 ? '' : 's'} ago';
+      return l10n.minutesAgo(difference.inMinutes);
     } else {
-      return 'Just now';
+      return l10n.justNow;
     }
   }
 
@@ -49,13 +57,13 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
           .update({'lastDate': Timestamp.fromDate(DateTime.now())});
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Logged now for: ${item.name}')),
+          SnackBar(content: Text(l10n!.loggedNowFor(item.name))),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error logging date: $e')),
+          SnackBar(content: Text(l10n!.errorLoggingDate(e.toString()))),
         );
       }
     }
@@ -81,13 +89,13 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
             .update({'lastDate': Timestamp.fromDate(pickedDate)});
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Custom date added for: ${item.name}')),
+            SnackBar(content: Text(l10n!.customDateAddedFor(item.name))),
           );
         }
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error adding custom date: $e')),
+            SnackBar(content: Text(l10n!.errorAddingCustomDate(e.toString()))),
           );
         }
       }
@@ -97,12 +105,12 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
   @override
   Widget build(BuildContext context) {
     if (currentUser == null) {
-      return const Center(child: Text('Please sign in to view your items.'));
+      return Center(child: Text(l10n!.pleaseSignIn));
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Item Status'),
+        title: Text(l10n!.itemStatusTitle),
       ),
       body: StreamBuilder<QuerySnapshot<TrackingItem>>(
         stream: _firestore
@@ -126,7 +134,7 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
           final items = snapshot.data?.docs.map((doc) => doc.data()).toList() ?? [];
 
           if (items.isEmpty) {
-            return const Center(child: Text('No tracking items yet. Add some in the Manage tab!'));
+            return Center(child: Text(l10n!.noTrackingItemsManageTab));
           }
 
           return ListView.separated(
@@ -150,12 +158,12 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
                                 style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                'Last Logged: ${item.lastDate.toLocal().toString().split(' ')[0]} (${_getTimeSince(item.lastDate)})',
+                                l10n!.lastLogged(item.lastDate.toLocal().toString().split(' ')[0], _getTimeSince(item.lastDate, l10n!)),
                                 style: const TextStyle(fontSize: 14.0, color: Colors.grey),
                               ),
                               if (item.notes != null && item.notes!.isNotEmpty)
                                 Text(
-                                  'Notes: ${item.notes}',
+                                  l10n!.notesLabel(item.notes!),
                                   style: const TextStyle(fontSize: 12.0, fontStyle: FontStyle.italic, color: Colors.grey),
                                 ),
                             ],

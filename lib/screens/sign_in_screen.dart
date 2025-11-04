@@ -1,6 +1,7 @@
 import 'package:time_since/screens/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:time_since/l10n/app_localizations.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -14,6 +15,13 @@ class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   bool _isPasswordVisible = false;
+  AppLocalizations? l10n;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    l10n = AppLocalizations.of(context);
+  }
 
   void _signIn() async {
     try {
@@ -28,21 +36,15 @@ class _SignInScreenState extends State<SignInScreen> {
     } on FirebaseAuthException catch (e) {
       String message;
       if (e.code == 'user-not-found') {
-        message = 'No user found for that email.';
+        message = l10n!.noUserFound;
       } else if (e.code == 'wrong-password') {
-        message = 'Wrong password provided for that user.';
+        message = l10n!.wrongPassword;
       } else {
-        message = e.message ?? 'An unknown error occurred.';
+        message = e.message ?? l10n!.unknownError;
       }
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(message)),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
+          SnackBar(content: Text(l10n!.unexpectedError(e.toString()))),
         );
       }
     }
@@ -51,7 +53,7 @@ class _SignInScreenState extends State<SignInScreen> {
   void _resetPassword() async {
     if (_emailController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter your email to reset password.')),
+        SnackBar(content: Text(l10n!.pleaseEnterEmailToResetPassword)),
       );
       return;
     }
@@ -59,19 +61,19 @@ class _SignInScreenState extends State<SignInScreen> {
       await _auth.sendPasswordResetEmail(email: _emailController.text);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Password reset email sent. Check your inbox.')),
+          SnackBar(content: Text(l10n!.passwordResetEmailSent)),
         );
       }
     } on FirebaseAuthException catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.message ?? 'Error sending password reset email.')),
+          SnackBar(content: Text(e.message ?? l10n!.errorSendingPasswordResetEmail)),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
+          SnackBar(content: Text(l10n!.unexpectedError(e.toString()))),
         );
       }
     }
@@ -106,9 +108,9 @@ class _SignInScreenState extends State<SignInScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const Text(
-                  'Please sign in to your account',
-                  style: TextStyle(
+                Text(
+                  l10n!.signInTitle,
+                  style: const TextStyle(
                     color: Colors.white70,
                     fontSize: 18,
                   ),
@@ -137,9 +139,9 @@ class _SignInScreenState extends State<SignInScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 20.0), // Spacing from top of white section
-                      const Text(
-                        'EMAIL',
-                        style: TextStyle(
+                      Text(
+                        l10n!.emailLabel,
+                        style: const TextStyle(
                           color: Colors.black54,
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
@@ -151,7 +153,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         style: const TextStyle(color: Colors.black),
                         autofillHints: [AutofillHints.email],
                         decoration: InputDecoration(
-                          hintText: 'example@gmail.com',
+                          hintText: l10n!.emailHint,
                           hintStyle: TextStyle(color: Colors.grey[400]),
                           filled: true,
                           fillColor: Colors.grey[200],
@@ -163,9 +165,9 @@ class _SignInScreenState extends State<SignInScreen> {
                         keyboardType: TextInputType.emailAddress,
                       ),
                       const SizedBox(height: 16.0),
-                      const Text(
-                        'PASSWORD',
-                        style: TextStyle(
+                      Text(
+                        l10n!.passwordLabel,
+                        style: const TextStyle(
                           color: Colors.black54,
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
@@ -177,7 +179,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         style: const TextStyle(color: Colors.black),
                         autofillHints: [AutofillHints.password],
                         decoration: InputDecoration(
-                          hintText: '********',
+                          hintText: l10n!.passwordHint,
                           hintStyle: TextStyle(color: Colors.grey[400]),
                           filled: true,
                           fillColor: Colors.grey[200],
@@ -203,9 +205,9 @@ class _SignInScreenState extends State<SignInScreen> {
                         alignment: Alignment.centerRight,
                         child: TextButton(
                           onPressed: _resetPassword,
-                          child: const Text(
-                            'Forgot Password',
-                            style: TextStyle(color: Colors.deepOrangeAccent),
+                          child: Text(
+                            l10n!.forgotPassword,
+                            style: const TextStyle(color: Colors.deepOrangeAccent),
                           ),
                         ),
                       ),
@@ -221,9 +223,9 @@ class _SignInScreenState extends State<SignInScreen> {
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
-                          child: const Text(
-                            'LOG IN',
-                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          child: Text(
+                            l10n!.loginButton,
+                            style: const TextStyle(fontSize: 18, color: Colors.white),
                           ),
                         ),
                       ),
@@ -231,17 +233,17 @@ class _SignInScreenState extends State<SignInScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
-                            'Don\'t have an account?',
-                            style: TextStyle(color: Colors.black54),
+                          Text(
+                            l10n!.noAccountPrompt,
+                            style: const TextStyle(color: Colors.black54),
                           ),
                           TextButton(
                             onPressed: () {
                               Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignUpScreen()));
                             },
-                            child: const Text(
-                              'SIGN UP',
-                              style: TextStyle(color: Colors.deepOrangeAccent),
+                            child: Text(
+                              l10n!.signUpButton,
+                              style: const TextStyle(color: Colors.deepOrangeAccent),
                             ),
                           ),
                         ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:time_since/screens/item_status_screen.dart';
 import 'package:time_since/screens/item_management_screen.dart';
 import 'package:time_since/screens/settings_screen.dart';
+import 'package:time_since/l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,12 +13,19 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+  AppLocalizations? l10n;
 
   static const List<Widget> _widgetOptions = <Widget>[
     ItemStatusScreen(),
     ItemManagementScreen(),
     SettingsScreen(),
   ];
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    l10n = AppLocalizations.of(context);
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -53,18 +61,18 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           child: BottomNavigationBar(
             backgroundColor: Colors.white,
-            items: const <BottomNavigationBarItem>[
+            items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                icon: Icon(Icons.check_circle_outline),
-                label: 'Status',
+                icon: const Icon(Icons.check_circle_outline),
+                label: l10n!.statusLabel,
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.list_alt),
-                label: 'Manage',
+                icon: const Icon(Icons.list_alt),
+                label: l10n!.manageLabel,
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
-                label: 'Settings',
+                icon: const Icon(Icons.settings),
+                label: l10n!.settingsTitle,
               ),
             ],
             currentIndex: _selectedIndex,
