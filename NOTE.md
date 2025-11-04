@@ -98,4 +98,3 @@ InAppPurchase.instance
 
 === TODO ===
 
-your task is to create a allowlist which is a hard coded list of uids which is not limited to 5 items.
