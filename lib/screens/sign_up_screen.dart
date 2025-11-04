@@ -130,6 +130,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       TextField(
                         controller: _emailController,
                         style: const TextStyle(color: Colors.black),
+                        autofillHints: [AutofillHints.email],
                         decoration: InputDecoration(
                           hintText: 'example@gmail.com',
                           hintStyle: TextStyle(color: Colors.grey[400]),
@@ -155,6 +156,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       TextField(
                         controller: _passwordController,
                         style: const TextStyle(color: Colors.black),
+                        autofillHints: [AutofillHints.newPassword],
                         decoration: InputDecoration(
                           hintText: '********',
                           hintStyle: TextStyle(color: Colors.grey[400]),
@@ -191,6 +193,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       TextField(
                         controller: _confirmPasswordController,
                         style: const TextStyle(color: Colors.black),
+                        autofillHints: [AutofillHints.newPassword],
                         decoration: InputDecoration(
                           hintText: '********',
                           hintStyle: TextStyle(color: Colors.grey[400]),
