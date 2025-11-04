@@ -98,3 +98,4 @@ InAppPurchase.instance
 
 === TODO ===
 
+Your task is to add a "delete account" button in the settings screen which should first delete all user data from the database and then delete the user from the authentication system.
