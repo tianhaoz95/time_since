@@ -251,32 +251,31 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
               final item = items[index];
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                child: Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            item.name,
-                            style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                          ),
-                          if (item.notes != null && item.notes!.isNotEmpty)
-                            Text(
-                              'Notes: ${item.notes}',
-                              style: const TextStyle(fontSize: 12.0, fontStyle: FontStyle.italic, color: Colors.grey),
-                            ),
-                        ],
+                    Text(
+                      item.name,
+                      style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                    ),
+                    if (item.notes != null && item.notes!.isNotEmpty)
+                      Text(
+                        'Notes: ${item.notes}',
+                        style: const TextStyle(fontSize: 12.0, fontStyle: FontStyle.italic, color: Colors.grey),
                       ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () => _editItem(item),
-                      child: const Text('Edit'),
-                    ),
-                    const SizedBox(width: 8.0),
-                    ElevatedButton(
-                      onPressed: () => _deleteItem(item),
-                      child: const Text('Delete'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () => _editItem(item),
+                          child: const Text('Edit'),
+                        ),
+                        const SizedBox(width: 8.0),
+                        ElevatedButton(
+                          onPressed: () => _deleteItem(item),
+                          child: const Text('Delete'),
+                        ),
+                      ],
                     ),
                   ],
                 ),
