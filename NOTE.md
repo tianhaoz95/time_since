@@ -80,6 +80,8 @@ Your task is to change the user visible Android app name from "time_since" to "T
 
 your task is to modify the items in the management screen to make each item have 3 rows where 1st row is the item name, 2nd row is the item note and the 3rd row is the 2 buttons for delete and modify.
 
+your task is to modify the sign in screen and sign up screen so that the auto fill in Android and iOS can recognize that this is credential and prompt the user to save passwords upon successful sign up or sign in and prompt user to choose to choose from saved credentials when the user wants to sign in.
+
 === Backlog ===
 
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
@@ -95,7 +97,5 @@ InAppPurchase.instance
 ```
 
 === TODO ===
-
-your task is to modify the sign in screen and sign up screen so that the auto fill in Android and iOS can recognize that this is credential and prompt the user to save passwords upon successful sign up or sign in and prompt user to choose to choose from saved credentials when the user wants to sign in.
 
 your task is to create a allowlist which is a hard coded list of uids which is not limited to 5 items.
