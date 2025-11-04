@@ -101,3 +101,5 @@ InAppPurchase.instance
 === TODO ===
 
 your task is to make the border of the "delete account" button in the settings page have the same color as the button fill color which is red.
+
+Your task is to support internationalization for the app, only English and Chinese support is needed. Add a selector in the settings page to switch between Chinese, English, and system default.
