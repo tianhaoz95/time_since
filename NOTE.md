@@ -100,3 +100,4 @@ InAppPurchase.instance
 
 === TODO ===
 
+your task is to make the border of the "delete account" button in the settings page have the same color as the button fill color which is red.
