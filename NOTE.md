@@ -107,3 +107,5 @@ InAppPurchase.instance
 ```
 
 === TODO ===
+
+Your task is to add a "sort" icon button to the top right corner of the item status screen. When user tap on the "sort" button, a drop down menu will show up to let user choose what should the list of item status be sorted with.
