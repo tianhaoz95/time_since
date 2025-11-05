@@ -106,3 +106,4 @@ InAppPurchase.instance
 
 === TODO ===
 
+Your task is to internationalize the "log now" and "customize date" buttons in the status screen.
