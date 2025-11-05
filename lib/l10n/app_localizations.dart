@@ -541,6 +541,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Custom Date'**
   String get customDateButton;
+
+  /// No description provided for @sortByName.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by Name'**
+  String get sortByName;
+
+  /// No description provided for @sortByLastLoggedDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by Last Logged Date'**
+  String get sortByLastLoggedDate;
 }
 
 class _AppLocalizationsDelegate

@@ -297,4 +297,10 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get customDateButton => '自定义日期';
+
+  @override
+  String get sortByName => '按名称排序';
+
+  @override
+  String get sortByLastLoggedDate => '按上次记录日期排序';
 }

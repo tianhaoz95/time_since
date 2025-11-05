@@ -92,6 +92,8 @@ your task is to make the border of the "delete account" button in the settings p
 
 Your task is to internationalize the "log now" and "customize date" buttons in the status screen.
 
+Your task is to add a "sort" icon button to the top right corner of the item status screen. When user tap on the "sort" button, a drop down menu will show up to let user choose what should the list of item status be sorted with. The options are by name, by last logged date.
+
 === Backlog ===
 
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
@@ -107,5 +109,3 @@ InAppPurchase.instance
 ```
 
 === TODO ===
-
-Your task is to add a "sort" icon button to the top right corner of the item status screen. When user tap on the "sort" button, a drop down menu will show up to let user choose what should the list of item status be sorted with. The options are by name, by last logged date.

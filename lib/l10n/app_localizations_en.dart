@@ -305,4 +305,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get customDateButton => 'Custom Date';
+
+  @override
+  String get sortByName => 'Sort by Name';
+
+  @override
+  String get sortByLastLoggedDate => 'Sort by Last Logged Date';
 }

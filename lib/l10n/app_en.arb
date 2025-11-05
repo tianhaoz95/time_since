@@ -73,5 +73,7 @@
     "pleaseEnterEmailToResetPassword": "Please enter your email to reset password.",
     "errorSigningOut": "Error signing out: {errorMessage}",
     "logNowButton": "Log Now",
-    "customDateButton": "Custom Date"
+    "customDateButton": "Custom Date",
+    "sortByName": "Sort by Name",
+    "sortByLastLoggedDate": "Sort by Last Logged Date"
 }

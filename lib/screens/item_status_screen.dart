@@ -16,6 +16,7 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   AppLocalizations? l10n;
+  String _currentSortOption = 'name'; // Default sort option
 
   User? get currentUser => _auth.currentUser;
 
@@ -111,6 +112,26 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n!.itemStatusTitle),
+        actions: [
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.sort),
+            onSelected: (String result) {
+              setState(() {
+                _currentSortOption = result;
+              });
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              PopupMenuItem<String>(
+                value: 'name',
+                child: Text(l10n!.sortByName), // Will add this localization key
+              ),
+              PopupMenuItem<String>(
+                value: 'lastLoggedDate',
+                child: Text(l10n!.sortByLastLoggedDate), // Will add this localization key
+              ),
+            ],
+          ),
+        ],
       ),
       body: StreamBuilder<QuerySnapshot<TrackingItem>>(
         stream: _firestore
@@ -132,6 +153,13 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
           }
 
           final items = snapshot.data?.docs.map((doc) => doc.data()).toList() ?? [];
+
+          // Apply sorting
+          if (_currentSortOption == 'name') {
+            items.sort((a, b) => a.name.compareTo(b.name));
+          } else if (_currentSortOption == 'lastLoggedDate') {
+            items.sort((a, b) => b.lastDate.compareTo(a.lastDate)); // Sort descending for most recent first
+          }
 
           if (items.isEmpty) {
             return Center(child: Text(l10n!.noTrackingItemsManageTab));

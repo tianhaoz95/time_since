@@ -73,5 +73,7 @@
     "pleaseEnterEmailToResetPassword": "请输入您的电子邮件以重置密码。",
     "errorSigningOut": "退出登录错误：{errorMessage}",
     "logNowButton": "立即记录",
-    "customDateButton": "自定义日期"
+    "customDateButton": "自定义日期",
+    "sortByName": "按名称排序",
+    "sortByLastLoggedDate": "按上次记录日期排序"
 }
