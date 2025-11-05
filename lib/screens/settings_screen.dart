@@ -265,6 +265,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   onPressed: _isLoading ? null : _deleteAccount,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
+                    side: const BorderSide(color: Colors.red, width: 2.0),
                   ),
                   child: _isLoading
                       ? const SizedBox(
