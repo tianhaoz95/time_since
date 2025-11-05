@@ -291,4 +291,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String errorSigningOut(Object errorMessage) {
     return '退出登录错误：$errorMessage';
   }
+
+  @override
+  String get logNowButton => '立即记录';
+
+  @override
+  String get customDateButton => '自定义日期';
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:time_since/models/tracking_item.dart';
+import 'package:time_since/l10n/app_localizations.dart';
 
 class StatusButtons extends StatelessWidget {
   const StatusButtons({
@@ -15,6 +16,7 @@ class StatusButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -27,7 +29,7 @@ class StatusButtons extends StatelessWidget {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
               elevation: 0,
             ),
-            child: const Text('Log Now'),
+            child: Text(l10n.logNowButton),
           ),
         ),
         const SizedBox(width: 8.0),
@@ -40,7 +42,7 @@ class StatusButtons extends StatelessWidget {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0), side: BorderSide(color: Colors.orange, width: 2.0)),
               elevation: 0,
             ),
-            child: const Text('Custom Date'),
+            child: Text(l10n.customDateButton),
           ),
         ),
       ],

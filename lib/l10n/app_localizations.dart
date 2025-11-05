@@ -529,6 +529,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error signing out: {errorMessage}'**
   String errorSigningOut(Object errorMessage);
+
+  /// No description provided for @logNowButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Log Now'**
+  String get logNowButton;
+
+  /// No description provided for @customDateButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Date'**
+  String get customDateButton;
 }
 
 class _AppLocalizationsDelegate

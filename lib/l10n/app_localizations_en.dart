@@ -299,4 +299,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String errorSigningOut(Object errorMessage) {
     return 'Error signing out: $errorMessage';
   }
+
+  @override
+  String get logNowButton => 'Log Now';
+
+  @override
+  String get customDateButton => 'Custom Date';
 }

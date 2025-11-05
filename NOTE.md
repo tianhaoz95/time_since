@@ -90,6 +90,8 @@ your task is to fix the issue that when i tap on the add button on the manage sc
 
 your task is to make the border of the "delete account" button in the settings page have the same color as the button fill color which is red.
 
+Your task is to internationalize the "log now" and "customize date" buttons in the status screen.
+
 === Backlog ===
 
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
@@ -105,5 +107,3 @@ InAppPurchase.instance
 ```
 
 === TODO ===
-
-Your task is to internationalize the "log now" and "customize date" buttons in the status screen.

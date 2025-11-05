@@ -71,5 +71,7 @@
     "customDateAddedFor": "已为：{itemName} 添加自定义日期",
     "errorAddingCustomDate": "添加自定义日期错误：{errorMessage}",
     "pleaseEnterEmailToResetPassword": "请输入您的电子邮件以重置密码。",
-    "errorSigningOut": "退出登录错误：{errorMessage}"
+    "errorSigningOut": "退出登录错误：{errorMessage}",
+    "logNowButton": "立即记录",
+    "customDateButton": "自定义日期"
 }

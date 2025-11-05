@@ -71,5 +71,7 @@
     "customDateAddedFor": "Custom date added for: {itemName}",
     "errorAddingCustomDate": "Error adding custom date: {errorMessage}",
     "pleaseEnterEmailToResetPassword": "Please enter your email to reset password.",
-    "errorSigningOut": "Error signing out: {errorMessage}"
+    "errorSigningOut": "Error signing out: {errorMessage}",
+    "logNowButton": "Log Now",
+    "customDateButton": "Custom Date"
 }
