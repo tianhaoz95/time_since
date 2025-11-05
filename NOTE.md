@@ -113,3 +113,5 @@ Your task is to use https://pub.dev/packages/password_strength to indicate the p
 === TODO ===
 
 Your task is to add a python script with name `add_early_adopter.py` under `scripts` directory. The purpose of the script is to record user signed up with specified email as an early adopter user and have discounted price for the app. The script should be accept argument `--email` as the early adopter user's email, it should take an email, query the Firebase auth to convert email to the user's uid, and add `type: early_adopter` under `/users/{uid}` in Firestore database.
+
+Your task is to make `SERVICE_ACCOUNT_KEY_PATH` in `scripts/add_early_adopter.py` a environment variable.
