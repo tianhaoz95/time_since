@@ -28,41 +28,47 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
   void _addItem() async {
     if (currentUser == null) return;
 
-    // Check current item count
-    final itemsSnapshot = await _firestore
-        .collection('users')
-        .doc(currentUser!.uid)
-        .collection('items')
-        .get();
+    // Fetch user document to check for 'early_adopter' status
+    final userDoc = await _firestore.collection('users').doc(currentUser!.uid).get();
+    final userType = userDoc.data()?['type'];
 
-    if (itemsSnapshot.docs.length >= 5) {
-      if (mounted) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text(l10n!.upgradeRequiredTitle),
-              content: Text(l10n!.upgradeRequiredContent),
-              actions: <Widget>[
-                TextButton(
-                  child: Text(l10n!.cancelButton),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                TextButton(
-                  child: Text(l10n!.upgradeButton),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => UpgradeScreen()));
-                  },
-                ),
-              ],
-            );
-          },
-        );
+    // Check current item count only if not an early adopter
+    if (userType != 'early_adopter') {
+      final itemsSnapshot = await _firestore
+          .collection('users')
+          .doc(currentUser!.uid)
+          .collection('items')
+          .get();
+
+      if (itemsSnapshot.docs.length >= 5) {
+        if (mounted) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text(l10n!.upgradeRequiredTitle),
+                content: Text(l10n!.upgradeRequiredContent),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text(l10n!.cancelButton),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  TextButton(
+                    child: Text(l10n!.upgradeButton),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => UpgradeScreen()));
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        }
+        return;
       }
-      return;
     }
 
     TextEditingController itemNameController = TextEditingController();
