@@ -94,6 +94,10 @@ Your task is to internationalize the "log now" and "customize date" buttons in t
 
 Your task is to add a "sort" icon button to the top right corner of the item status screen. When user tap on the "sort" button, a drop down menu will show up to let user choose what should the list of item status be sorted with. The options are by name, by last logged date.
 
+Your task is to add a python script with name `add_early_adopter.py` under `scripts` directory. The purpose of the script is to record user signed up with specified email as an early adopter user and have discounted price for the app. The script should be accept argument `--email` as the early adopter user's email, it should take an email, query the Firebase auth to convert email to the user's uid, and add `type: early_adopter` under `/users/{uid}` in Firestore database.
+
+Your task is to make `SERVICE_ACCOUNT_KEY_PATH` in `scripts/add_early_adopter.py` a environment variable.
+
 === Backlog ===
 
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
@@ -111,7 +115,3 @@ InAppPurchase.instance
 Your task is to use https://pub.dev/packages/password_strength to indicate the password strength in sign up screen.
 
 === TODO ===
-
-Your task is to add a python script with name `add_early_adopter.py` under `scripts` directory. The purpose of the script is to record user signed up with specified email as an early adopter user and have discounted price for the app. The script should be accept argument `--email` as the early adopter user's email, it should take an email, query the Firebase auth to convert email to the user's uid, and add `type: early_adopter` under `/users/{uid}` in Firestore database.
-
-Your task is to make `SERVICE_ACCOUNT_KEY_PATH` in `scripts/add_early_adopter.py` a environment variable.
