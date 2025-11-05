@@ -115,3 +115,5 @@ InAppPurchase.instance
 Your task is to use https://pub.dev/packages/password_strength to indicate the password strength in sign up screen.
 
 === TODO ===
+
+Your task is to implement the logic that the limit of 5 items per user should not apply to user marked with `type: early_adopter` under `/users/{uid}` in Firestore database.
