@@ -125,3 +125,5 @@ InAppPurchase.instance
 Your task is to use https://pub.dev/packages/password_strength to indicate the password strength in sign up screen.
 
 === TODO ===
+
+Your task is to add a new way of sorting in status screen. The new sorting method is by shortest to the next due date. The items with the shortest days to the next due date should be at the top. Items without `users/{uid}/items/{item_id}/repeatDays` should be at the bottom without sorting.
