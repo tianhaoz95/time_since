@@ -123,3 +123,5 @@ InAppPurchase.instance
 Your task is to use https://pub.dev/packages/password_strength to indicate the password strength in sign up screen.
 
 === TODO ===
+
+Your task is to fix the bug that the fetched repeat days is incorrect, i have a 180 days fetched to be 0 days and 90 days fetched to be 1 days. Debug and fix it.
