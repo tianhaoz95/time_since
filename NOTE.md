@@ -130,3 +130,11 @@ Your task is to use https://pub.dev/packages/password_strength to indicate the p
 
 === TODO ===
 
+Your task is to fix the error when build aab with `flutter build aab`. The error message is:
+```
+Warning: Flutter support for your project's Kotlin version (1.8.10) will soon be dropped. Please upgrade your Kotlin version to a version of at least 2.1.0 soon.
+Alternatively, use the flag "--android-skip-build-dependency-validation" to bypass this check.
+
+Potential fix: Your project's KGP version is typically defined in the plugins block of the `settings.gradle` file (/Users/tianhaozhou/fun/time_since/android/settings.gradle), by a plugin with the id of org.jetbrains.kotlin.android. 
+If you don't see a plugins block, your project was likely created with an older template version, in which case it is most likely defined in the top-level build.gradle file (/Users/tianhaozhou/fun/time_since/android/build.gradle) by the ext.kotlin_version property.
+```
