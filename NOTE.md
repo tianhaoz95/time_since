@@ -139,6 +139,6 @@ Your task is to use https://pub.dev/packages/password_strength to indicate the p
 
 === TODO ===
 
-Your task is to combine the "custom date" and "schedule" button in the status screen into a drop down menu. The drop down menu can be opened with a button with text "More" and 3 dot icon.
+Your task is to combine the "custom date" and "schedule" button in the status screen into a drop down menu. The drop down menu can be opened with a icon button with 3 dot icon. The icon button should be to the right of the "Log Now" button. The size of the icon button should be only the size of the icon, no need to take half of the row. The icon button should have the same border and fill color as the buttons in the manage screen.
 
 Your task is to use firebase cli to clone the database rule locally inside `firebase` directory which is already created for easier modification.
