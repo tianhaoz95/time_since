@@ -87,5 +87,6 @@
     "scheduleEventTitle": "{itemName} - Next Due Date",
     "scheduleEventDescription": "Time to log {itemName} again! (Every {repeatDays} days)",
     "scheduleEventConfirmation": "Scheduled {itemName} for {date} in your calendar.",
-    "repeatDaysProgress": "{currentDays} days out of {totalDays} days ({percentage}%)"
+    "repeatDaysProgress": "{currentDays} days out of {totalDays} days ({percentage}%)",
+    "repeatDaysProgressRemaining": "{remainingDays} days out of {totalDays} days remaining ({percentage}%)"
 }

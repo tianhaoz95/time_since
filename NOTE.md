@@ -127,6 +127,8 @@ Your task is to use firebase cli to clone the database rule locally inside `fire
 
 Your task is to rewrite `firebase/firestore.rules` so that `users/{uid}` can only be accessed by logged in user with id `uid`. The goal is that each logged in user can only access their own data under `users/{uid}` in firestore.
 
+Your task is to change the progress bar in status screen from days out of repeat days to be remaining days out of repeat days. It should be 1 minus the current percentage value. For example, if a item has repeat days of 14 and it has 0 days since last log, it should show 100%, and the text below should show "14 days out of 14 days remaining (100%)".
+
 === Backlog ===
 
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
@@ -147,4 +149,4 @@ Your task is to implement swiping left or right should switch between status scr
 
 === TODO ===
 
-Your task is to change the progress bar in status screen from days out of repeat days to be remaining days out of repeat days. It should be 1 minus the current percentage value. For example, if a item has repeat days of 14 and it has 0 days since last log, it should show 100%, and the text below should show "14 days out of 14 days remaining (100%)".
+

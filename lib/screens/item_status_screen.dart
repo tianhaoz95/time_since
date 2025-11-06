@@ -246,15 +246,15 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
                     if (item.repeatDays != null && item.repeatDays! > 0) ...[
                       const SizedBox(height: 8.0),
                       LinearProgressIndicator(
-                        value: (DateTime.now().difference(item.lastDate).inDays / item.repeatDays!).clamp(0.0, 1.0),
+                        value: (item.repeatDays! - DateTime.now().difference(item.lastDate).inDays).clamp(0, item.repeatDays!).toDouble() / item.repeatDays!,
                         backgroundColor: Colors.grey[300],
                         color: Colors.blueAccent,
                       ),
                       const SizedBox(height: 4.0),
                       Text(
-                        l10n!.repeatDaysProgress(
-                          DateTime.now().difference(item.lastDate).inDays,
-                          (item.repeatDays! > 0 ? (DateTime.now().difference(item.lastDate).inDays / item.repeatDays!).clamp(0.0, 1.0) * 100 : 0).toInt(),
+                        l10n!.repeatDaysProgressRemaining(
+                          ((item.repeatDays! - DateTime.now().difference(item.lastDate).inDays).clamp(0, item.repeatDays!).toDouble() / item.repeatDays! * 100).toInt(),
+                          (item.repeatDays! - DateTime.now().difference(item.lastDate).inDays).clamp(0, item.repeatDays!),
                           item.repeatDays!,
                         ),
                         style: const TextStyle(fontSize: 12.0, color: Colors.grey),

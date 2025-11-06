@@ -363,4 +363,13 @@ class AppLocalizationsEn extends AppLocalizations {
   ) {
     return '$currentDays days out of $totalDays days ($percentage%)';
   }
+
+  @override
+  String repeatDaysProgressRemaining(
+    Object percentage,
+    Object remainingDays,
+    Object totalDays,
+  ) {
+    return '$remainingDays days out of $totalDays days remaining ($percentage%)';
+  }
 }

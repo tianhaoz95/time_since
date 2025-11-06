@@ -629,6 +629,16 @@ abstract class AppLocalizations {
     Object percentage,
     Object totalDays,
   );
+
+  /// No description provided for @repeatDaysProgressRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'{remainingDays} days out of {totalDays} days remaining ({percentage}%)'**
+  String repeatDaysProgressRemaining(
+    Object percentage,
+    Object remainingDays,
+    Object totalDays,
+  );
 }
 
 class _AppLocalizationsDelegate
