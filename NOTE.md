@@ -128,4 +128,4 @@ Your task is to use https://pub.dev/packages/password_strength to indicate the p
 
 === TODO ===
 
-Your task is to add a schedule functionality to the app. A button with text "schedule" should be added to items in status screen with `users/{uid}/items/{item_id}/repeatDays` field. When the user taps on the button, it should schedule a event on the next scheduled time with the system calendar.
+Your task is to add a schedule functionality to the app. A button with text "schedule" should be added to items in status screen with `users/{uid}/items/{item_id}/repeatDays` field. The position of the button should be to the right of "custom date" button. When the user taps on the button, it should schedule a event on the next scheduled time with the system calendar.
