@@ -82,5 +82,5 @@
     "errorUpdatingRepeatDays": "Error updating repeat days: {errorMessage}",
     "confirmButton": "Confirm",
     "repeatButton": "Repeat",
-    "repeatDaysProgress": "{currentDays} days out of {totalDays} days"
+    "repeatDaysProgress": "{currentDays} days out of {totalDays} days ({percentage}%)"
 }

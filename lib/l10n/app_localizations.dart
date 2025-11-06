@@ -593,8 +593,12 @@ abstract class AppLocalizations {
   /// No description provided for @repeatDaysProgress.
   ///
   /// In en, this message translates to:
-  /// **'{currentDays} days out of {totalDays} days'**
-  String repeatDaysProgress(Object currentDays, Object totalDays);
+  /// **'{currentDays} days out of {totalDays} days ({percentage}%)'**
+  String repeatDaysProgress(
+    Object currentDays,
+    Object percentage,
+    Object totalDays,
+  );
 }
 
 class _AppLocalizationsDelegate

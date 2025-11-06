@@ -104,6 +104,8 @@ Your task is to add a button to each row in the manage screen to the left of the
 
 Your task is to show a progress bar as a row between notes and the buttons in the items in status page if the item has a `users/{uid}/items/{item_id}/repeatDays` field in the database. The progress bar should be calculated by dividing the days since last log by the repeat days.
 
+Your task is to also show a percentage passed under the progress bar in status screen right after "out of xx days" which can looks like "out of xx days (40%)".
+
 === Backlog ===
 
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
@@ -121,5 +123,3 @@ InAppPurchase.instance
 Your task is to use https://pub.dev/packages/password_strength to indicate the password strength in sign up screen.
 
 === TODO ===
-
-Your task is to also show a percentage passed under the progress bar in status screen right after "out of xx days" which can looks like "out of xx days (40%)".

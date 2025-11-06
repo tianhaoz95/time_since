@@ -208,7 +208,11 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
                       ),
                       const SizedBox(height: 4.0),
                       Text(
-                        l10n!.repeatDaysProgress(DateTime.now().difference(item.lastDate).inDays, item.repeatDays!),
+                        l10n!.repeatDaysProgress(
+                          DateTime.now().difference(item.lastDate).inDays,
+                          item.repeatDays!,
+                          ((DateTime.now().difference(item.lastDate).inDays / item.repeatDays!) * 100).toInt(),
+                        ),
                         style: const TextStyle(fontSize: 12.0, color: Colors.grey),
                       ),
                     ],

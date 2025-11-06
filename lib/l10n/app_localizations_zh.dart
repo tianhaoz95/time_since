@@ -327,7 +327,11 @@ class AppLocalizationsZh extends AppLocalizations {
   String get repeatButton => '重复';
 
   @override
-  String repeatDaysProgress(Object currentDays, Object totalDays) {
-    return '$currentDays 天 / $totalDays 天';
+  String repeatDaysProgress(
+    Object currentDays,
+    Object percentage,
+    Object totalDays,
+  ) {
+    return '$currentDays 天 / $totalDays 天 ($percentage%)';
   }
 }

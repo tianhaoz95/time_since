@@ -82,5 +82,5 @@
     "errorUpdatingRepeatDays": "更新重复天数错误：{errorMessage}",
     "confirmButton": "确认",
     "repeatButton": "重复",
-    "repeatDaysProgress": "{currentDays} 天 / {totalDays} 天"
+    "repeatDaysProgress": "{currentDays} 天 / {totalDays} 天 ({percentage}%)"
 }
