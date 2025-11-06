@@ -108,6 +108,8 @@ Your task is to also show a percentage passed under the progress bar in status s
 
 Your task is to fix the text under the progress bar in status screen. When i set the repeat days to be 180, i see under progress bar "1 days out of 0 days (180%)" where it should be "1 days out of 180 days (0%)".
 
+Your task is to add a new way of sorting in status screen. The new sorting method is by shortest to the next due date. The items with the shortest days to the next due date should be at the top. Items without `users/{uid}/items/{item_id}/repeatDays` should be at the bottom without sorting.
+
 === Backlog ===
 
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
@@ -125,7 +127,5 @@ InAppPurchase.instance
 Your task is to use https://pub.dev/packages/password_strength to indicate the password strength in sign up screen.
 
 === TODO ===
-
-Your task is to add a new way of sorting in status screen. The new sorting method is by shortest to the next due date. The items with the shortest days to the next due date should be at the top. Items without `users/{uid}/items/{item_id}/repeatDays` should be at the bottom without sorting.
 
 Your task is to add a schedule functionality to the app. A button with text "schedule" should be added to items in status screen with `users/{uid}/items/{item_id}/repeatDays` field. When the user taps on the button, it should schedule a event on the next scheduled time with the system calendar.
