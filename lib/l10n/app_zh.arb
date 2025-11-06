@@ -83,5 +83,9 @@
     "errorUpdatingRepeatDays": "更新重复天数错误：{errorMessage}",
     "confirmButton": "确认",
     "repeatButton": "重复",
+    "scheduleButton": "日程",
+    "scheduleEventTitle": "{itemName} - 下次到期日",
+    "scheduleEventDescription": "再次记录 {itemName} 的时间到了！ (每 {repeatDays} 天)",
+    "scheduleEventConfirmation": "已将 {itemName} 的 {date} 日程添加到您的日历中。",
     "repeatDaysProgress": "{currentDays} 天 / {totalDays} 天 ({percentage}%)"
 }

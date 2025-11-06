@@ -596,6 +596,30 @@ abstract class AppLocalizations {
   /// **'Repeat'**
   String get repeatButton;
 
+  /// No description provided for @scheduleButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule'**
+  String get scheduleButton;
+
+  /// No description provided for @scheduleEventTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{itemName} - Next Due Date'**
+  String scheduleEventTitle(Object itemName);
+
+  /// No description provided for @scheduleEventDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Time to log {itemName} again! (Every {repeatDays} days)'**
+  String scheduleEventDescription(Object itemName, Object repeatDays);
+
+  /// No description provided for @scheduleEventConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled {itemName} for {date} in your calendar.'**
+  String scheduleEventConfirmation(Object date, Object itemName);
+
   /// No description provided for @repeatDaysProgress.
   ///
   /// In en, this message translates to:

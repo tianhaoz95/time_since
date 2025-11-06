@@ -8,11 +8,13 @@ class StatusButtons extends StatelessWidget {
     required this.item,
     required this.onLogNow,
     required this.onAddCustomDate,
+    required this.onSchedule,
   });
 
   final TrackingItem item;
   final Function(TrackingItem) onLogNow;
   final Function(TrackingItem) onAddCustomDate;
+  final Function(TrackingItem) onSchedule;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,21 @@ class StatusButtons extends StatelessWidget {
             child: Text(l10n.customDateButton),
           ),
         ),
+        if (item.repeatDays != null && item.repeatDays! > 0) ...[
+          const SizedBox(width: 8.0),
+          Expanded(
+            child: ElevatedButton(
+              onPressed: () => onSchedule(item),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blueAccent,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+                elevation: 0,
+              ),
+              child: Text(l10n.scheduleButton),
+            ),
+          ),
+        ],
       ],
     );
   }

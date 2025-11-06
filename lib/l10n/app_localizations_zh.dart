@@ -330,6 +330,24 @@ class AppLocalizationsZh extends AppLocalizations {
   String get repeatButton => '重复';
 
   @override
+  String get scheduleButton => '日程';
+
+  @override
+  String scheduleEventTitle(Object itemName) {
+    return '$itemName - 下次到期日';
+  }
+
+  @override
+  String scheduleEventDescription(Object itemName, Object repeatDays) {
+    return '再次记录 $itemName 的时间到了！ (每 $repeatDays 天)';
+  }
+
+  @override
+  String scheduleEventConfirmation(Object date, Object itemName) {
+    return '已将 $itemName 的 $date 日程添加到您的日历中。';
+  }
+
+  @override
   String repeatDaysProgress(
     Object currentDays,
     Object percentage,

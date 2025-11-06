@@ -338,6 +338,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get repeatButton => 'Repeat';
 
   @override
+  String get scheduleButton => 'Schedule';
+
+  @override
+  String scheduleEventTitle(Object itemName) {
+    return '$itemName - Next Due Date';
+  }
+
+  @override
+  String scheduleEventDescription(Object itemName, Object repeatDays) {
+    return 'Time to log $itemName again! (Every $repeatDays days)';
+  }
+
+  @override
+  String scheduleEventConfirmation(Object date, Object itemName) {
+    return 'Scheduled $itemName for $date in your calendar.';
+  }
+
+  @override
   String repeatDaysProgress(
     Object currentDays,
     Object percentage,

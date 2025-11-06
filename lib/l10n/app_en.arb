@@ -83,5 +83,9 @@
     "errorUpdatingRepeatDays": "Error updating repeat days: {errorMessage}",
     "confirmButton": "Confirm",
     "repeatButton": "Repeat",
+    "scheduleButton": "Schedule",
+    "scheduleEventTitle": "{itemName} - Next Due Date",
+    "scheduleEventDescription": "Time to log {itemName} again! (Every {repeatDays} days)",
+    "scheduleEventConfirmation": "Scheduled {itemName} for {date} in your calendar.",
     "repeatDaysProgress": "{currentDays} days out of {totalDays} days ({percentage}%)"
 }

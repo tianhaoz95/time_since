@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:time_since/widgets/status_buttons.dart';
 import 'package:time_since/l10n/app_localizations.dart';
+import 'package:add_2_calendar/add_2_calendar.dart';
 
 class ItemStatusScreen extends StatefulWidget {
   const ItemStatusScreen({super.key});
@@ -101,6 +102,26 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
         }
       }
     }
+  }
+
+  void _onSchedule(TrackingItem item) {
+    if (item.repeatDays == null || item.repeatDays! <= 0) return;
+
+    final DateTime nextDueDate = item.lastDate.add(Duration(days: item.repeatDays!));
+
+    final Event event = Event(
+      title: l10n!.scheduleEventTitle(item.name),
+      description: l10n!.scheduleEventDescription(item.name, item.repeatDays!),
+      startDate: nextDueDate,
+      endDate: nextDueDate.add(const Duration(hours: 1)), // Event for 1 hour
+      allDay: true,
+    );
+
+    Add2Calendar.addEvent2Cal(event);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(l10n!.scheduleEventConfirmation(item.name, nextDueDate.toLocal().toString().split(' ')[0]))),
+    );
   }
 
   @override
@@ -244,6 +265,7 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
                       item: item,
                       onLogNow: _logNow,
                       onAddCustomDate: _addCustomDate,
+                      onSchedule: _onSchedule,
                     ),
                   ],
                 ),
