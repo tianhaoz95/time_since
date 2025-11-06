@@ -553,6 +553,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sort by Last Logged Date'**
   String get sortByLastLoggedDate;
+
+  /// No description provided for @setRepeatDaysTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Set Repeat Days'**
+  String get setRepeatDaysTitle;
+
+  /// No description provided for @repeatDaysHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter number'**
+  String get repeatDaysHint;
+
+  /// No description provided for @repeatDaysUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat days for {itemName} updated to {repeatDays} days.'**
+  String repeatDaysUpdated(Object itemName, Object repeatDays);
+
+  /// No description provided for @errorUpdatingRepeatDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Error updating repeat days: {errorMessage}'**
+  String errorUpdatingRepeatDays(Object errorMessage);
+
+  /// No description provided for @confirmButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirmButton;
+
+  /// No description provided for @repeatButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeat'**
+  String get repeatButton;
 }
 
 class _AppLocalizationsDelegate

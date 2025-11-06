@@ -5,12 +5,14 @@ class TrackingItem {
   String name;
   DateTime lastDate;
   String? notes;
+  int? repeatDays;
 
   TrackingItem({
     required this.id,
     required this.name,
     required this.lastDate,
     this.notes,
+    this.repeatDays,
   });
 
   factory TrackingItem.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot, SnapshotOptions? options) {
@@ -20,6 +22,7 @@ class TrackingItem {
       name: data?['name'],
       lastDate: (data?['lastDate'] as Timestamp).toDate(),
       notes: data?['notes'],
+      repeatDays: data?['repeatDays'],
     );
   }
 
@@ -28,6 +31,7 @@ class TrackingItem {
       'name': name,
       'lastDate': Timestamp.fromDate(lastDate),
       'notes': notes,
+      'repeatDays': repeatDays,
     };
   }
 }

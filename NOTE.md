@@ -100,6 +100,8 @@ Your task is to make `SERVICE_ACCOUNT_KEY_PATH` in `scripts/add_early_adopter.py
 
 Your task is to implement the logic that the limit of 5 items per user should not apply to user marked with `type: early_adopter` under `/users/{uid}` in Firestore database.
 
+Your task is to add a button to each row in the manage screen to the left of the "edit" button. The new button should be a text button with text "Repeat". The purpose of the button is for the user to input a desired periodic time the task should be performed. For example, the user can input AC filter should be replaced every 6 months. When the user tap on the button, a pop up window should show up for the user to input a number and a unit where the unit can be days, weeks, months, years. When the user finish input and tap on confirm, the data should be saved with unit being days to `/users/{uid}/items/{item_id}/repeatDays`.
+
 === Backlog ===
 
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
@@ -117,5 +119,3 @@ InAppPurchase.instance
 Your task is to use https://pub.dev/packages/password_strength to indicate the password strength in sign up screen.
 
 === TODO ===
-
-Your task is to add a button to each row in the manage screen to the left of the "edit" button. The new button will be an icon button which "refresh" icon. The purpose of the button is for the user to input a desired periodic time the task should be performed. For example, the user can input AC filter should be replaced every 6 months. When the user tap on the button, a pop up window should show up for the user to input a number and a unit where the unit can be days, weeks, months, years. When the user finish input and tap on confirm, the data should be saved with unit being days to `/users/{uid}/items/{item_id}/repeatDays`.

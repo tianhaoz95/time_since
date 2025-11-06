@@ -75,5 +75,11 @@
     "logNowButton": "Log Now",
     "customDateButton": "Custom Date",
     "sortByName": "Sort by Name",
-    "sortByLastLoggedDate": "Sort by Last Logged Date"
+    "sortByLastLoggedDate": "Sort by Last Logged Date",
+    "setRepeatDaysTitle": "Set Repeat Days",
+    "repeatDaysHint": "Enter number",
+    "repeatDaysUpdated": "Repeat days for {itemName} updated to {repeatDays} days.",
+    "errorUpdatingRepeatDays": "Error updating repeat days: {errorMessage}",
+    "confirmButton": "Confirm",
+    "repeatButton": "Repeat"
 }

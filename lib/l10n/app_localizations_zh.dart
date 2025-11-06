@@ -303,4 +303,26 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get sortByLastLoggedDate => '按上次记录日期排序';
+
+  @override
+  String get setRepeatDaysTitle => '设置重复天数';
+
+  @override
+  String get repeatDaysHint => '输入数字';
+
+  @override
+  String repeatDaysUpdated(Object itemName, Object repeatDays) {
+    return '$itemName 的重复天数已更新为 $repeatDays 天。';
+  }
+
+  @override
+  String errorUpdatingRepeatDays(Object errorMessage) {
+    return '更新重复天数错误：$errorMessage';
+  }
+
+  @override
+  String get confirmButton => '确认';
+
+  @override
+  String get repeatButton => '重复';
 }

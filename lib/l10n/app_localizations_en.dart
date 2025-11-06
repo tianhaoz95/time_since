@@ -311,4 +311,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sortByLastLoggedDate => 'Sort by Last Logged Date';
+
+  @override
+  String get setRepeatDaysTitle => 'Set Repeat Days';
+
+  @override
+  String get repeatDaysHint => 'Enter number';
+
+  @override
+  String repeatDaysUpdated(Object itemName, Object repeatDays) {
+    return 'Repeat days for $itemName updated to $repeatDays days.';
+  }
+
+  @override
+  String errorUpdatingRepeatDays(Object errorMessage) {
+    return 'Error updating repeat days: $errorMessage';
+  }
+
+  @override
+  String get confirmButton => 'Confirm';
+
+  @override
+  String get repeatButton => 'Repeat';
 }
