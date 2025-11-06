@@ -129,6 +129,10 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
                 value: 'lastLoggedDate',
                 child: Text(l10n!.sortByLastLoggedDate), // Will add this localization key
               ),
+              PopupMenuItem<String>(
+                value: 'nextDueDate',
+                child: Text(l10n!.sortByNextDueDate), // New localization key
+              ),
             ],
           ),
         ],
@@ -152,13 +156,32 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final items = snapshot.data?.docs.map((doc) => doc.data()).toList() ?? [];
+          var items = snapshot.data?.docs.map((doc) => doc.data()).toList() ?? [];
 
           // Apply sorting
           if (_currentSortOption == 'name') {
             items.sort((a, b) => a.name.compareTo(b.name));
           } else if (_currentSortOption == 'lastLoggedDate') {
             items.sort((a, b) => b.lastDate.compareTo(a.lastDate)); // Sort descending for most recent first
+          } else if (_currentSortOption == 'nextDueDate') {
+            final List<TrackingItem> itemsWithRepeatDays = [];
+            final List<TrackingItem> itemsWithoutRepeatDays = [];
+
+            for (var item in items) {
+              if (item.repeatDays != null && item.repeatDays! > 0) {
+                itemsWithRepeatDays.add(item);
+              } else {
+                itemsWithoutRepeatDays.add(item);
+              }
+            }
+
+            itemsWithRepeatDays.sort((a, b) {
+              final DateTime nextDueDateA = a.lastDate.add(Duration(days: a.repeatDays!));
+              final DateTime nextDueDateB = b.lastDate.add(Duration(days: b.repeatDays!));
+              return nextDueDateA.compareTo(nextDueDateB);
+            });
+
+            items = [...itemsWithRepeatDays, ...itemsWithoutRepeatDays];
           }
 
           if (items.isEmpty) {

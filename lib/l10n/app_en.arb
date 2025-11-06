@@ -76,6 +76,7 @@
     "customDateButton": "Custom Date",
     "sortByName": "Sort by Name",
     "sortByLastLoggedDate": "Sort by Last Logged Date",
+    "sortByNextDueDate": "Sort by Next Due Date",
     "setRepeatDaysTitle": "Set Repeat Days",
     "repeatDaysHint": "Enter number",
     "repeatDaysUpdated": "Repeat days for {itemName} updated to {repeatDays} days.",

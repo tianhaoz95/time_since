@@ -76,6 +76,7 @@
     "customDateButton": "自定义日期",
     "sortByName": "按名称排序",
     "sortByLastLoggedDate": "按上次记录日期排序",
+    "sortByNextDueDate": "按下次到期日排序",
     "setRepeatDaysTitle": "设置重复天数",
     "repeatDaysHint": "输入数字",
     "repeatDaysUpdated": "{itemName} 的重复天数已更新为 {repeatDays} 天。",

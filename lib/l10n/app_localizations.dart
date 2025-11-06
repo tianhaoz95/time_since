@@ -554,6 +554,12 @@ abstract class AppLocalizations {
   /// **'Sort by Last Logged Date'**
   String get sortByLastLoggedDate;
 
+  /// No description provided for @sortByNextDueDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by Next Due Date'**
+  String get sortByNextDueDate;
+
   /// No description provided for @setRepeatDaysTitle.
   ///
   /// In en, this message translates to:

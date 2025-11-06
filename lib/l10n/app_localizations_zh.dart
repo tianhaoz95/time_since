@@ -305,6 +305,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get sortByLastLoggedDate => '按上次记录日期排序';
 
   @override
+  String get sortByNextDueDate => '按下次到期日排序';
+
+  @override
   String get setRepeatDaysTitle => '设置重复天数';
 
   @override

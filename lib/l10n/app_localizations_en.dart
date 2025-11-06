@@ -313,6 +313,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sortByLastLoggedDate => 'Sort by Last Logged Date';
 
   @override
+  String get sortByNextDueDate => 'Sort by Next Due Date';
+
+  @override
   String get setRepeatDaysTitle => 'Set Repeat Days';
 
   @override
