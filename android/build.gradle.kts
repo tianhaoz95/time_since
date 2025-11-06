@@ -1,5 +1,5 @@
 buildscript {
-    val kotlin_version: String by extra("1.8.10") // Define kotlin_version using 'by extra' with explicit type
+    val kotlin_version: String by extra("2.1.0") // Define kotlin_version using 'by extra' with explicit type
     repositories {
         google()
         mavenCentral()
