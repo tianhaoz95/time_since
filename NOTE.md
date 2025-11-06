@@ -138,3 +138,7 @@ Alternatively, use the flag "--android-skip-build-dependency-validation" to bypa
 Potential fix: Your project's KGP version is typically defined in the plugins block of the `settings.gradle` file (/Users/tianhaozhou/fun/time_since/android/settings.gradle), by a plugin with the id of org.jetbrains.kotlin.android. 
 If you don't see a plugins block, your project was likely created with an older template version, in which case it is most likely defined in the top-level build.gradle file (/Users/tianhaozhou/fun/time_since/android/build.gradle) by the ext.kotlin_version property.
 ```
+
+Your task is to combine the "custom date" and "schedule" button in the status screen into a drop down menu. The drop down menu can be opened with a button with text "More" and 3 dot icon.
+
+Your task is to use firebase cli to clone the database rule locally inside `firebase` directory which is already created for easier modification.
