@@ -119,3 +119,5 @@ InAppPurchase.instance
 Your task is to use https://pub.dev/packages/password_strength to indicate the password strength in sign up screen.
 
 === TODO ===
+
+Your task is to show a progress bar as a row between notes and the buttons in the items in status page if the item has a `users/{uid}/items/{item_id}/repeatDays` field in the database. The progress bar should be calculated by dividing the days since last log by the repeat days.
