@@ -143,5 +143,6 @@ InAppPurchase.instance
 
 Your task is to use https://pub.dev/packages/password_strength to indicate the password strength in sign up screen.
 
-=== TODO ===
+Your task is to implement swiping left or right should switch between status screen and manage screen and settings screen.
 
+=== TODO ===
