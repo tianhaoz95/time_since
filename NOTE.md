@@ -146,3 +146,5 @@ Your task is to use https://pub.dev/packages/password_strength to indicate the p
 Your task is to implement swiping left or right should switch between status screen and manage screen and settings screen.
 
 === TODO ===
+
+Your task is to change the progress bar in status screen from days out of repeat days to be remaining days out of repeat days. It should be 1 minus the current percentage value. For example, if a item has repeat days of 14 and it has 0 days since last log, it should show 100%, and the text below should show "14 days out of 14 days remaining (100%)".
