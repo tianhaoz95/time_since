@@ -121,6 +121,8 @@ Potential fix: Your project's KGP version is typically defined in the plugins bl
 If you don't see a plugins block, your project was likely created with an older template version, in which case it is most likely defined in the top-level build.gradle file (/Users/tianhaozhou/fun/time_since/android/build.gradle) by the ext.kotlin_version property.
 ```
 
+Your task is to combine the "custom date" and "schedule" button in the status screen into a drop down menu. The drop down menu can be opened with a icon button with 3 dot icon. The icon button should be to the right of the "Log Now" button. The size of the icon button should be only the size of the icon, no need to take half of the row. The icon button should have the same border and fill color as the buttons in the manage screen.
+
 === Backlog ===
 
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
@@ -138,7 +140,5 @@ InAppPurchase.instance
 Your task is to use https://pub.dev/packages/password_strength to indicate the password strength in sign up screen.
 
 === TODO ===
-
-Your task is to combine the "custom date" and "schedule" button in the status screen into a drop down menu. The drop down menu can be opened with a icon button with 3 dot icon. The icon button should be to the right of the "Log Now" button. The size of the icon button should be only the size of the icon, no need to take half of the row. The icon button should have the same border and fill color as the buttons in the manage screen.
 
 Your task is to use firebase cli to clone the database rule locally inside `firebase` directory which is already created for easier modification.

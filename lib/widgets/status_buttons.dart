@@ -35,33 +35,35 @@ class StatusButtons extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 8.0),
-        Expanded(
-          child: ElevatedButton(
-            onPressed: () => onAddCustomDate(item),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              foregroundColor: Colors.orange,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0), side: BorderSide(color: Colors.orange, width: 2.0)),
-              elevation: 0,
+        PopupMenuButton<String>(
+          icon: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.0),
+              border: Border.all(color: Colors.orange, width: 2.0),
             ),
-            child: Text(l10n.customDateButton),
+            padding: const EdgeInsets.all(8.0), // Adjust padding to control size
+            child: const Icon(Icons.more_vert, color: Colors.orange),
           ),
-        ),
-        if (item.repeatDays != null && item.repeatDays! > 0) ...[
-          const SizedBox(width: 8.0),
-          Expanded(
-            child: ElevatedButton(
-              onPressed: () => onSchedule(item),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueAccent,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-                elevation: 0,
+          onSelected: (String result) {
+            if (result == 'custom_date') {
+              onAddCustomDate(item);
+            } else if (result == 'schedule') {
+              onSchedule(item);
+            }
+          },
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+            PopupMenuItem<String>(
+              value: 'custom_date',
+              child: Text(l10n.customDateButton),
+            ),
+            if (item.repeatDays != null && item.repeatDays! > 0)
+              PopupMenuItem<String>(
+                value: 'schedule',
+                child: Text(l10n.scheduleButton),
               ),
-              child: Text(l10n.scheduleButton),
-            ),
-          ),
-        ],
+          ],
+        ),
       ],
     );
   }
