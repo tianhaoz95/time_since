@@ -122,3 +122,4 @@ Your task is to use https://pub.dev/packages/password_strength to indicate the p
 
 === TODO ===
 
+Your task is to also show a percentage passed under the progress bar in status screen right after "out of xx days" which can looks like "out of xx days (40%)".
