@@ -117,3 +117,5 @@ InAppPurchase.instance
 Your task is to use https://pub.dev/packages/password_strength to indicate the password strength in sign up screen.
 
 === TODO ===
+
+Your task is to add a button to each row in the manage screen to the left of the "edit" button. The new button will be an icon button which "refresh" icon. The purpose of the button is for the user to input a desired periodic time the task should be performed. For example, the user can input AC filter should be replaced every 6 months. When the user tap on the button, a pop up window should show up for the user to input a number and a unit where the unit can be days, weeks, months, years. When the user finish input and tap on confirm, the data should be saved with unit being days to `/users/{uid}/items/{item_id}/repeatDays`.
