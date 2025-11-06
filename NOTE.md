@@ -127,3 +127,5 @@ Your task is to use https://pub.dev/packages/password_strength to indicate the p
 === TODO ===
 
 Your task is to add a new way of sorting in status screen. The new sorting method is by shortest to the next due date. The items with the shortest days to the next due date should be at the top. Items without `users/{uid}/items/{item_id}/repeatDays` should be at the bottom without sorting.
+
+Your task is to add a schedule functionality to the app. A button with text "schedule" should be added to items in status screen with `users/{uid}/items/{item_id}/repeatDays` field. When the user taps on the button, it should schedule a event on the next scheduled time with the system calendar.
