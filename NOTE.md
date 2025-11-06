@@ -123,6 +123,10 @@ If you don't see a plugins block, your project was likely created with an older 
 
 Your task is to combine the "custom date" and "schedule" button in the status screen into a drop down menu. The drop down menu can be opened with a icon button with 3 dot icon. The icon button should be to the right of the "Log Now" button. The size of the icon button should be only the size of the icon, no need to take half of the row. The icon button should have the same border and fill color as the buttons in the manage screen.
 
+Your task is to use firebase cli to clone the database rule locally inside `firebase` directory which is already created for easier modification.
+
+Your task is to rewrite `firebase/firestore.rules` so that `users/{uid}` can only be accessed by logged in user with id `uid`. The goal is that each logged in user can only access their own data under `users/{uid}` in firestore.
+
 === Backlog ===
 
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
@@ -141,4 +145,3 @@ Your task is to use https://pub.dev/packages/password_strength to indicate the p
 
 === TODO ===
 
-Your task is to use firebase cli to clone the database rule locally inside `firebase` directory which is already created for easier modification.
