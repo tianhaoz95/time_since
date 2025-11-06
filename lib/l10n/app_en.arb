@@ -81,5 +81,6 @@
     "repeatDaysUpdated": "Repeat days for {itemName} updated to {repeatDays} days.",
     "errorUpdatingRepeatDays": "Error updating repeat days: {errorMessage}",
     "confirmButton": "Confirm",
-    "repeatButton": "Repeat"
+    "repeatButton": "Repeat",
+    "repeatDaysProgress": "{currentDays} days out of {totalDays} days"
 }

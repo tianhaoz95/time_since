@@ -199,6 +199,19 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
                         ),
                       ],
                     ),
+                    if (item.repeatDays != null && item.repeatDays! > 0) ...[
+                      const SizedBox(height: 8.0),
+                      LinearProgressIndicator(
+                        value: (DateTime.now().difference(item.lastDate).inDays / item.repeatDays!).clamp(0.0, 1.0),
+                        backgroundColor: Colors.grey[300],
+                        color: Colors.blueAccent,
+                      ),
+                      const SizedBox(height: 4.0),
+                      Text(
+                        l10n!.repeatDaysProgress(DateTime.now().difference(item.lastDate).inDays, item.repeatDays!),
+                        style: const TextStyle(fontSize: 12.0, color: Colors.grey),
+                      ),
+                    ],
                     const SizedBox(height: 10.0),
                     StatusButtons(
                       item: item,

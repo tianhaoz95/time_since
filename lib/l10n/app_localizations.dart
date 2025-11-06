@@ -589,6 +589,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Repeat'**
   String get repeatButton;
+
+  /// No description provided for @repeatDaysProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'{currentDays} days out of {totalDays} days'**
+  String repeatDaysProgress(Object currentDays, Object totalDays);
 }
 
 class _AppLocalizationsDelegate

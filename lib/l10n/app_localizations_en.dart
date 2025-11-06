@@ -333,4 +333,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get repeatButton => 'Repeat';
+
+  @override
+  String repeatDaysProgress(Object currentDays, Object totalDays) {
+    return '$currentDays days out of $totalDays days';
+  }
 }
