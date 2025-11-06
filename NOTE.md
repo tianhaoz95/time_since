@@ -149,4 +149,5 @@ Your task is to implement swiping left or right should switch between status scr
 
 === TODO ===
 
+Your task is to improve the UI for progress bar in status screen. When the remaining percentage is greater than 40%, it should be green, from 20% to 40% it should be yellow, and from 0% to 20% it should be red.
 
