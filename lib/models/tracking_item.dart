@@ -17,12 +17,13 @@ class TrackingItem {
 
   factory TrackingItem.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot, SnapshotOptions? options) {
     final data = snapshot.data();
+    print('Raw repeatDays from Firestore: ${data?['repeatDays']}');
     return TrackingItem(
       id: snapshot.id,
       name: data?['name'],
       lastDate: (data?['lastDate'] as Timestamp).toDate(),
       notes: data?['notes'],
-      repeatDays: data?['repeatDays'],
+      repeatDays: data?['repeatDays'] as int?,
     );
   }
 
