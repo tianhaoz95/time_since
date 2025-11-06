@@ -124,4 +124,4 @@ Your task is to use https://pub.dev/packages/password_strength to indicate the p
 
 === TODO ===
 
-Your task is to fix the bug that the fetched repeat days is incorrect. When i set the repeat days to be 180, i see under progress bar "1 days out of 0 days (180%)" where it should be "1 days out of 180 days (0%)". Debug and fix it.
+Your task is to fix the text under the progress bar in status screen. When i set the repeat days to be 180, i see under progress bar "1 days out of 0 days (180%)" where it should be "1 days out of 180 days (0%)".
