@@ -245,19 +245,40 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
                     ),
                     if (item.repeatDays != null && item.repeatDays! > 0) ...[
                       const SizedBox(height: 8.0),
-                      LinearProgressIndicator(
-                        value: (item.repeatDays! - DateTime.now().difference(item.lastDate).inDays).clamp(0, item.repeatDays!).toDouble() / item.repeatDays!,
-                        backgroundColor: Colors.grey[300],
-                        color: Colors.blueAccent,
-                      ),
-                      const SizedBox(height: 4.0),
-                      Text(
-                        l10n!.repeatDaysProgressRemaining(
-                          ((item.repeatDays! - DateTime.now().difference(item.lastDate).inDays).clamp(0, item.repeatDays!).toDouble() / item.repeatDays! * 100).toInt(),
-                          (item.repeatDays! - DateTime.now().difference(item.lastDate).inDays).clamp(0, item.repeatDays!),
-                          item.repeatDays!,
-                        ),
-                        style: const TextStyle(fontSize: 12.0, color: Colors.grey),
+                      Builder(
+                        builder: (BuildContext context) {
+                          final int remainingDays = (item.repeatDays! - DateTime.now().difference(item.lastDate).inDays).clamp(0, item.repeatDays!);
+                          final double percentageRemaining = remainingDays / item.repeatDays!;
+
+                          Color progressBarColor;
+                          if (percentageRemaining > 0.4) {
+                            progressBarColor = Colors.green;
+                          } else if (percentageRemaining >= 0.2) {
+                            progressBarColor = Colors.yellow;
+                          } else {
+                            progressBarColor = Colors.red;
+                          }
+
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              LinearProgressIndicator(
+                                value: percentageRemaining,
+                                backgroundColor: Colors.grey[300],
+                                color: progressBarColor,
+                              ),
+                              const SizedBox(height: 4.0),
+                              Text(
+                                l10n!.repeatDaysProgressRemaining(
+                                  ((item.repeatDays! - DateTime.now().difference(item.lastDate).inDays).clamp(0, item.repeatDays!).toDouble() / item.repeatDays! * 100).toInt(),
+                                  (item.repeatDays! - DateTime.now().difference(item.lastDate).inDays).clamp(0, item.repeatDays!),
+                                  item.repeatDays!,
+                                ),
+                                style: const TextStyle(fontSize: 12.0, color: Colors.grey),
+                              ),
+                            ],
+                          );
+                        },
                       ),
                     ],
                     const SizedBox(height: 10.0),
