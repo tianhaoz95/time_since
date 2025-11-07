@@ -390,9 +390,25 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        ElevatedButton(
-                          onPressed: () => _showRepeatDaysDialog(item),
-                          child: Text(l10n!.repeatButton),
+                        SizedBox(
+                          width: 48.0, // Adjust width as needed for compactness
+                          height: 48.0, // Adjust height as needed for compactness
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0), // Match border radius of other buttons
+                            child: Container( // Use Container to apply border
+                              decoration: BoxDecoration(
+                                color: Colors.white, // Fill color
+                                borderRadius: BorderRadius.circular(8.0),
+                                border: Border.all(color: Colors.orange, width: 2.0), // Border color
+                              ),
+                              child: IconButton(
+                                onPressed: () => _showRepeatDaysDialog(item),
+                                icon: const Icon(Icons.schedule),
+                                color: Colors.orange, // Foreground color
+                                padding: EdgeInsets.zero, // Remove default padding for compactness
+                              ),
+                            ),
+                          ),
                         ),
                         const SizedBox(width: 8.0),
                         SizedBox(
