@@ -141,6 +141,8 @@ Your task is to change the "Repeat" button in the management screen to be a icon
 
 Your task is to place the "Delete" button in the manage screen into a drop down menu. The drop down menu can be opened with a icon button with 3 dot icon. The icon button should be to the right of the edit icon button. The icon button should have the same border and fill color as the buttons in the manage screen.
 
+Your task is to make the spacing between schedule button, edit button and more button in manage screen the same, now the spacing between edit and more button is larger than between edit and schedule button.
+
 === Backlog ===
 
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
@@ -163,4 +165,3 @@ Your task is to implement swiping left or right should switch between status scr
 
 Your task is to create a background job that runs every hour to check if any items have a repeat time with 20% or less remaining, and compose a notification with all the approaching items and send the notification to the user through app notification.
 
-Your task is to make the spacing between schedule button, edit button and more button in manage screen the same, now the spacing between edit and more button is larger than between edit and schedule button.
