@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:time_since/widgets/status_buttons.dart';
 import 'package:time_since/l10n/app_localizations.dart';
 import 'package:add_2_calendar/add_2_calendar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ItemStatusScreen extends StatefulWidget {
   const ItemStatusScreen({super.key});
@@ -20,6 +21,24 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
   String _currentSortOption = 'name'; // Default sort option
 
   User? get currentUser => _auth.currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSortOption();
+  }
+
+  void _loadSortOption() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _currentSortOption = prefs.getString('sortOption') ?? 'name';
+    });
+  }
+
+  void _saveSortOption(String option) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('sortOption', option);
+  }
 
   @override
   void didChangeDependencies() {
@@ -140,6 +159,7 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
               setState(() {
                 _currentSortOption = result;
               });
+              _saveSortOption(result);
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
               PopupMenuItem<String>(
