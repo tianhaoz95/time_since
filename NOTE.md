@@ -151,4 +151,4 @@ Your task is to implement swiping left or right should switch between status scr
 
 === TODO ===
 
-
+Your task is to save the user selected sorting method in status screen as a local preference so that it persists across app launches.
