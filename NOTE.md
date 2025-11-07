@@ -153,3 +153,4 @@ Your task is to implement swiping left or right should switch between status scr
 
 === TODO ===
 
+Your task is to visually mark the used filtering method in status screen to let user know what is being used.
