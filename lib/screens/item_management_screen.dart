@@ -432,9 +432,35 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
                           ),
                         ),
                         const SizedBox(width: 8.0),
-                        ElevatedButton(
-                          onPressed: () => _deleteItem(item),
-                          child: Text(l10n!.deleteButton),
+                        PopupMenuButton<String>(
+                          icon: SizedBox(
+                            width: 48.0, // Adjust width as needed for compactness
+                            height: 48.0, // Adjust height as needed for compactness
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0), // Match border radius of other buttons
+                              child: Container( // Use Container to apply border
+                                decoration: BoxDecoration(
+                                  color: Colors.white, // Fill color
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  border: Border.all(color: Colors.orange, width: 2.0), // Border color
+                                ),
+                                child: Center( // Center the icon within the container
+                                  child: const Icon(Icons.more_vert, color: Colors.orange),
+                                ),
+                              ),
+                            ),
+                          ),
+                          onSelected: (String result) {
+                            if (result == 'delete') {
+                              _deleteItem(item);
+                            }
+                          },
+                          itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                            PopupMenuItem<String>(
+                              value: 'delete',
+                              child: Text(l10n!.deleteButton),
+                            ),
+                          ],
                         ),
                       ],
                     ),
