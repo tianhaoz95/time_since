@@ -395,9 +395,25 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
                           child: Text(l10n!.repeatButton),
                         ),
                         const SizedBox(width: 8.0),
-                        ElevatedButton(
-                          onPressed: () => _editItem(item),
-                          child: Text(l10n!.editButton),
+                        SizedBox(
+                          width: 48.0, // Adjust width as needed for compactness
+                          height: 48.0, // Adjust height as needed for compactness
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0), // Match border radius of other buttons
+                            child: Container( // Use Container to apply border
+                              decoration: BoxDecoration(
+                                color: Colors.white, // Fill color
+                                borderRadius: BorderRadius.circular(8.0),
+                                border: Border.all(color: Colors.orange, width: 2.0), // Border color
+                              ),
+                              child: IconButton(
+                                onPressed: () => _editItem(item),
+                                icon: const Icon(Icons.edit),
+                                color: Colors.orange, // Foreground color
+                                padding: EdgeInsets.zero, // Remove default padding for compactness
+                              ),
+                            ),
+                          ),
                         ),
                         const SizedBox(width: 8.0),
                         ElevatedButton(
