@@ -164,15 +164,36 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
               PopupMenuItem<String>(
                 value: 'name',
-                child: Text(l10n!.sortByName), // Will add this localization key
+                child: Row(
+                  children: [
+                    if (_currentSortOption == 'name')
+                      const Icon(Icons.check, size: 20.0),
+                    const SizedBox(width: 8.0),
+                    Text(l10n!.sortByName),
+                  ],
+                ),
               ),
               PopupMenuItem<String>(
                 value: 'lastLoggedDate',
-                child: Text(l10n!.sortByLastLoggedDate), // Will add this localization key
+                child: Row(
+                  children: [
+                    if (_currentSortOption == 'lastLoggedDate')
+                      const Icon(Icons.check, size: 20.0),
+                    const SizedBox(width: 8.0),
+                    Text(l10n!.sortByLastLoggedDate),
+                  ],
+                ),
               ),
               PopupMenuItem<String>(
                 value: 'nextDueDate',
-                child: Text(l10n!.sortByNextDueDate), // New localization key
+                child: Row(
+                  children: [
+                    if (_currentSortOption == 'nextDueDate')
+                      const Icon(Icons.check, size: 20.0),
+                    const SizedBox(width: 8.0),
+                    Text(l10n!.sortByNextDueDate),
+                  ],
+                ),
               ),
             ],
           ),

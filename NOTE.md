@@ -133,6 +133,8 @@ Your task is to improve the UI for progress bar in status screen. When the remai
 
 Your task is to save the user selected sorting method in status screen as a local preference so that it persists across app launches.
 
+Your task is to visually mark the used filtering method in status screen to let user know what is being used.
+
 === Backlog ===
 
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
@@ -153,4 +155,3 @@ Your task is to implement swiping left or right should switch between status scr
 
 === TODO ===
 
-Your task is to visually mark the used filtering method in status screen to let user know what is being used.
