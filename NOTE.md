@@ -158,3 +158,5 @@ Your task is to implement swiping left or right should switch between status scr
 Your task is to create a background job that runs every hour to check if any items have a repeat time with 20% or less remaining, and compose a notification with all the approaching items and send the notification to the user through app notification.
 
 Your task is to change the "Repeat" button in the management screen to be a icon button with schedule or calendar icon. The rest of the button including the border and fill color should remain the same.
+
+Your task is to change the "Edit" button in the management screen to be a icon button with edit icon. The rest of the button including the border and fill color should remain the same.
