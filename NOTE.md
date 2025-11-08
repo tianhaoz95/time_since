@@ -161,7 +161,8 @@ InAppPurchase.instance
     .buyNonConsumable(purchaseParam: purchaseParam);
 ```
 
+Your task is to create a background job that runs every hour to check if any items have a repeat time with 20% or less remaining, and compose a notification with all the approaching items and send the notification to the user through app notification.
+
 === TODO ===
 
-Your task is to create a background job that runs every hour to check if any items have a repeat time with 20% or less remaining, and compose a notification with all the approaching items and send the notification to the user through app notification.
 
