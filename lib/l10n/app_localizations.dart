@@ -590,6 +590,24 @@ abstract class AppLocalizations {
   /// **'Confirm'**
   String get confirmButton;
 
+  /// No description provided for @passwordStrengthWeak.
+  ///
+  /// In en, this message translates to:
+  /// **'Weak'**
+  String get passwordStrengthWeak;
+
+  /// No description provided for @passwordStrengthMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get passwordStrengthMedium;
+
+  /// No description provided for @passwordStrengthStrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Strong'**
+  String get passwordStrengthStrong;
+
   /// No description provided for @repeatButton.
   ///
   /// In en, this message translates to:

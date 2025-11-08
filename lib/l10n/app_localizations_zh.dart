@@ -327,6 +327,15 @@ class AppLocalizationsZh extends AppLocalizations {
   String get confirmButton => '确认';
 
   @override
+  String get passwordStrengthWeak => '弱';
+
+  @override
+  String get passwordStrengthMedium => '中';
+
+  @override
+  String get passwordStrengthStrong => '强';
+
+  @override
   String get repeatButton => '重复';
 
   @override

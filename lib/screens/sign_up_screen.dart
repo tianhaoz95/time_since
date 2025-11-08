@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:time_since/l10n/app_localizations.dart';
+import 'package:password_strength/password_strength.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -17,11 +18,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
   AppLocalizations? l10n;
+  double _passwordStrength = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _passwordController.addListener(_updatePasswordStrength);
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     l10n = AppLocalizations.of(context);
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.removeListener(_updatePasswordStrength);
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
   }
 
   void _signUp() async {
@@ -64,6 +81,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
         );
       }
     }
+  }
+
+  void _updatePasswordStrength() {
+    setState(() {
+      _passwordStrength = estimatePasswordStrength(_passwordController.text);
+    });
   }
 
   @override
@@ -187,6 +210,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ),
                         obscureText: !_isPasswordVisible,
+                      ),
+                      const SizedBox(height: 8.0),
+                      LinearProgressIndicator(
+                        value: _passwordStrength,
+                        backgroundColor: Colors.grey[300],
+                        color: _passwordStrength < 0.33
+                            ? Colors.red
+                            : _passwordStrength < 0.66
+                                ? Colors.orange
+                                : Colors.green,
+                      ),
+                      const SizedBox(height: 4.0),
+                      Text(
+                        _passwordStrength < 0.33
+                            ? l10n!.passwordStrengthWeak
+                            : _passwordStrength < 0.66
+                                ? l10n!.passwordStrengthMedium
+                                : l10n!.passwordStrengthStrong,
+                        style: TextStyle(
+                          color: _passwordStrength < 0.33
+                              ? Colors.red
+                              : _passwordStrength < 0.66
+                                  ? Colors.orange
+                                  : Colors.green,
+                          fontSize: 12.0,
+                        ),
                       ),
                       const SizedBox(height: 16.0),
                       Text(

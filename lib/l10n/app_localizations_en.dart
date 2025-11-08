@@ -335,6 +335,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get confirmButton => 'Confirm';
 
   @override
+  String get passwordStrengthWeak => 'Weak';
+
+  @override
+  String get passwordStrengthMedium => 'Medium';
+
+  @override
+  String get passwordStrengthStrong => 'Strong';
+
+  @override
   String get repeatButton => 'Repeat';
 
   @override

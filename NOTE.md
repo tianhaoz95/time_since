@@ -143,6 +143,8 @@ Your task is to place the "Delete" button in the manage screen into a drop down 
 
 Your task is to make the spacing between schedule button, edit button and more button in manage screen the same, now the spacing between edit and more button is larger than between edit and schedule button.
 
+Your task is to use https://pub.dev/packages/password_strength to indicate the password strength in sign up screen.
+
 === Backlog ===
 
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
@@ -156,8 +158,6 @@ PurchaseParam purchaseParam = GooglePlayPurchaseParam(
 InAppPurchase.instance
     .buyNonConsumable(purchaseParam: purchaseParam);
 ```
-
-Your task is to use https://pub.dev/packages/password_strength to indicate the password strength in sign up screen.
 
 Your task is to implement swiping left or right should switch between status screen and manage screen and settings screen.
 
