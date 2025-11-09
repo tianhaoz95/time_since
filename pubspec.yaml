@@ -18,6 +18,7 @@ dependencies:
   shared_preferences: ^2.0.0
   add_2_calendar: ^2.2.0
   password_strength: ^0.2.0
+  lpinyin: ^2.0.2
 
 dev_dependencies:
   flutter_test:

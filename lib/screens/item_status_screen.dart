@@ -6,6 +6,7 @@ import 'package:time_since/widgets/status_buttons.dart';
 import 'package:time_since/l10n/app_localizations.dart';
 import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lpinyin/lpinyin.dart';
 
 class ItemStatusScreen extends StatefulWidget {
   const ItemStatusScreen({super.key});
@@ -276,12 +277,15 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
 
             var items = snapshot.data?.docs.map((doc) => doc.data()).toList() ?? [];
 
-            // Apply search filter
-            if (_searchController.text.isNotEmpty) {
-              items = items.where((item) =>
-                  item.name.toLowerCase().contains(_searchController.text.toLowerCase())).toList();
-            }
-
+                      // Apply search filter
+                      if (_searchController.text.isNotEmpty) {
+                        final searchQuery = _searchController.text.toLowerCase();
+                        items = items.where((item) {
+                          final itemNameLower = item.name.toLowerCase();
+                          final itemPinyinLower = PinyinHelper.getPinyin(item.name, separator: "", format: PinyinFormat.WITHOUT_TONE).toLowerCase();
+                          return itemNameLower.contains(searchQuery) || itemPinyinLower.contains(searchQuery);
+                        }).toList();
+                      }
             // Apply sorting
             if (_currentSortOption == 'name') {
               items.sort((a, b) => a.name.compareTo(b.name));
