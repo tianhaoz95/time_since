@@ -169,3 +169,4 @@ your task is to remove the cancel button in the search bar in status screen, tap
 
 === TODO ===
 
+your task is to make sure if the user search in status page with english, it should also match chinese using pinyin.
