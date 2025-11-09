@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:time_since/screens/upgrade_screen.dart';
 import 'package:time_since/l10n/app_localizations.dart';
+import 'package:lpinyin/lpinyin.dart';
 
 class ItemManagementScreen extends StatefulWidget {
   const ItemManagementScreen({super.key});
@@ -18,8 +19,24 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
   AppLocalizations? l10n;
   final TextEditingController _repeatDaysController = TextEditingController();
   String _selectedUnit = 'Days';
+  bool _isSearching = false;
+  final TextEditingController _searchController = TextEditingController();
+  final FocusNode _searchFocusNode = FocusNode();
 
   User? get currentUser => _auth.currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchFocusNode.addListener(() {
+      if (!_searchFocusNode.hasFocus && _isSearching) {
+        setState(() {
+          _isSearching = false;
+          _searchController.clear();
+        });
+      }
+    });
+  }
 
   @override
   void didChangeDependencies() {
@@ -30,6 +47,8 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
   @override
   void dispose() {
     _repeatDaysController.dispose();
+    _searchController.dispose();
+    _searchFocusNode.dispose();
     super.dispose();
   }
 
@@ -341,153 +360,204 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n!.itemManagementTitle),
-      ),
-      body: StreamBuilder<QuerySnapshot<TrackingItem>>(
-        stream: _firestore
-            .collection('users')
-            .doc(currentUser!.uid)
-            .collection('items')
-            .withConverter<TrackingItem>(
-              fromFirestore: TrackingItem.fromFirestore,
-              toFirestore: (item, options) => item.toFirestore(),
-            )
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          }
-
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          final items = snapshot.data?.docs.map((doc) => doc.data()).toList() ?? [];
-
-          if (items.isEmpty) {
-            return Center(child: Text(l10n!.noTrackingItems));
-          }
-
-          return ListView.separated(
-            itemCount: items.length,
-            separatorBuilder: (context, index) => const Divider(height: 1, indent: 16, endIndent: 16),
-            itemBuilder: (context, index) {
-              final item = items[index];
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      item.name,
-                      style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                    ),
-                    if (item.notes != null && item.notes!.isNotEmpty)
-                      Text(
-                        l10n!.notesLabel(item.notes!),
-                        style: const TextStyle(fontSize: 12.0, fontStyle: FontStyle.italic, color: Colors.grey),
-                      ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        SizedBox(
-                          width: 48.0, // Adjust width as needed for compactness
-                          height: 48.0, // Adjust height as needed for compactness
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0), // Match border radius of other buttons
-                            child: Container( // Use Container to apply border
-                              decoration: BoxDecoration(
-                                color: Colors.white, // Fill color
-                                borderRadius: BorderRadius.circular(8.0),
-                                border: Border.all(color: Colors.orange, width: 2.0), // Border color
-                              ),
-                              child: IconButton(
-                                onPressed: () => _showRepeatDaysDialog(item),
-                                icon: const Icon(Icons.schedule),
-                                color: Colors.orange, // Foreground color
-                                padding: EdgeInsets.zero, // Remove default padding for compactness
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8.0),
-                        SizedBox(
-                          width: 48.0, // Adjust width as needed for compactness
-                          height: 48.0, // Adjust height as needed for compactness
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0), // Match border radius of other buttons
-                            child: Container( // Use Container to apply border
-                              decoration: BoxDecoration(
-                                color: Colors.white, // Fill color
-                                borderRadius: BorderRadius.circular(8.0),
-                                border: Border.all(color: Colors.orange, width: 2.0), // Border color
-                              ),
-                              child: IconButton(
-                                onPressed: () => _editItem(item),
-                                icon: const Icon(Icons.edit),
-                                color: Colors.orange, // Foreground color
-                                padding: EdgeInsets.zero, // Remove default padding for compactness
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8.0),
-                        SizedBox(
-                          width: 48.0, // Adjust width as needed for compactness
-                          height: 48.0, // Adjust height as needed for compactness
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0), // Match border radius of other buttons
-                            child: Container( // Use Container to apply border
-                              decoration: BoxDecoration(
-                                color: Colors.white, // Fill color
-                                borderRadius: BorderRadius.circular(8.0),
-                                border: Border.all(color: Colors.orange, width: 2.0), // Border color
-                              ),
-                              child: Builder(
-                                builder: (BuildContext innerContext) {
-                                  return IconButton(
-                                    onPressed: () {
-                                      final RenderBox button = innerContext.findRenderObject() as RenderBox;
-                                      final RenderBox overlay = Overlay.of(innerContext).context.findRenderObject() as RenderBox;
-                                      final RelativeRect position = RelativeRect.fromRect(
-                                        Rect.fromPoints(
-                                          button.localToGlobal(Offset.zero, ancestor: overlay),
-                                          button.localToGlobal(button.size.bottomRight(Offset.zero), ancestor: overlay),
-                                        ),
-                                        Offset.zero & overlay.size,
-                                      );
-                                      showMenu<String>(
-                                        context: innerContext,
-                                        position: position,
-                                        items: <PopupMenuEntry<String>>[
-                                          PopupMenuItem<String>(
-                                            value: 'delete',
-                                            child: Text(l10n!.deleteButton),
-                                          ),
-                                        ],
-                                      ).then((String? result) {
-                                        if (result == 'delete') {
-                                          _deleteItem(item);
-                                        }
-                                      });
-                                    },
-                                    icon: const Icon(Icons.more_vert),
-                                    color: Colors.orange, // Foreground color
-                                    padding: EdgeInsets.zero, // Remove default padding for compactness
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+        title: _isSearching
+            ? TextField(
+                controller: _searchController,
+                focusNode: _searchFocusNode,
+                decoration: InputDecoration(
+                  hintText: l10n!.searchHint,
+                  border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  prefixIcon: const Icon(Icons.search),
+                  suffixIcon: _searchController.text.isNotEmpty
+                      ? IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: () {
+                            _searchController.clear();
+                            setState(() {}); // Rebuild to update the list
+                          },
+                        )
+                      : null,
                 ),
-              );
-            },
-          );
+                onChanged: (value) {
+                  setState(() {}); // Rebuild to filter the list
+                },
+              )
+            : Text(l10n!.itemManagementTitle),
+        actions: _isSearching
+            ? []
+            : [
+                IconButton(
+                  icon: const Icon(Icons.search),
+                  onPressed: () {
+                    setState(() {
+                      _isSearching = true;
+                    });
+                    _searchFocusNode.requestFocus();
+                  },
+                ),
+              ],
+      ),
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
         },
+        child: StreamBuilder<QuerySnapshot<TrackingItem>>(
+          stream: _firestore
+              .collection('users')
+              .doc(currentUser!.uid)
+              .collection('items')
+              .withConverter<TrackingItem>(
+                fromFirestore: TrackingItem.fromFirestore,
+                toFirestore: (item, options) => item.toFirestore(),
+              )
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            var items = snapshot.data?.docs.map((doc) => doc.data()).toList() ?? [];
+
+            // Apply search filter
+            if (_searchController.text.isNotEmpty) {
+              final searchQuery = _searchController.text.toLowerCase();
+              items = items.where((item) {
+                final itemNameLower = item.name.toLowerCase();
+                final itemPinyinLower = PinyinHelper.getPinyin(item.name, separator: "", format: PinyinFormat.WITHOUT_TONE).toLowerCase();
+                return itemNameLower.contains(searchQuery) || itemPinyinLower.contains(searchQuery);
+              }).toList();
+            }
+
+            if (items.isEmpty) {
+              return Center(child: Text(l10n!.noTrackingItems));
+            }
+
+            return ListView.separated(
+              itemCount: items.length,
+              separatorBuilder: (context, index) => const Divider(height: 1, indent: 16, endIndent: 16),
+              itemBuilder: (context, index) {
+                final item = items[index];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        item.name,
+                        style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+                      ),
+                      if (item.notes != null && item.notes!.isNotEmpty)
+                        Text(
+                          l10n!.notesLabel(item.notes!),
+                          style: const TextStyle(fontSize: 12.0, fontStyle: FontStyle.italic, color: Colors.grey),
+                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          SizedBox(
+                            width: 48.0, // Adjust width as needed for compactness
+                            height: 48.0, // Adjust height as needed for compactness
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0), // Match border radius of other buttons
+                              child: Container( // Use Container to apply border
+                                decoration: BoxDecoration(
+                                  color: Colors.white, // Fill color
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  border: Border.all(color: Colors.orange, width: 2.0), // Border color
+                                ),
+                                child: IconButton(
+                                  onPressed: () => _showRepeatDaysDialog(item),
+                                  icon: const Icon(Icons.schedule),
+                                  color: Colors.orange, // Foreground color
+                                  padding: EdgeInsets.zero, // Remove default padding for compactness
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8.0),
+                          SizedBox(
+                            width: 48.0, // Adjust width as needed for compactness
+                            height: 48.0, // Adjust height as needed for compactness
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0), // Match border radius of other buttons
+                              child: Container( // Use Container to apply border
+                                decoration: BoxDecoration(
+                                  color: Colors.white, // Fill color
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  border: Border.all(color: Colors.orange, width: 2.0), // Border color
+                                ),
+                                child: IconButton(
+                                  onPressed: () => _editItem(item),
+                                  icon: const Icon(Icons.edit),
+                                  color: Colors.orange, // Foreground color
+                                  padding: EdgeInsets.zero, // Remove default padding for compactness
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8.0),
+                          SizedBox(
+                            width: 48.0, // Adjust width as needed for compactness
+                            height: 48.0, // Adjust height as needed for compactness
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0), // Match border radius of other buttons
+                              child: Container( // Use Container to apply border
+                                decoration: BoxDecoration(
+                                  color: Colors.white, // Fill color
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  border: Border.all(color: Colors.orange, width: 2.0), // Border color
+                                ),
+                                child: Builder(
+                                  builder: (BuildContext innerContext) {
+                                    return IconButton(
+                                      onPressed: () {
+                                        final RenderBox button = innerContext.findRenderObject() as RenderBox;
+                                        final RenderBox overlay = Overlay.of(innerContext).context.findRenderObject() as RenderBox;
+                                        final RelativeRect position = RelativeRect.fromRect(
+                                          Rect.fromPoints(
+                                            button.localToGlobal(Offset.zero, ancestor: overlay),
+                                            button.localToGlobal(button.size.bottomRight(Offset.zero), ancestor: overlay),
+                                          ),
+                                          Offset.zero & overlay.size,
+                                        );
+                                        showMenu<String>(
+                                          context: innerContext,
+                                          position: position,
+                                          items: <PopupMenuEntry<String>>[
+                                            PopupMenuItem<String>(
+                                              value: 'delete',
+                                              child: Text(l10n!.deleteButton),
+                                            ),
+                                          ],
+                                        ).then((String? result) {
+                                          if (result == 'delete') {
+                                            _deleteItem(item);
+                                          }
+                                        });
+                                      },
+                                      icon: const Icon(Icons.more_vert),
+                                      color: Colors.orange, // Foreground color
+                                      padding: EdgeInsets.zero, // Remove default padding for compactness
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addItem,
