@@ -147,6 +147,8 @@ Your task is to use https://pub.dev/packages/password_strength to indicate the p
 
 Your task is to implement swiping left or right should switch between status screen and manage screen and settings screen.
 
+your task is to add search function in status screen. A search icon button should be added to the left of the sort icon button. when the user taps on the search icon button, a search bar should show up and take up the space of the app bar. the search bar should have a light grey border and have a search icon to the left of the text field. when user type in the search bar, sort the items by similarity to the typed search text.
+
 === Backlog ===
 
 Your task is to use in_app_purchase package (https://pub.dev/packages/in_app_purchase#upgrading-or-downgrading-an-existing-in-app-subscription) to bring up in app purchase when the user tap on subscribe button on the upgrade screen. Here is an example code for using the package:
@@ -165,4 +167,4 @@ Your task is to create a background job that runs every hour to check if any ite
 
 === TODO ===
 
-your task is to add search function in status screen. A search icon button should be added to the left of the sort icon button. when the user taps on the search icon button, a search bar should show up and take up the space of the app bar. the search bar should have a light grey border and have a search icon to the left of the text field. when user type in the search bar, sort the items by similarity to the typed search text.
+your task is to remove the cancel button in the search bar in status screen, tapping outside the search bar should cancel it and hide the search bar.
