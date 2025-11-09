@@ -165,4 +165,4 @@ Your task is to create a background job that runs every hour to check if any ite
 
 === TODO ===
 
-your task is to add a search bar on the top of the status screen. The search bar should be between the screen title and the sort button with light grey and rounded border and a search icon to the right side inside the serach bar. when user type in the search bar, sort the items by similarity to the typed search text.
+your task is to add search function in status screen. A search icon button should be added to the left of the sort icon button. when the user taps on the search icon button, a search bar should show up and take up the space of the app bar. the search bar should have a light grey border and have a search icon to the left of the text field. when user type in the search bar, sort the items by similarity to the typed search text.
