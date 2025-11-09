@@ -12,8 +12,6 @@ InAppPurchase.instance
     .buyNonConsumable(purchaseParam: purchaseParam);
 ```
 
-Your task is to create a background job that runs every hour to check if any items have a repeat time with 20% or less remaining, and compose a notification with all the approaching items and send the notification to the user through app notification.
-
 === Completed ===
 
 Your task is to build on top of the empty Flutter app to build a maintenance tracking app. The goal is to build an all-in-one app to help track maintenance schedules. For example, when I change the water filter for my house, I should be able to log an entry and I will be able to always check when was the last time I changed the filter and how long it has been. The app should have a sign in screen. For now, it will show a text input field for email and another for password, and the user will successfully log in regardless of the email and password for now when click on the sign in button. When the user successfully sign in, it should navigate to the home screen which consists of 3 subscreen (item status screen, item management screen and settings screen) with bottom navigator. The item management screen should show a list of tracking items, for example, AC filter, water filter, etc and a button to add a new item, and for each item in the list, it should show a button to edit it and a button to delete it. In the item status screem, it should show a list of tracking items, for example, AC filter, water filter, etc and for each item in the list, it should show a button to log now as the last action or add a custom date as the last action, it should also show a button to check a list of full action history. In the settings page, it should show a button to sign out. Always use `flutter build apk` to validate the change and fix any issues.
@@ -172,3 +170,5 @@ your task is to make sure if the user search in status page with english, it sho
 your task is to duplicate the search impelementation in status screen to manage screen to search items in manage screen.
 
 === TODO ===
+
+Your task is to create a background job that runs every hour to check if any items have a repeat time with 20% or less remaining, and compose a notification with all the approaching items and send the notification to the user through app notification.
