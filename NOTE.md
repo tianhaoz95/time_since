@@ -165,4 +165,4 @@ Your task is to create a background job that runs every hour to check if any ite
 
 === TODO ===
 
-your task is to add a search bar on the top of the status screen. when user type in the search bar, sort the items by similarity to the typed search text.
+your task is to add a search bar on the top of the status screen. The search bar should be between the screen title and the sort button with light grey and rounded border and a search icon to the right side inside the serach bar. when user type in the search bar, sort the items by similarity to the typed search text.
