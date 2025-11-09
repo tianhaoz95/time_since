@@ -167,6 +167,8 @@ your task is to add search function in status screen. A search icon button shoul
 
 your task is to remove the cancel button in the search bar in status screen, tapping outside the search bar should cancel it and hide the search bar.
 
+your task is to make sure if the user search in status page with english, it should also match chinese using pinyin.
+
 === TODO ===
 
-your task is to make sure if the user search in status page with english, it should also match chinese using pinyin.
+your task is to duplicate the search impelementation in status screen to manage screen to search items in manage screen.
