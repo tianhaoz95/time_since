@@ -165,4 +165,4 @@ Your task is to create a background job that runs every hour to check if any ite
 
 === TODO ===
 
-
+your task is to add a search bar on the top of the status screen. when user type in the search bar, sort the items by similarity to the typed search text.
