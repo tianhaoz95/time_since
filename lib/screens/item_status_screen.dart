@@ -19,6 +19,8 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   AppLocalizations? l10n;
   String _currentSortOption = 'name'; // Default sort option
+  bool _isSearching = false;
+  final TextEditingController _searchController = TextEditingController();
 
   User? get currentUser => _auth.currentUser;
 
@@ -26,6 +28,12 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
   void initState() {
     super.initState();
     _loadSortOption();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   void _loadSortOption() async {
@@ -151,53 +159,95 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n!.itemStatusTitle),
-        actions: [
-          PopupMenuButton<String>(
-            icon: const Icon(Icons.sort),
-            onSelected: (String result) {
-              setState(() {
-                _currentSortOption = result;
-              });
-              _saveSortOption(result);
-            },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              PopupMenuItem<String>(
-                value: 'name',
-                child: Row(
-                  children: [
-                    if (_currentSortOption == 'name')
-                      const Icon(Icons.check, size: 20.0),
-                    const SizedBox(width: 8.0),
-                    Text(l10n!.sortByName),
+        title: _isSearching
+            ? TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: l10n!.searchHint,
+                  border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  prefixIcon: const Icon(Icons.search),
+                  suffixIcon: _searchController.text.isNotEmpty
+                      ? IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: () {
+                            _searchController.clear();
+                            setState(() {}); // Rebuild to update the list
+                          },
+                        )
+                      : null,
+                ),
+                onChanged: (value) {
+                  setState(() {}); // Rebuild to filter the list
+                },
+              )
+            : Text(l10n!.itemStatusTitle),
+        actions: _isSearching
+            ? [
+                IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () {
+                    setState(() {
+                      _isSearching = false;
+                      _searchController.clear();
+                    });
+                  },
+                ),
+              ]
+            : [
+                IconButton(
+                  icon: const Icon(Icons.search),
+                  onPressed: () {
+                    setState(() {
+                      _isSearching = true;
+                    });
+                  },
+                ),
+                PopupMenuButton<String>(
+                  icon: const Icon(Icons.sort),
+                  onSelected: (String result) {
+                    setState(() {
+                      _currentSortOption = result;
+                    });
+                    _saveSortOption(result);
+                  },
+                  itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                    PopupMenuItem<String>(
+                      value: 'name',
+                      child: Row(
+                        children: [
+                          if (_currentSortOption == 'name')
+                            const Icon(Icons.check, size: 20.0),
+                          const SizedBox(width: 8.0),
+                          Text(l10n!.sortByName),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem<String>(
+                      value: 'lastLoggedDate',
+                      child: Row(
+                        children: [
+                          if (_currentSortOption == 'lastLoggedDate')
+                            const Icon(Icons.check, size: 20.0),
+                          const SizedBox(width: 8.0),
+                          Text(l10n!.sortByLastLoggedDate),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem<String>(
+                      value: 'nextDueDate',
+                      child: Row(
+                        children: [
+                          if (_currentSortOption == 'nextDueDate')
+                            const Icon(Icons.check, size: 20.0),
+                          const SizedBox(width: 8.0),
+                          Text(l10n!.sortByNextDueDate),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
-              ),
-              PopupMenuItem<String>(
-                value: 'lastLoggedDate',
-                child: Row(
-                  children: [
-                    if (_currentSortOption == 'lastLoggedDate')
-                      const Icon(Icons.check, size: 20.0),
-                    const SizedBox(width: 8.0),
-                    Text(l10n!.sortByLastLoggedDate),
-                  ],
-                ),
-              ),
-              PopupMenuItem<String>(
-                value: 'nextDueDate',
-                child: Row(
-                  children: [
-                    if (_currentSortOption == 'nextDueDate')
-                      const Icon(Icons.check, size: 20.0),
-                    const SizedBox(width: 8.0),
-                    Text(l10n!.sortByNextDueDate),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
+              ],
       ),
       body: StreamBuilder<QuerySnapshot<TrackingItem>>(
         stream: _firestore
@@ -219,6 +269,12 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
           }
 
           var items = snapshot.data?.docs.map((doc) => doc.data()).toList() ?? [];
+
+          // Apply search filter
+          if (_searchController.text.isNotEmpty) {
+            items = items.where((item) =>
+                item.name.toLowerCase().contains(_searchController.text.toLowerCase())).toList();
+          }
 
           // Apply sorting
           if (_currentSortOption == 'name') {

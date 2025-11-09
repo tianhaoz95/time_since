@@ -91,5 +91,6 @@
     "scheduleEventDescription": "Time to log {itemName} again! (Every {repeatDays} days)",
     "scheduleEventConfirmation": "Scheduled {itemName} for {date} in your calendar.",
     "repeatDaysProgress": "{currentDays} days out of {totalDays} days ({percentage}%)",
-    "repeatDaysProgressRemaining": "{remainingDays} days out of {totalDays} days remaining ({percentage}%)"
+    "repeatDaysProgressRemaining": "{remainingDays} days out of {totalDays} days remaining ({percentage}%)",
+    "searchHint": "Search items..."
 }

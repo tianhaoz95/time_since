@@ -373,4 +373,7 @@ class AppLocalizationsZh extends AppLocalizations {
   ) {
     return '$remainingDays days out of $totalDays days remaining ($percentage%)';
   }
+
+  @override
+  String get searchHint => '搜索项目...';
 }

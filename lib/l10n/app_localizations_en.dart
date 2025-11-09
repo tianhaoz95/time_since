@@ -381,4 +381,7 @@ class AppLocalizationsEn extends AppLocalizations {
   ) {
     return '$remainingDays days out of $totalDays days remaining ($percentage%)';
   }
+
+  @override
+  String get searchHint => 'Search items...';
 }

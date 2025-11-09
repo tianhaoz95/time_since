@@ -657,6 +657,12 @@ abstract class AppLocalizations {
     Object remainingDays,
     Object totalDays,
   );
+
+  /// No description provided for @searchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search items...'**
+  String get searchHint;
 }
 
 class _AppLocalizationsDelegate
