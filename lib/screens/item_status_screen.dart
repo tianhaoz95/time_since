@@ -21,6 +21,7 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
   String _currentSortOption = 'name'; // Default sort option
   bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
+  final FocusNode _searchFocusNode = FocusNode();
 
   User? get currentUser => _auth.currentUser;
 
@@ -28,11 +29,20 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
   void initState() {
     super.initState();
     _loadSortOption();
+    _searchFocusNode.addListener(() {
+      if (!_searchFocusNode.hasFocus && _isSearching) {
+        setState(() {
+          _isSearching = false;
+          _searchController.clear();
+        });
+      }
+    });
   }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _searchFocusNode.dispose();
     super.dispose();
   }
 
@@ -162,6 +172,7 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
         title: _isSearching
             ? TextField(
                 controller: _searchController,
+                focusNode: _searchFocusNode,
                 decoration: InputDecoration(
                   hintText: l10n!.searchHint,
                   border: InputBorder.none,
@@ -183,17 +194,7 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
               )
             : Text(l10n!.itemStatusTitle),
         actions: _isSearching
-            ? [
-                IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () {
-                    setState(() {
-                      _isSearching = false;
-                      _searchController.clear();
-                    });
-                  },
-                ),
-              ]
+            ? []
             : [
                 IconButton(
                   icon: const Icon(Icons.search),
@@ -201,6 +202,7 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
                     setState(() {
                       _isSearching = true;
                     });
+                    _searchFocusNode.requestFocus();
                   },
                 ),
                 PopupMenuButton<String>(
@@ -249,148 +251,153 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
                 ),
               ],
       ),
-      body: StreamBuilder<QuerySnapshot<TrackingItem>>(
-        stream: _firestore
-            .collection('users')
-            .doc(currentUser!.uid)
-            .collection('items')
-            .withConverter<TrackingItem>(
-              fromFirestore: TrackingItem.fromFirestore,
-              toFirestore: (item, options) => item.toFirestore(),
-            )
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          }
-
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          var items = snapshot.data?.docs.map((doc) => doc.data()).toList() ?? [];
-
-          // Apply search filter
-          if (_searchController.text.isNotEmpty) {
-            items = items.where((item) =>
-                item.name.toLowerCase().contains(_searchController.text.toLowerCase())).toList();
-          }
-
-          // Apply sorting
-          if (_currentSortOption == 'name') {
-            items.sort((a, b) => a.name.compareTo(b.name));
-          } else if (_currentSortOption == 'lastLoggedDate') {
-            items.sort((a, b) => b.lastDate.compareTo(a.lastDate)); // Sort descending for most recent first
-          } else if (_currentSortOption == 'nextDueDate') {
-            final List<TrackingItem> itemsWithRepeatDays = [];
-            final List<TrackingItem> itemsWithoutRepeatDays = [];
-
-            for (var item in items) {
-              if (item.repeatDays != null && item.repeatDays! > 0) {
-                itemsWithRepeatDays.add(item);
-              } else {
-                itemsWithoutRepeatDays.add(item);
-              }
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: StreamBuilder<QuerySnapshot<TrackingItem>>(
+          stream: _firestore
+              .collection('users')
+              .doc(currentUser!.uid)
+              .collection('items')
+              .withConverter<TrackingItem>(
+                fromFirestore: TrackingItem.fromFirestore,
+                toFirestore: (item, options) => item.toFirestore(),
+              )
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
             }
 
-            itemsWithRepeatDays.sort((a, b) {
-              final DateTime nextDueDateA = a.lastDate.add(Duration(days: a.repeatDays!));
-              final DateTime nextDueDateB = b.lastDate.add(Duration(days: b.repeatDays!));
-              return nextDueDateA.compareTo(nextDueDateB);
-            });
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-            items = [...itemsWithRepeatDays, ...itemsWithoutRepeatDays];
-          }
+            var items = snapshot.data?.docs.map((doc) => doc.data()).toList() ?? [];
 
-          if (items.isEmpty) {
-            return Center(child: Text(l10n!.noTrackingItemsManageTab));
-          }
+            // Apply search filter
+            if (_searchController.text.isNotEmpty) {
+              items = items.where((item) =>
+                  item.name.toLowerCase().contains(_searchController.text.toLowerCase())).toList();
+            }
 
-          return ListView.separated(
-            itemCount: items.length,
-            separatorBuilder: (context, index) => const Divider(height: 1, indent: 16, endIndent: 16),
-            itemBuilder: (context, index) {
-              final item = items[index];
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                item.name,
-                                style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                l10n!.lastLogged(item.lastDate.toLocal().toString().split(' ')[0], _getTimeSince(item.lastDate, l10n!)),
-                                style: const TextStyle(fontSize: 14.0, color: Colors.grey),
-                              ),
-                              if (item.notes != null && item.notes!.isNotEmpty)
+            // Apply sorting
+            if (_currentSortOption == 'name') {
+              items.sort((a, b) => a.name.compareTo(b.name));
+            } else if (_currentSortOption == 'lastLoggedDate') {
+              items.sort((a, b) => b.lastDate.compareTo(a.lastDate)); // Sort descending for most recent first
+            } else if (_currentSortOption == 'nextDueDate') {
+              final List<TrackingItem> itemsWithRepeatDays = [];
+              final List<TrackingItem> itemsWithoutRepeatDays = [];
+
+              for (var item in items) {
+                if (item.repeatDays != null && item.repeatDays! > 0) {
+                  itemsWithRepeatDays.add(item);
+                } else {
+                  itemsWithoutRepeatDays.add(item);
+                }
+              }
+
+              itemsWithRepeatDays.sort((a, b) {
+                final DateTime nextDueDateA = a.lastDate.add(Duration(days: a.repeatDays!));
+                final DateTime nextDueDateB = b.lastDate.add(Duration(days: b.repeatDays!));
+                return nextDueDateA.compareTo(nextDueDateB);
+              });
+
+              items = [...itemsWithRepeatDays, ...itemsWithoutRepeatDays];
+            }
+
+            if (items.isEmpty) {
+              return Center(child: Text(l10n!.noTrackingItemsManageTab));
+            }
+
+            return ListView.separated(
+              itemCount: items.length,
+              separatorBuilder: (context, index) => const Divider(height: 1, indent: 16, endIndent: 16),
+              itemBuilder: (context, index) {
+                final item = items[index];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
                                 Text(
-                                  l10n!.notesLabel(item.notes!),
-                                  style: const TextStyle(fontSize: 12.0, fontStyle: FontStyle.italic, color: Colors.grey),
+                                  item.name,
+                                  style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                                 ),
-                            ],
+                                Text(
+                                  l10n!.lastLogged(item.lastDate.toLocal().toString().split(' ')[0], _getTimeSince(item.lastDate, l10n!)),
+                                  style: const TextStyle(fontSize: 14.0, color: Colors.grey),
+                                ),
+                                if (item.notes != null && item.notes!.isNotEmpty)
+                                  Text(
+                                    l10n!.notesLabel(item.notes!),
+                                    style: const TextStyle(fontSize: 12.0, fontStyle: FontStyle.italic, color: Colors.grey),
+                                  ),
+                              ],
+                            ),
                           ),
+                        ],
+                      ),
+                      if (item.repeatDays != null && item.repeatDays! > 0) ...[
+                        const SizedBox(height: 8.0),
+                        Builder(
+                          builder: (BuildContext context) {
+                            final int remainingDays = (item.repeatDays! - DateTime.now().difference(item.lastDate).inDays).clamp(0, item.repeatDays!);
+                            final double percentageRemaining = remainingDays / item.repeatDays!;
+
+                            Color progressBarColor;
+                            if (percentageRemaining > 0.4) {
+                              progressBarColor = Colors.green;
+                            } else if (percentageRemaining >= 0.2) {
+                              progressBarColor = Colors.yellow;
+                            } else {
+                              progressBarColor = Colors.red;
+                            }
+
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                LinearProgressIndicator(
+                                  value: percentageRemaining,
+                                  backgroundColor: Colors.grey[300],
+                                  color: progressBarColor,
+                                ),
+                                const SizedBox(height: 4.0),
+                                Text(
+                                  l10n!.repeatDaysProgressRemaining(
+                                    ((item.repeatDays! - DateTime.now().difference(item.lastDate).inDays).clamp(0, item.repeatDays!).toDouble() / item.repeatDays! * 100).toInt(),
+                                    (item.repeatDays! - DateTime.now().difference(item.lastDate).inDays).clamp(0, item.repeatDays!),
+                                    item.repeatDays!,
+                                  ),
+                                  style: const TextStyle(fontSize: 12.0, color: Colors.grey),
+                                ),
+                              ],
+                            );
+                          },
                         ),
                       ],
-                    ),
-                    if (item.repeatDays != null && item.repeatDays! > 0) ...[
-                      const SizedBox(height: 8.0),
-                      Builder(
-                        builder: (BuildContext context) {
-                          final int remainingDays = (item.repeatDays! - DateTime.now().difference(item.lastDate).inDays).clamp(0, item.repeatDays!);
-                          final double percentageRemaining = remainingDays / item.repeatDays!;
-
-                          Color progressBarColor;
-                          if (percentageRemaining > 0.4) {
-                            progressBarColor = Colors.green;
-                          } else if (percentageRemaining >= 0.2) {
-                            progressBarColor = Colors.yellow;
-                          } else {
-                            progressBarColor = Colors.red;
-                          }
-
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              LinearProgressIndicator(
-                                value: percentageRemaining,
-                                backgroundColor: Colors.grey[300],
-                                color: progressBarColor,
-                              ),
-                              const SizedBox(height: 4.0),
-                              Text(
-                                l10n!.repeatDaysProgressRemaining(
-                                  ((item.repeatDays! - DateTime.now().difference(item.lastDate).inDays).clamp(0, item.repeatDays!).toDouble() / item.repeatDays! * 100).toInt(),
-                                  (item.repeatDays! - DateTime.now().difference(item.lastDate).inDays).clamp(0, item.repeatDays!),
-                                  item.repeatDays!,
-                                ),
-                                style: const TextStyle(fontSize: 12.0, color: Colors.grey),
-                              ),
-                            ],
-                          );
-                        },
+                      const SizedBox(height: 10.0),
+                      StatusButtons(
+                        item: item,
+                        onLogNow: _logNow,
+                        onAddCustomDate: _addCustomDate,
+                        onSchedule: _onSchedule,
                       ),
                     ],
-                    const SizedBox(height: 10.0),
-                    StatusButtons(
-                      item: item,
-                      onLogNow: _logNow,
-                      onAddCustomDate: _addCustomDate,
-                      onSchedule: _onSchedule,
-                    ),
-                  ],
-                ),
-              );
-            },
-          );
-        },
+                  ),
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
