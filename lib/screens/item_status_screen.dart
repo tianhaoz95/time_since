@@ -316,7 +316,15 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
               return Center(child: Text(l10n!.noTrackingItemsManageTab));
             }
 
-            return ListView.separated(
+            return RefreshIndicator(
+              onRefresh: () async {
+                // The StreamBuilder automatically listens for updates.
+                // We can add a small delay here to simulate network latency
+                // or just return immediately.
+                await Future.delayed(const Duration(milliseconds: 500));
+                // No explicit data fetching needed here as StreamBuilder handles it.
+              },
+              child: ListView.separated(
               itemCount: items.length,
               separatorBuilder: (context, index) => const Divider(height: 1, indent: 16, endIndent: 16),
               itemBuilder: (context, index) {
@@ -398,8 +406,9 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
                     ],
                   ),
                 );
-              },
-            );
+                },
+              ), // Closing ListView.separated and RefreshIndicator
+            ); // Closing RefreshIndicator
           },
         ),
       ),
