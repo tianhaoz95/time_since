@@ -181,4 +181,6 @@ your task is to ask user for notification permission when needed. when the user 
 
 Your task is to modify the periodic background job to filter all items have a repeat time with 20% or less remaining, and compose a notification with all the approaching items and send the notification to the user through app notification.
 
-your task is to implement reminder notification feature.
+your task is to implement reminder notification feature. when the user taps the bell icon button in the manage screen
+
+your task is to implement saving the reminder information in the database. the bell icon in the item management screen should act like a toggle which can visually show user whether the notification is turned on or off. when the user taps it can switch between on and off and set the field `users/{uid}/items/{item_id}/notify` to true or false accordingly. if `users/{uid}/items/{item_id}/notify` does not exist, treat it as notification is off.
