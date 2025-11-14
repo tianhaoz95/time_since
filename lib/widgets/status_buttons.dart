@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:time_since/models/tracking_item.dart';
 import 'package:time_since/l10n/app_localizations.dart';
 
-class StatusButtons extends StatelessWidget {
+class StatusButtons extends StatefulWidget {
   const StatusButtons({
     super.key,
     required this.item,
@@ -10,6 +10,7 @@ class StatusButtons extends StatelessWidget {
     required this.onAddCustomDate,
     required this.onSchedule,
     this.isOverdue = false,
+    this.animationController,
   });
 
   final TrackingItem item;
@@ -17,6 +18,42 @@ class StatusButtons extends StatelessWidget {
   final Function(TrackingItem) onAddCustomDate;
   final Function(TrackingItem) onSchedule;
   final bool isOverdue;
+  final AnimationController? animationController;
+
+  @override
+  State<StatusButtons> createState() => _StatusButtonsState();
+}
+
+class _StatusButtonsState extends State<StatusButtons> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.animationController != null) {
+      _controller = widget.animationController!;
+    } else {
+      _controller = AnimationController(
+        duration: const Duration(seconds: 1),
+        vsync: this,
+      )..repeat(reverse: true);
+    }
+    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeInOut,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    if (widget.animationController == null) {
+      _controller.dispose();
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,19 +62,17 @@ class StatusButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Expanded(
-          child: TweenAnimationBuilder<double>(
-            tween: Tween<double>(begin: 0.0, end: 1.0),
-            duration: const Duration(seconds: 1),
-            curve: Curves.easeInOut,
-            builder: (context, value, child) {
+          child: AnimatedBuilder(
+            animation: _animation,
+            builder: (context, child) {
               return Container(
-                decoration: isOverdue
+                decoration: widget.isOverdue
                     ? BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.red.withOpacity(0.5 * value),
-                            blurRadius: 10.0 * value,
-                            spreadRadius: 5.0 * value,
+                            color: Colors.red.withOpacity(0.5 * _animation.value),
+                            blurRadius: 10.0 * _animation.value,
+                            spreadRadius: 5.0 * _animation.value,
                           ),
                         ],
                       )
@@ -46,7 +81,7 @@ class StatusButtons extends StatelessWidget {
               );
             },
             child: ElevatedButton(
-              onPressed: () => onLogNow(item),
+              onPressed: () => widget.onLogNow(widget.item),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.orange,
                 foregroundColor: Colors.white,
@@ -70,9 +105,9 @@ class StatusButtons extends StatelessWidget {
           ),
           onSelected: (String result) {
             if (result == 'custom_date') {
-              onAddCustomDate(item);
+              widget.onAddCustomDate(widget.item);
             } else if (result == 'schedule') {
-              onSchedule(item);
+              widget.onSchedule(widget.item);
             }
           },
           itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
@@ -80,7 +115,7 @@ class StatusButtons extends StatelessWidget {
               value: 'custom_date',
               child: Text(l10n.customDateButton),
             ),
-            if (item.repeatDays != null && item.repeatDays! > 0)
+            if (widget.item.repeatDays != null && widget.item.repeatDays! > 0)
               PopupMenuItem<String>(
                 value: 'schedule',
                 child: Text(l10n.scheduleButton),
