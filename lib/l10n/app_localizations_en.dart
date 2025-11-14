@@ -383,5 +383,15 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String notificationTitle(String itemName) {
+    return 'Reminder: $itemName';
+  }
+
+  @override
+  String notificationBody(String itemName) {
+    return 'It\'s time to log $itemName again!';
+  }
+
+  @override
   String get searchHint => 'Search items...';
 }

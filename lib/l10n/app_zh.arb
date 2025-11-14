@@ -91,5 +91,25 @@
     "scheduleEventDescription": "再次记录 {itemName} 的时间到了！ (每 {repeatDays} 天)",
     "scheduleEventConfirmation": "已将 {itemName} 的 {date} 日程添加到您的日历中。",
     "repeatDaysProgress": "{currentDays} 天 / {totalDays} 天 ({percentage}%)",
+    "notificationTitle": "提醒：{itemName}",
+    "@notificationTitle": {
+        "description": "Title for the notification for a tracking item.",
+        "placeholders": {
+            "itemName": {
+                "type": "String",
+                "example": "浇花"
+            }
+        }
+    },
+    "notificationBody": "是时候再次记录 {itemName} 了！",
+    "@notificationBody": {
+        "description": "Body for the notification for a tracking item.",
+        "placeholders": {
+            "itemName": {
+                "type": "String",
+                "example": "浇花"
+            }
+        }
+    },
     "searchHint": "搜索项目..."
 }

@@ -375,5 +375,15 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String notificationTitle(String itemName) {
+    return '提醒：$itemName';
+  }
+
+  @override
+  String notificationBody(String itemName) {
+    return '是时候再次记录 $itemName 了！';
+  }
+
+  @override
   String get searchHint => '搜索项目...';
 }

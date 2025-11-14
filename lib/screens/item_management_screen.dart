@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:time_since/screens/upgrade_screen.dart';
 import 'package:time_since/l10n/app_localizations.dart';
 import 'package:lpinyin/lpinyin.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart'; // New import
 
 class ItemManagementScreen extends StatefulWidget {
   const ItemManagementScreen({super.key});
@@ -23,6 +24,8 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocusNode = FocusNode();
 
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin; // Declared here
+
   User? get currentUser => _auth.currentUser;
 
   @override
@@ -36,6 +39,45 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
         });
       }
     });
+
+    // Initialize flutter_local_notifications
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('notification_icon'); // Use the new notification icon
+
+    const DarwinInitializationSettings initializationSettingsIOS =
+        DarwinInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+    );
+
+    const InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsIOS,
+    );
+
+    flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (NotificationResponse notificationResponse) async {
+        print('Notification tapped! Payload: ${notificationResponse.payload}');
+        // Handle notification tap
+        // For example, navigate to a specific screen
+      },
+    );
+
+    // Create Android Notification Channel (for Android 8.0 and above)
+    const AndroidNotificationChannel channel = AndroidNotificationChannel(
+      'time_since_channel_id', // id - changed to a more unique ID
+      'Time Since Reminders', // title - changed
+      description: 'Notifications for your Time Since tracking items', // description - changed
+      importance: Importance.max,
+    );
+
+    flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
   }
 
   @override
@@ -50,6 +92,47 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
     _searchController.dispose();
     _searchFocusNode.dispose();
     super.dispose();
+  }
+
+  Future<void> _showNotification(TrackingItem item) async {
+    print('Attempting to show notification for item: ${item.name}');
+
+    // Check if notifications are enabled for the app
+    final bool? areNotificationsEnabled = await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.areNotificationsEnabled();
+
+    if (areNotificationsEnabled == false) {
+      print('Notifications are disabled for the app. Please enable them in settings.');
+      // Optionally, show a dialog to the user to direct them to settings
+      return;
+    }
+
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      'time_since_channel_id', 'Time Since Reminders',
+      channelDescription: 'Notifications for your Time Since tracking items',
+      importance: Importance.max,
+      priority: Priority.high,
+      ticker: 'ticker',
+      playSound: true, // Added
+      enableVibration: true, // Added
+    );
+    const DarwinNotificationDetails iOSPlatformChannelSpecifics =
+        DarwinNotificationDetails();
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics,
+    );
+    await flutterLocalNotificationsPlugin.show(
+      0, // Notification ID
+      l10n!.notificationTitle(item.name), // Title
+      l10n!.notificationBody(item.name), // Body
+      platformChannelSpecifics,
+      payload: 'item_id_${item.id}',
+    );
+    print('Notification show method executed for item: ${item.name}');
   }
 
   void _addItem() async {
@@ -467,6 +550,28 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
+                          // Bell Icon Button
+                          SizedBox(
+                            width: 48.0,
+                            height: 48.0,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  border: Border.all(color: Colors.orange, width: 2.0),
+                                ),
+                                child: IconButton(
+                                  onPressed: () => _showNotification(item),
+                                  icon: const Icon(Icons.notifications_active),
+                                  color: Colors.orange,
+                                  padding: EdgeInsets.zero,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8.0),
                           SizedBox(
                             width: 48.0, // Adjust width as needed for compactness
                             height: 48.0, // Adjust height as needed for compactness

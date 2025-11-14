@@ -658,6 +658,18 @@ abstract class AppLocalizations {
     Object totalDays,
   );
 
+  /// Title for the notification for a tracking item.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder: {itemName}'**
+  String notificationTitle(String itemName);
+
+  /// Body for the notification for a tracking item.
+  ///
+  /// In en, this message translates to:
+  /// **'It\'s time to log {itemName} again!'**
+  String notificationBody(String itemName);
+
   /// No description provided for @searchHint.
   ///
   /// In en, this message translates to:

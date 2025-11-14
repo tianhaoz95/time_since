@@ -92,5 +92,25 @@
     "scheduleEventConfirmation": "Scheduled {itemName} for {date} in your calendar.",
     "repeatDaysProgress": "{currentDays} days out of {totalDays} days ({percentage}%)",
     "repeatDaysProgressRemaining": "{remainingDays} days out of {totalDays} days remaining ({percentage}%)",
+    "notificationTitle": "Reminder: {itemName}",
+    "@notificationTitle": {
+        "description": "Title for the notification for a tracking item.",
+        "placeholders": {
+            "itemName": {
+                "type": "String",
+                "example": "Water Plants"
+            }
+        }
+    },
+    "notificationBody": "It's time to log {itemName} again!",
+    "@notificationBody": {
+        "description": "Body for the notification for a tracking item.",
+        "placeholders": {
+            "itemName": {
+                "type": "String",
+                "example": "Water Plants"
+            }
+        }
+    },
     "searchHint": "Search items..."
 }
