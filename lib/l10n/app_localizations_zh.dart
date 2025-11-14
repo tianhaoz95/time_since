@@ -386,4 +386,13 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get searchHint => '搜索项目...';
+
+  @override
+  String get notificationPermissionDeniedTitle => '通知权限被拒绝';
+
+  @override
+  String get notificationPermissionDeniedContent => '请在您的设备设置中启用通知权限以接收提醒。';
+
+  @override
+  String get okButton => '确定';
 }

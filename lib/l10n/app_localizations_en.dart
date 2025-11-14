@@ -394,4 +394,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get searchHint => 'Search items...';
+
+  @override
+  String get notificationPermissionDeniedTitle =>
+      'Notification Permission Denied';
+
+  @override
+  String get notificationPermissionDeniedContent =>
+      'Please enable notification permissions in your device settings to receive reminders.';
+
+  @override
+  String get okButton => 'OK';
 }

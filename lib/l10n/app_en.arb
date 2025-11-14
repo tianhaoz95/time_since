@@ -112,5 +112,8 @@
             }
         }
     },
-    "searchHint": "Search items..."
+    "searchHint": "Search items...",
+    "notificationPermissionDeniedTitle": "Notification Permission Denied",
+    "notificationPermissionDeniedContent": "Please enable notification permissions in your device settings to receive reminders.",
+    "okButton": "OK"
 }

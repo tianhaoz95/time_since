@@ -97,15 +97,47 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
   Future<void> _showNotification(TrackingItem item) async {
     print('Attempting to show notification for item: ${item.name}');
 
-    // Check if notifications are enabled for the app
-    final bool? areNotificationsEnabled = await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.areNotificationsEnabled();
+    // Check and request notification permissions
+    bool? granted = false;
+    if (Theme.of(context).platform == TargetPlatform.iOS) {
+      granted = await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              IOSFlutterLocalNotificationsPlugin>()
+          ?.requestPermissions(
+            alert: true,
+            badge: true,
+            sound: true,
+          );
+    } else if (Theme.of(context).platform == TargetPlatform.android) {
+      final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
+          flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>();
+      if (androidImplementation != null) {
+        granted = await androidImplementation.requestNotificationsPermission();
+      }
+    }
 
-    if (areNotificationsEnabled == false) {
-      print('Notifications are disabled for the app. Please enable them in settings.');
-      // Optionally, show a dialog to the user to direct them to settings
+    if (granted == null || !granted) {
+      if (mounted) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(l10n!.notificationPermissionDeniedTitle),
+              content: Text(l10n!.notificationPermissionDeniedContent),
+              actions: <Widget>[
+                TextButton(
+                  child: Text(l10n!.okButton),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+      print('Notification permission denied or not granted.');
       return;
     }
 
@@ -116,8 +148,8 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
       importance: Importance.max,
       priority: Priority.high,
       ticker: 'ticker',
-      playSound: true, // Added
-      enableVibration: true, // Added
+      playSound: true,
+      enableVibration: true,
     );
     const DarwinNotificationDetails iOSPlatformChannelSpecifics =
         DarwinNotificationDetails();

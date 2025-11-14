@@ -111,5 +111,8 @@
             }
         }
     },
-    "searchHint": "搜索项目..."
+    "searchHint": "搜索项目...",
+    "notificationPermissionDeniedTitle": "通知权限被拒绝",
+    "notificationPermissionDeniedContent": "请在您的设备设置中启用通知权限以接收提醒。",
+    "okButton": "确定"
 }

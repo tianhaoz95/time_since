@@ -675,6 +675,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Search items...'**
   String get searchHint;
+
+  /// No description provided for @notificationPermissionDeniedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification Permission Denied'**
+  String get notificationPermissionDeniedTitle;
+
+  /// No description provided for @notificationPermissionDeniedContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enable notification permissions in your device settings to receive reminders.'**
+  String get notificationPermissionDeniedContent;
+
+  /// No description provided for @okButton.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get okButton;
 }
 
 class _AppLocalizationsDelegate

@@ -173,12 +173,12 @@ your task is to create a background job that runs every 5 minutes and print "Run
 
 Your task is to implement pull down to refresh feature for status screen and manage screen. When the user pull down and release, a loading animation should appear on the top of the list and the list should refresh with newly fetched data from firebase.
 
-=== TODO ===
-
-Your task is to modify the periodic background job to filter all items have a repeat time with 20% or less remaining, and compose a notification with all the approaching items and send the notification to the user through app notification.
-
 your task is to add a bell icon button to each item in the manage screen, and when the user tap on the bell, a example app notification will pop up to let the user know what the reminder notification will look like.
 
 your task is to ask user for notification permission when needed. when the user taps on the bell icon button for notification in manage screen, if the user have not enabled the notification permission for the app, prompt user to obtain permssion for notification.
+
+=== TODO ===
+
+Your task is to modify the periodic background job to filter all items have a repeat time with 20% or less remaining, and compose a notification with all the approaching items and send the notification to the user through app notification.
 
 your task is to implement reminder notification feature.
