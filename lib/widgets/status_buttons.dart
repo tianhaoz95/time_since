@@ -9,12 +9,14 @@ class StatusButtons extends StatelessWidget {
     required this.onLogNow,
     required this.onAddCustomDate,
     required this.onSchedule,
+    this.isOverdue = false,
   });
 
   final TrackingItem item;
   final Function(TrackingItem) onLogNow;
   final Function(TrackingItem) onAddCustomDate;
   final Function(TrackingItem) onSchedule;
+  final bool isOverdue;
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +25,36 @@ class StatusButtons extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Expanded(
-          child: ElevatedButton(
-            onPressed: () => onLogNow(item),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.orange,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-              elevation: 0,
+          child: TweenAnimationBuilder<double>(
+            tween: Tween<double>(begin: 0.0, end: 1.0),
+            duration: const Duration(seconds: 1),
+            curve: Curves.easeInOut,
+            builder: (context, value, child) {
+              return Container(
+                decoration: isOverdue
+                    ? BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.red.withOpacity(0.5 * value),
+                            blurRadius: 10.0 * value,
+                            spreadRadius: 5.0 * value,
+                          ),
+                        ],
+                      )
+                    : null,
+                child: child,
+              );
+            },
+            child: ElevatedButton(
+              onPressed: () => onLogNow(item),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.orange,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+                elevation: 0,
+              ),
+              child: Text(l10n.logNowButton),
             ),
-            child: Text(l10n.logNowButton),
           ),
         ),
         const SizedBox(width: 8.0),

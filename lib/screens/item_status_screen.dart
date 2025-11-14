@@ -402,6 +402,7 @@ class _ItemStatusScreenState extends State<ItemStatusScreen> {
                         onLogNow: _logNow,
                         onAddCustomDate: _addCustomDate,
                         onSchedule: _onSchedule,
+                        isOverdue: item.repeatDays != null && item.repeatDays! > 0 && DateTime.now().difference(item.lastDate).inDays >= item.repeatDays!,
                       ),
                     ],
                   ),
