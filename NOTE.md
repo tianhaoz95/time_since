@@ -180,3 +180,5 @@ Your task is to modify the periodic background job to filter all items have a re
 your task is to add a bell icon button to each item in the manage screen, and when the user tap on the bell, a example app notification will pop up to let the user know what the reminder notification will look like.
 
 your task is to ask user for notification permission when needed. when the user taps on the bell icon button for notification in manage screen, if the user have not enabled the notification permission for the app, prompt user to obtain permssion for notification.
+
+your task is to implement reminder notification feature.
