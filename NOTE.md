@@ -177,10 +177,10 @@ your task is to add a bell icon button to each item in the manage screen, and wh
 
 your task is to ask user for notification permission when needed. when the user taps on the bell icon button for notification in manage screen, if the user have not enabled the notification permission for the app, prompt user to obtain permssion for notification.
 
-=== TODO ===
-
 Your task is to modify the periodic background job to filter all items have a repeat time with 20% or less remaining, and compose a notification with all the approaching items and send the notification to the user through app notification.
 
-your task is to implement reminder notification feature. when the user taps the bell icon button in the manage screen
+your task is to implement reminder notification feature.
 
 your task is to implement saving the reminder information in the database. the bell icon in the item management screen should act like a toggle which can visually show user whether the notification is turned on or off. when the user taps it can switch between on and off and set the field `users/{uid}/items/{item_id}/notify` to true or false accordingly. if `users/{uid}/items/{item_id}/notify` does not exist, treat it as notification is off. when the notification go from not enabled to enabled, show the sample notification to help the user visualize what the notification will look like. when sending sample notification is not successful also print the error message in the console for easier debugging.
+
+=== TODO ===
