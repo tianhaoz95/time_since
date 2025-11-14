@@ -176,3 +176,5 @@ Your task is to implement pull down to refresh feature for status screen and man
 === TODO ===
 
 Your task is to modify the periodic background job to filter all items have a repeat time with 20% or less remaining, and compose a notification with all the approaching items and send the notification to the user through app notification.
+
+your task is to add a bell icon button to each item in the manage screen, and when the user tap on the bell, a example app notification will pop up to let the user know what the reminder notification will look like.
