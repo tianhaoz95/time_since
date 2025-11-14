@@ -115,5 +115,11 @@
     "searchHint": "Search items...",
     "notificationPermissionDeniedTitle": "Notification Permission Denied",
     "notificationPermissionDeniedContent": "Please enable notification permissions in your device settings to receive reminders.",
-    "okButton": "OK"
+    "okButton": "OK",
+    "notificationOn": "Notifications turned ON for {itemName}.",
+    "notificationOff": "Notifications turned OFF for {itemName}.",
+    "errorTogglingNotification": "Error toggling notification: {errorMessage}",
+    "exactAlarmPermissionTitle": "Exact Alarm Permission Required",
+    "exactAlarmPermissionContent": "To ensure timely reminders, please grant 'Alarms & reminders' permission in app settings.",
+    "settingsButton": "Settings"
 }

@@ -693,6 +693,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'OK'**
   String get okButton;
+
+  /// No description provided for @notificationOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications turned ON for {itemName}.'**
+  String notificationOn(Object itemName);
+
+  /// No description provided for @notificationOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications turned OFF for {itemName}.'**
+  String notificationOff(Object itemName);
+
+  /// No description provided for @errorTogglingNotification.
+  ///
+  /// In en, this message translates to:
+  /// **'Error toggling notification: {errorMessage}'**
+  String errorTogglingNotification(Object errorMessage);
+
+  /// No description provided for @exactAlarmPermissionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Exact Alarm Permission Required'**
+  String get exactAlarmPermissionTitle;
+
+  /// No description provided for @exactAlarmPermissionContent.
+  ///
+  /// In en, this message translates to:
+  /// **'To ensure timely reminders, please grant \'Alarms & reminders\' permission in app settings.'**
+  String get exactAlarmPermissionContent;
+
+  /// No description provided for @settingsButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsButton;
 }
 
 class _AppLocalizationsDelegate

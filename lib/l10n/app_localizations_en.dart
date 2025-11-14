@@ -405,4 +405,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get okButton => 'OK';
+
+  @override
+  String notificationOn(Object itemName) {
+    return 'Notifications turned ON for $itemName.';
+  }
+
+  @override
+  String notificationOff(Object itemName) {
+    return 'Notifications turned OFF for $itemName.';
+  }
+
+  @override
+  String errorTogglingNotification(Object errorMessage) {
+    return 'Error toggling notification: $errorMessage';
+  }
+
+  @override
+  String get exactAlarmPermissionTitle => 'Exact Alarm Permission Required';
+
+  @override
+  String get exactAlarmPermissionContent =>
+      'To ensure timely reminders, please grant \'Alarms & reminders\' permission in app settings.';
+
+  @override
+  String get settingsButton => 'Settings';
 }

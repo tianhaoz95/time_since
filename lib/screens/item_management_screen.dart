@@ -4,8 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:time_since/screens/upgrade_screen.dart';
 import 'package:time_since/l10n/app_localizations.dart';
-import 'package:lpinyin/lpinyin.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart'; // New import
+import 'package:lpinyin/lpinyin.dart' as lpinyin;
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:device_info_plus/device_info_plus.dart'; // New import
+import 'package:flutter/foundation.dart'; // For defaultTargetPlatform
 
 class ItemManagementScreen extends StatefulWidget {
   const ItemManagementScreen({super.key});
@@ -23,8 +26,9 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
   bool _isSearching = false;
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocusNode = FocusNode();
+  bool _hasPromptedForExactAlarmPermission = false;
 
-  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin; // Declared here
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
   User? get currentUser => _auth.currentUser;
 
@@ -43,7 +47,7 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
     // Initialize flutter_local_notifications
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('notification_icon'); // Use the new notification icon
+        AndroidInitializationSettings('notification_icon');
 
     const DarwinInitializationSettings initializationSettingsIOS =
         DarwinInitializationSettings(
@@ -62,15 +66,14 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
       onDidReceiveNotificationResponse: (NotificationResponse notificationResponse) async {
         print('Notification tapped! Payload: ${notificationResponse.payload}');
         // Handle notification tap
-        // For example, navigate to a specific screen
       },
     );
 
     // Create Android Notification Channel (for Android 8.0 and above)
     const AndroidNotificationChannel channel = AndroidNotificationChannel(
-      'time_since_channel_id', // id - changed to a more unique ID
-      'Time Since Reminders', // title - changed
-      description: 'Notifications for your Time Since tracking items', // description - changed
+      'time_since_channel_id',
+      'Time Since Reminders',
+      description: 'Notifications for your Time Since tracking items',
       importance: Importance.max,
     );
 
@@ -94,8 +97,8 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
     super.dispose();
   }
 
-  Future<void> _showNotification(TrackingItem item) async {
-    print('Attempting to show notification for item: ${item.name}');
+  Future<void> _scheduleNotification(TrackingItem item) async {
+    print('Attempting to schedule notification for item: ${item.name}');
 
     // Check and request notification permissions
     bool? granted = false;
@@ -114,6 +117,44 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
               AndroidFlutterLocalNotificationsPlugin>();
       if (androidImplementation != null) {
         granted = await androidImplementation.requestNotificationsPermission();
+
+        // Handle exact alarm permission for Android 12+
+        if (granted != null && granted && defaultTargetPlatform == TargetPlatform.android) {
+          final AndroidDeviceInfo androidInfo = await DeviceInfoPlugin().androidInfo;
+          if (androidInfo.version.sdkInt >= 31) {
+            if (!_hasPromptedForExactAlarmPermission) {
+              if (mounted) {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text(l10n!.exactAlarmPermissionTitle),
+                      content: Text(l10n!.exactAlarmPermissionContent),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text(l10n!.cancelButton),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        TextButton(
+                          child: Text(l10n!.settingsButton),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            androidImplementation.requestExactAlarmsPermission();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
+              _hasPromptedForExactAlarmPermission = true;
+              print('Exact alarm permission needs to be granted by the user.');
+              return; // Do not proceed with scheduling if permission is not granted yet
+            }
+          }
+        }
       }
     }
 
@@ -141,6 +182,21 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
       return;
     }
 
+    if (item.repeatDays == null || item.repeatDays! <= 0) {
+      print('Cannot schedule notification for item ${item.name}: repeatDays is not set or invalid.');
+      return;
+    }
+
+    final now = tz.TZDateTime.now(tz.local);
+    DateTime nextNotificationDate = item.lastDate.add(Duration(days: item.repeatDays!));
+
+    // Ensure the notification is scheduled for a future time
+    while (nextNotificationDate.isBefore(now)) {
+      nextNotificationDate = nextNotificationDate.add(Duration(days: item.repeatDays!));
+    }
+
+    final scheduledDate = tz.TZDateTime.from(nextNotificationDate, tz.local);
+
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
       'time_since_channel_id', 'Time Since Reminders',
@@ -157,14 +213,106 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
       android: androidPlatformChannelSpecifics,
       iOS: iOSPlatformChannelSpecifics,
     );
-    await flutterLocalNotificationsPlugin.show(
-      0, // Notification ID
-      l10n!.notificationTitle(item.name), // Title
-      l10n!.notificationBody(item.name), // Body
+
+    // Use a unique ID for each item's notification
+    final int notificationId = item.id.hashCode;
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      notificationId,
+      l10n!.notificationTitle(item.name),
+      l10n!.notificationBody(item.name),
+      scheduledDate,
       platformChannelSpecifics,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      matchDateTimeComponents: DateTimeComponents.dateAndTime, // Schedule daily at the same time
       payload: 'item_id_${item.id}',
     );
-    print('Notification show method executed for item: ${item.name}');
+    print('Notification scheduled for item: ${item.name} at $scheduledDate');
+  }
+
+  Future<void> _cancelNotification(TrackingItem item) async {
+    final int notificationId = item.id.hashCode;
+    await flutterLocalNotificationsPlugin.cancel(notificationId);
+    print('Notification cancelled for item: ${item.name}');
+  }
+
+  Future<void> _toggleNotification(TrackingItem item) async {
+    if (currentUser == null) return;
+
+    final bool newNotifyStatus = !item.notify;
+
+    try {
+      await _firestore
+          .collection('users')
+          .doc(currentUser!.uid)
+          .collection('items')
+          .doc(item.id)
+          .update({'notify': newNotifyStatus});
+
+      if (newNotifyStatus) {
+        // If turning on, schedule the notification
+        await _scheduleNotification(item);
+        // Show a sample notification immediately
+        await _showSampleNotification(item);
+      } else {
+        // If turning off, cancel the notification
+        await _cancelNotification(item);
+      }
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(newNotifyStatus
+                ? l10n!.notificationOn(item.name)
+                : l10n!.notificationOff(item.name)),
+          ),
+        );
+      }
+    } catch (e) {
+      print('Error toggling notification for item ${item.name}: $e'); // Added print statement
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n!.errorTogglingNotification(e.toString())),
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _showSampleNotification(TrackingItem item) async {
+    print('Attempting to show sample notification for item: ${item.name}');
+
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      'time_since_channel_id', 'Time Since Reminders',
+      channelDescription: 'Notifications for your Time Since tracking items',
+      importance: Importance.max,
+      priority: Priority.high,
+      ticker: 'ticker',
+      playSound: true,
+      enableVibration: true,
+    );
+    const DarwinNotificationDetails iOSPlatformChannelSpecifics =
+        DarwinNotificationDetails();
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics,
+    );
+
+    try {
+      await flutterLocalNotificationsPlugin.show(
+        // Use a different ID for sample notifications to avoid conflicts
+        item.id.hashCode + 1,
+        l10n!.notificationTitle(item.name),
+        l10n!.notificationBody(item.name),
+        platformChannelSpecifics,
+        payload: 'item_id_${item.id}_sample',
+      );
+      print('Sample notification shown for item: ${item.name}');
+    } catch (e) {
+      print('Error showing sample notification for item ${item.name}: $e');
+    }
   }
 
   void _addItem() async {
@@ -256,6 +404,7 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
                             name: itemNameController.text,
                             lastDate: DateTime.now(),
                             notes: itemNotesController.text.isEmpty ? null : itemNotesController.text,
+                            notify: false, // Initialize notify to false
                           ).toFirestore(),
                         );
                     if (mounted) {
@@ -429,6 +578,8 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
           .collection('items')
           .doc(item.id)
           .delete();
+      // Also cancel any scheduled notifications for this item
+      await _cancelNotification(item);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(l10n!.itemDeleted(item.name))),
@@ -453,6 +604,11 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
           .collection('items')
           .doc(item.id)
           .update({'repeatDays': repeatDays});
+      // If notifications are active for this item, reschedule them with the new repeatDays
+      if (item.notify) {
+        await _cancelNotification(item); // Cancel old schedule
+        await _scheduleNotification(item.copyWith(repeatDays: repeatDays)); // Schedule new
+      }
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(l10n!.repeatDaysUpdated(item.name, repeatDays))),
@@ -543,7 +699,7 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
               final searchQuery = _searchController.text.toLowerCase();
               items = items.where((item) {
                 final itemNameLower = item.name.toLowerCase();
-                final itemPinyinLower = PinyinHelper.getPinyin(item.name, separator: "", format: PinyinFormat.WITHOUT_TONE).toLowerCase();
+                final itemPinyinLower = lpinyin.PinyinHelper.getPinyin(item.name, separator: "", format: lpinyin.PinyinFormat.WITHOUT_TONE).toLowerCase();
                 return itemNameLower.contains(searchQuery) || itemPinyinLower.contains(searchQuery);
               }).toList();
             }
@@ -595,8 +751,8 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
                                   border: Border.all(color: Colors.orange, width: 2.0),
                                 ),
                                 child: IconButton(
-                                  onPressed: () => _showNotification(item),
-                                  icon: const Icon(Icons.notifications_active),
+                                  onPressed: () => _toggleNotification(item),
+                                  icon: Icon(item.notify ? Icons.notifications_active : Icons.notifications_off),
                                   color: Colors.orange,
                                   padding: EdgeInsets.zero,
                                 ),

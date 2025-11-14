@@ -8,9 +8,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:time_since/l10n/app_localizations.dart';
 import 'package:time_since/services/background_task_service.dart';
+import 'package:timezone/data/latest.dart' as tz; // New import
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  tz.initializeTimeZones(); // Initialize timezones
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   BackgroundTaskService.initialize();
   runApp(const MainApp());

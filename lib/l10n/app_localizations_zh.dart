@@ -395,4 +395,28 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get okButton => '确定';
+
+  @override
+  String notificationOn(Object itemName) {
+    return '已为 $itemName 开启通知。';
+  }
+
+  @override
+  String notificationOff(Object itemName) {
+    return '已为 $itemName 关闭通知。';
+  }
+
+  @override
+  String errorTogglingNotification(Object errorMessage) {
+    return '切换通知时出错：$errorMessage';
+  }
+
+  @override
+  String get exactAlarmPermissionTitle => '需要精确闹钟权限';
+
+  @override
+  String get exactAlarmPermissionContent => '为确保及时提醒，请在应用设置中授予“闹钟和提醒”权限。';
+
+  @override
+  String get settingsButton => '设置';
 }

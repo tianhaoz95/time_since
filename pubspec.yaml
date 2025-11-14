@@ -1,7 +1,7 @@
 name: time_since
 description: "A new Flutter project."
 publish_to: "none"
-version: 0.1.16+24
+version: 0.1.16+25
 
 environment:
   sdk: ^3.9.0
@@ -20,7 +20,8 @@ dependencies:
   password_strength: ^0.2.0
   lpinyin: ^2.0.2
   workmanager: ^0.9.0+3
-  flutter_local_notifications: ^17.0.0
+  flutter_local_notifications: ^19.0.0
+  device_info_plus: ^10.0.0
 
 dev_dependencies:
   flutter_test:
