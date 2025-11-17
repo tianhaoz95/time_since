@@ -736,7 +736,7 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
                           style: const TextStyle(fontSize: 12.0, fontStyle: FontStyle.italic, color: Colors.grey),
                         ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           // Bell Icon Button
                           SizedBox(
