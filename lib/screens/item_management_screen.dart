@@ -810,8 +810,8 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
                         children: [
                           // Bell Icon Button
                           SizedBox(
-                            width: 48.0,
-                            height: 48.0,
+                            width: 38.4,
+                            height: 38.4,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8.0),
                               child: Container(
@@ -831,8 +831,8 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
                           ),
                           const SizedBox(width: 8.0),
                           SizedBox(
-                            width: 48.0, // Adjust width as needed for compactness
-                            height: 48.0, // Adjust height as needed for compactness
+                            width: 38.4, // Adjust width as needed for compactness
+                            height: 38.4, // Adjust height as needed for compactness
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8.0), // Match border radius of other buttons
                               child: Container( // Use Container to apply border
@@ -852,8 +852,8 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
                           ),
                           const SizedBox(width: 8.0),
                           SizedBox(
-                            width: 48.0, // Adjust width as needed for compactness
-                            height: 48.0, // Adjust height as needed for compactness
+                            width: 38.4, // Adjust width as needed for compactness
+                            height: 38.4, // Adjust height as needed for compactness
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8.0), // Match border radius of other buttons
                               child: Container( // Use Container to apply border
@@ -873,8 +873,8 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
                           ),
                           const SizedBox(width: 8.0),
                           SizedBox(
-                            width: 48.0, // Adjust width as needed for compactness
-                            height: 48.0, // Adjust height as needed for compactness
+                            width: 38.4, // Adjust width as needed for compactness
+                            height: 38.4, // Adjust height as needed for compactness
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(8.0), // Match border radius of other buttons
                               child: Container( // Use Container to apply border
