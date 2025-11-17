@@ -75,6 +75,7 @@
     "logNowButton": "立即记录",
     "customDateButton": "自定义日期",
     "sortByName": "按名称排序",
+    "sortByCreationTime": "按创建时间排序",
     "sortByLastLoggedDate": "按上次记录日期排序",
     "sortByNextDueDate": "按下次到期日排序",
     "setRepeatDaysTitle": "设置重复天数",

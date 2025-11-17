@@ -302,6 +302,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get sortByName => '按名称排序';
 
   @override
+  String get sortByCreationTime => '按创建时间排序';
+
+  @override
   String get sortByLastLoggedDate => '按上次记录日期排序';
 
   @override

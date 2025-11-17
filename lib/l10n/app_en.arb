@@ -75,6 +75,7 @@
     "logNowButton": "Log Now",
     "customDateButton": "Custom Date",
     "sortByName": "Sort by Name",
+    "sortByCreationTime": "Sort by Creation Time",
     "sortByLastLoggedDate": "Sort by Last Logged Date",
     "sortByNextDueDate": "Sort by Next Due Date",
     "setRepeatDaysTitle": "Set Repeat Days",

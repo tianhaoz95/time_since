@@ -548,6 +548,12 @@ abstract class AppLocalizations {
   /// **'Sort by Name'**
   String get sortByName;
 
+  /// No description provided for @sortByCreationTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by Creation Time'**
+  String get sortByCreationTime;
+
   /// No description provided for @sortByLastLoggedDate.
   ///
   /// In en, this message translates to:

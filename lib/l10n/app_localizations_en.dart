@@ -310,6 +310,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sortByName => 'Sort by Name';
 
   @override
+  String get sortByCreationTime => 'Sort by Creation Time';
+
+  @override
   String get sortByLastLoggedDate => 'Sort by Last Logged Date';
 
   @override

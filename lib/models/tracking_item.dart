@@ -6,7 +6,8 @@ class TrackingItem {
   DateTime lastDate;
   String? notes;
   int? repeatDays;
-  bool notify; // New field
+  bool notify;
+  DateTime? createdAt; // New field
 
   TrackingItem({
     required this.id,
@@ -14,7 +15,8 @@ class TrackingItem {
     required this.lastDate,
     this.notes,
     this.repeatDays,
-    this.notify = false, // Default to false
+    this.notify = false,
+    this.createdAt, // Initialize createdAt
   });
 
   factory TrackingItem.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot, SnapshotOptions? options) {
@@ -27,6 +29,7 @@ class TrackingItem {
       notes: data?['notes'],
       repeatDays: data?['repeatDays'] as int?,
       notify: data?['notify'] ?? false, // Read notify field, default to false
+      createdAt: (data?['createdAt'] as Timestamp?)?.toDate(), // Read createdAt field
     );
   }
 
@@ -37,6 +40,7 @@ class TrackingItem {
       'notes': notes,
       'repeatDays': repeatDays,
       'notify': notify, // Include notify field
+      'createdAt': createdAt != null ? Timestamp.fromDate(createdAt!) : null, // Include createdAt field
     };
   }
 
@@ -47,6 +51,7 @@ class TrackingItem {
     String? notes,
     int? repeatDays,
     bool? notify,
+    DateTime? createdAt,
   }) {
     return TrackingItem(
       id: id ?? this.id,
@@ -55,6 +60,7 @@ class TrackingItem {
       notes: notes ?? this.notes,
       repeatDays: repeatDays ?? this.repeatDays,
       notify: notify ?? this.notify,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 }

@@ -7,8 +7,9 @@ import 'package:time_since/l10n/app_localizations.dart';
 import 'package:lpinyin/lpinyin.dart' as lpinyin;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
-import 'package:device_info_plus/device_info_plus.dart'; // New import
+import 'package:device_info_plus/device_info_plus.dart'; // For defaultTargetPlatform
 import 'package:flutter/foundation.dart'; // For defaultTargetPlatform
+import 'package:shared_preferences/shared_preferences.dart'; // New import
 
 class ItemManagementScreen extends StatefulWidget {
   const ItemManagementScreen({super.key});
@@ -27,6 +28,8 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocusNode = FocusNode();
   bool _hasPromptedForExactAlarmPermission = false;
+  String _currentSortOption = 'name'; // Default sort option
+  bool _isSortAscending = true; // Default sort direction
 
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
@@ -35,6 +38,7 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
   @override
   void initState() {
     super.initState();
+    _loadSortOption(); // Load sort option on init
     _searchFocusNode.addListener(() {
       if (!_searchFocusNode.hasFocus && _isSearching) {
         setState(() {
@@ -87,6 +91,20 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     l10n = AppLocalizations.of(context);
+  }
+
+  void _loadSortOption() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _currentSortOption = prefs.getString('manageSortOption') ?? 'name';
+      _isSortAscending = prefs.getBool('manageIsSortAscending') ?? true;
+    });
+  }
+
+  void _saveSortOption(String option, bool isAscending) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('manageSortOption', option);
+    await prefs.setBool('manageIsSortAscending', isAscending);
   }
 
   @override
@@ -667,6 +685,46 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
                     _searchFocusNode.requestFocus();
                   },
                 ),
+                PopupMenuButton<String>(
+                  icon: Icon(Icons.sort),
+                  onSelected: (String result) {
+                    if (result == _currentSortOption) {
+                      setState(() {
+                        _isSortAscending = !_isSortAscending;
+                      });
+                    } else {
+                      setState(() {
+                        _currentSortOption = result;
+                        _isSortAscending = true; // Default to ascending when changing sort option
+                      });
+                    }
+                    _saveSortOption(_currentSortOption, _isSortAscending);
+                  },
+                  itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                    PopupMenuItem<String>(
+                      value: 'name',
+                      child: Row(
+                        children: [
+                          if (_currentSortOption == 'name')
+                            Icon(_isSortAscending ? Icons.arrow_upward : Icons.arrow_downward, size: 20.0),
+                          const SizedBox(width: 8.0),
+                          Text(l10n!.sortByName),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem<String>(
+                      value: 'createdAt',
+                      child: Row(
+                        children: [
+                          if (_currentSortOption == 'createdAt')
+                            Icon(_isSortAscending ? Icons.arrow_upward : Icons.arrow_downward, size: 20.0),
+                          const SizedBox(width: 8.0),
+                          Text(l10n!.sortByCreationTime),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ],
       ),
       body: GestureDetector(
@@ -702,6 +760,18 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
                 final itemPinyinLower = lpinyin.PinyinHelper.getPinyin(item.name, separator: "", format: lpinyin.PinyinFormat.WITHOUT_TONE).toLowerCase();
                 return itemNameLower.contains(searchQuery) || itemPinyinLower.contains(searchQuery);
               }).toList();
+            }
+
+            // Apply sorting
+            if (_currentSortOption == 'name') {
+              items.sort((a, b) => _isSortAscending ? a.name.compareTo(b.name) : b.name.compareTo(a.name));
+            } else if (_currentSortOption == 'createdAt') {
+              items.sort((a, b) {
+                if (a.createdAt == null && b.createdAt == null) return 0;
+                if (a.createdAt == null) return _isSortAscending ? 1 : -1;
+                if (b.createdAt == null) return _isSortAscending ? -1 : 1;
+                return _isSortAscending ? a.createdAt!.compareTo(b.createdAt!) : b.createdAt!.compareTo(a.createdAt!);
+              });
             }
 
             if (items.isEmpty) {
