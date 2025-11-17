@@ -788,7 +788,7 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
               },
               child: ListView.separated(
               itemCount: items.length,
-              separatorBuilder: (context, index) => const Divider(height: 1, indent: 16, endIndent: 16),
+              separatorBuilder: (context, index) => Divider(height: 1, indent: 16, endIndent: 16, color: Colors.grey.shade300),
               itemBuilder: (context, index) {
                 final item = items[index];
                 return Padding(
