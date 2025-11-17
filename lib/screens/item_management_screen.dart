@@ -800,11 +800,12 @@ class _ItemManagementScreenState extends State<ItemManagementScreen> {
                         item.name,
                         style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                       ),
-                      if (item.notes != null && item.notes!.isNotEmpty)
-                        Text(
-                          l10n!.notesLabel(item.notes!),
-                          style: const TextStyle(fontSize: 12.0, fontStyle: FontStyle.italic, color: Colors.grey),
-                        ),
+                      Text(
+                        item.notes != null && item.notes!.isNotEmpty
+                            ? l10n!.notesLabel(item.notes!)
+                            : '', // Display empty string if no notes
+                        style: const TextStyle(fontSize: 12.0, fontStyle: FontStyle.italic, color: Colors.grey),
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
